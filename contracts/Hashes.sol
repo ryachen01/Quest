@@ -1,110 +1,99 @@
 pragma solidity ^0.4.24;
 // We have to specify what version of compiler this code will compile with
 
+import "Token.sol"
 
 
 contract Hashes {
 
 
 
+
+
+
+
+  //uint256 totalVotes;
+  //address winnerAddress;
+  //string winnerHash;
+
   struct hashes{
          string hash;
          address addr;
+         uint index;
   }
-
 
   mapping (address => uint256) public votesReceived;
-  uint256 totalVotes;
-  address winnerAddress;
-  string winnerHash;
-  hashes[] public list;
+  mapping (address => hashes) public registry;
+  address[] public participants;
+  uint256 minTokens;
+  Token myToken;
 
-
-
-
-  function addHash( string ipfsHash, address ipfsAddress) public returns (bool){
-
-         hashes memory myHash;
-         myHash.hash = ipfsHash;
-         myHash.addr = ipfsAddress;
-         list.push(myHash);
-
-         return true;
+  function Hashes(uint256 _minTokens, address _myToken){
+    minTokens = _minTokens;
+    myToken = Token.at(_myToken);
   }
-  function voteForCandidate(address candidate) public returns (bool) {
-  	if (keccak256(msg.sender) != keccak256(candidate)){
+
+  //look into whether underscore notation is good form
+  function addHash( string _ipfsHash, address _ipfsAddress) public {
+         //need to add requirements
+         require (myToken.balanceOf(tx.sender) > minTokens);
+         hashes memory myHash;
+         myHash.hash = _ipfsHash;
+         myHash.addr = _ipfsAddress;
+         myHash.index = participants.length;
+         participants.push(tx.sender);
+         registry[tx.sender] = myHash;
+  }
+
+  function voteForCandidate(address candidate) public {
+  	require (keccak256(tx.sender) != keccak256(candidate));
   	votesReceived[candidate] += 1;
   	totalVotes += 1;
-  	return true;
-  	}
-  	return false;
   }
 
-
-  function getWinner() public returns (bool){
-
-
+  function getWinner() public {
   	uint random = uint((uint(keccak256(block.timestamp)) + block.number) % totalVotes);
   	uint num = 0;
   	uint winnerIndex = 0;
   	bool done = false;
-  	for (uint i = 0; i < list.length; i++){
+
+  	for (uint i = 0; i < participants.length && !done; i++){
   		num += (votesReceived[list[i].add]);
-  		if (num > random && done == false){
+  		if (num > random){
   			winnerIndex = i;
   			done = true;
-  }
-
+      }
   	}
-
-
   	winnerHash = getList(winnerIndex);
   	winnerAddress = getAddress(winnerIndex);
-  	return true;
   }
-
 
   function returnWinnerHash() constant returns (string){
   	return winnerHash;
   }
+  
   function returnWinnerAddress() constant returns (address){
-
   	return winnerAddress;
   }
 
-
   function getList(uint256 x) constant returns (string){
+  	return registry[participants[x]].hash;
+  }
 
-  	return list[x].hash;
+  function getAddress(uint256 x) constant returns (address){
+  	return registry[participants[x]].addr;
   }
 
   function totalVotesFor(address x) constant returns(uint256){
-
-
   	return votesReceived[x];
   }
 
-
-
-  function getAddress(uint256 x) constant returns (address){
-
-  	return list[x].add;
-  }
-
   function listLength() constant returns (uint256){
-  	return list.length;
+  	return participants.length;
   }
 
-
-  function newRound() public returns (bool){
-
-  getWinner();
-
-
-  return true;
-
+  function newRound() public {
+    getWinner();
   }
-
-
 
 }
