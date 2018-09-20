@@ -1,6 +1,6 @@
 pragma solidity ^0.4.24;
 
-import "contracts/Hashes.sol";
+
 
 contract SafeMath {
     function safeAdd(uint a, uint b) public pure returns (uint c) {
@@ -32,6 +32,7 @@ contract MyToken is SafeMath{
 
     address public creator;
 
+
     function MyToken() public {
         symbol = "RAC";
         name = "My Token";
@@ -43,10 +44,8 @@ contract MyToken is SafeMath{
 
     }
     function returnCreator() constant returns(address){
-
     	return creator;
     }
-
 
     function totalSupply() public constant returns (uint) {
         return _totalSupply;
@@ -60,18 +59,21 @@ contract MyToken is SafeMath{
         return true;
     }
 
-    function redeem() public returns (bool) {
-
-
-
-    }
     function buy() public payable{
 
+    creator.transfer(msg.value);
 	  uint tokens = msg.value * 100;
-	balances[msg.sender] = safeAdd(balances[msg.sender], tokens);
-	_totalSupply = safeAdd(_totalSupply, tokens);
-	creator.transfer(msg.value);
+	  balances[msg.sender] = safeAdd(balances[msg.sender], tokens);
+	  _totalSupply = safeAdd(_totalSupply, tokens);
+
 
 }
+
+    function redeem(address tokenOwnner) internal{
+    balances[tokenOwnner] = safeAdd(balances[tokenOwnner], 1e20);
+    _totalSupply = safeAdd(_totalSupply, 1e20);
+
+    }
+
 
 }

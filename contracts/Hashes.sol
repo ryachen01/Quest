@@ -1,20 +1,13 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.20;
 // We have to specify what version of compiler this code will compile with
 
-import "Token.sol"
-
+import "contracts/Token.sol";
 
 contract Hashes {
 
-
-
-
-
-
-
-  //uint256 totalVotes;
-  //address winnerAddress;
-  //string winnerHash;
+  uint totalVotes;
+  address winnerAddress;
+  string winnerHash;
 
   struct hashes{
          string hash;
@@ -22,43 +15,65 @@ contract Hashes {
          uint index;
   }
 
+  // uint timestamp
+
   mapping (address => uint256) public votesReceived;
   mapping (address => hashes) public registry;
   address[] public participants;
   uint256 minTokens;
-  Token myToken;
+  MyToken token;
+  address _tokenAddress;
 
   function Hashes(uint256 _minTokens, address _myToken){
     minTokens = _minTokens;
-    myToken = Token.at(_myToken);
+    token = MyToken(_myToken);
+    _tokenAddress = _myToken;
+    //timestamp = block.height + 6000;
   }
 
   //look into whether underscore notation is good form
-  function addHash( string _ipfsHash, address _ipfsAddress) public {
-         //need to add requirements
-         require (myToken.balanceOf(tx.sender) > minTokens);
+  function addHash(string _ipfsHash, address _ipfsAddress) public enoughCoins{
          hashes memory myHash;
          myHash.hash = _ipfsHash;
          myHash.addr = _ipfsAddress;
          myHash.index = participants.length;
-         participants.push(tx.sender);
-         registry[tx.sender] = myHash;
+         participants.push(msg.sender);
+         registry[msg.sender] = myHash;
   }
 
-  function voteForCandidate(address candidate) public {
-  	require (keccak256(tx.sender) != keccak256(candidate));
+  modifier enoughCoins() {
+		if (!(token.balanceOf(msg.sender) > minTokens)) revert();
+		_;
+	}
+
+  function total() public returns (uint) {
+      return token.totalSupply();
+  }
+
+  function tokenAddress() public returns (address) {
+      return _tokenAddress;
+  }
+  function getBalance() public constant returns (uint) {
+      return token.balanceOf(msg.sender);
+  }
+  function sender() public constant returns (address){
+      return msg.sender;
+  }
+
+  function voteForCandidate(address candidate) public enoughCoins{
+  	require (keccak256(msg.sender) != keccak256(candidate));
   	votesReceived[candidate] += 1;
   	totalVotes += 1;
   }
 
-  function getWinner() public {
+  function getWinner() internal {
   	uint random = uint((uint(keccak256(block.timestamp)) + block.number) % totalVotes);
   	uint num = 0;
   	uint winnerIndex = 0;
   	bool done = false;
 
   	for (uint i = 0; i < participants.length && !done; i++){
-  		num += (votesReceived[list[i].add]);
+  		num += (votesReceived[participants[i]]);
   		if (num > random){
   			winnerIndex = i;
   			done = true;
@@ -68,32 +83,34 @@ contract Hashes {
   	winnerAddress = getAddress(winnerIndex);
   }
 
-  function returnWinnerHash() constant returns (string){
+  function returnWinnerHash() public constant returns (string){
   	return winnerHash;
   }
-  
-  function returnWinnerAddress() constant returns (address){
+
+  function returnWinnerAddress() public constant returns (address){
   	return winnerAddress;
   }
 
-  function getList(uint256 x) constant returns (string){
+  function getList(uint256 x) public constant returns (string){
   	return registry[participants[x]].hash;
   }
 
-  function getAddress(uint256 x) constant returns (address){
+  function getAddress(uint256 x) public constant returns (address){
   	return registry[participants[x]].addr;
   }
 
-  function totalVotesFor(address x) constant returns(uint256){
+  function totalVotesFor(address x) public constant returns(uint256){
   	return votesReceived[x];
   }
 
-  function listLength() constant returns (uint256){
+  function listLength() public constant returns (uint256){
   	return participants.length;
   }
 
-  function newRound() public {
+  function newRound() public enoughCoins{
+    //require(block.height > timestamp);
     getWinner();
+    //timestamp = timestamp + 6000;
   }
 
 }

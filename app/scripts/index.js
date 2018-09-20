@@ -20,11 +20,11 @@ var submitted = false
 //import voting_artifacts from '../../build/contracts/Voting.json'
 import hashing_artifacts from '../../build/contracts/Hashes.json'
 import token_artifacts from '../../build/contracts/MyToken.json'
-import account_artifacts from '../../build/contracts/Accounts.json'
+
 //var Voting = contract(voting_artifacts);
 var Hashes = contract(hashing_artifacts);
 var Token = contract(token_artifacts);
-var Account = contract(account_artifacts);
+
 var index = 0;
 var hashes = [];
 var winner = 0;
@@ -54,7 +54,7 @@ try {
     contractInstance.getAddress.call(index - 1).then(function(v){
 
 
-       contractInstance.voteForCandidate(v, {gas: 100000, from: web3.eth.coinbase}).then(function() {
+       contractInstance.voteForCandidate(v, {from: web3.eth.coinbase}).then(function() {
 
        });
     });
@@ -100,12 +100,12 @@ window.getWinner = function(){
       console.log(v.toString());
     });
 
-    contractInstance.getWinnerAddress({gas: 100000, from: web3.eth.coinbase}).then(function() {
+    contractInstance.getWinnerAddress({from: web3.eth.coinbase}).then(function() {
 
 
 
     });
-    contractInstance.getWinnerHash({gas: 100000, from: web3.eth.coinbase}).then(function() {
+    contractInstance.getWinnerHash({from: web3.eth.coinbase}).then(function() {
 
 
 
@@ -116,22 +116,6 @@ window.getWinner = function(){
 
   });
 
-
-
-}
-window.newLists = function(){
-
-
-  Hashes.deployed().then(function(contractInstance){
-
-
-    contractInstance.newLists({gas: 100000, from: web3.eth.coinbase}).then(function(v){
-
-
-    });
-
-
-  });
 
 
 }
@@ -171,24 +155,7 @@ function getHashList(){
 
 
 }
-window.newAccount = function(){
-Account.deployed().then(function(contractInstance){
-contractInstance.isAccount.call(web3.eth.coinbase.toString()).then(function(v){
-    console.log(v);
 
-});
-contractInstance.getAccount.call(0).then(function(v){
-  console.log(v.toString());
-
-});
-
-contractInstance.createAccount({gas: 100000, from: web3.eth.coinbase}).then(function(){
-
-});
-
-});
-
-}
 
 
 
@@ -217,7 +184,7 @@ window.uploadFile = function() {
             try {
 
                 Hashes.deployed().then(function(contractInstance) {
-                contractInstance.addHash(hash, web3.eth.coinbase, {gas: 100000, from: web3.eth.coinbase}).then(function() {
+                contractInstance.addHash(hash, web3.eth.coinbase, {from: web3.eth.coinbase}).then(function() {
 
 
                 });
@@ -252,7 +219,7 @@ window.buyCoins = function(){
         console.log(v.toString());
     });
 
-    contractInstance.buy({gas: 100000, value: 1000000000000000000, from: web3.eth.coinbase}).then(function(){
+    contractInstance.buy({from: web3.eth.coinbase, value: 1000000000000000000}).then(function(){
 
     });
 
@@ -268,8 +235,11 @@ window.transferCoins = function(){
     var amount = document.getElementById("amount").value;
 
     console.log(parseFloat(amount) *1000000000000000000);
-    contractInstance.transfer(address.toString(), (parseFloat(amount)*1000000000000000000), {gas: 100000, from: web3.eth.coinbase}).then(function(){
+    contractInstance.transfer(address.toString(), (parseFloat(amount)*1000000000000000000), {from: web3.eth.coinbase}).then(function(){
 
+    });
+    contractInstance.returnContractAddress.call().then(function(v){
+      console.log(v);
     });
 
   });
@@ -281,7 +251,7 @@ window.newround = function(){
 
 
         Hashes.deployed().then(function(contractInstance) {
-          contractInstance.newRound({gas: 300000, from: web3.eth.coinbase}).then(function() {
+          contractInstance.newRound({from: web3.eth.coinbase}).then(function() {
 
           });
         });
@@ -292,7 +262,7 @@ window.newround = function(){
 
 window.viewPosts = function(){
 
-  console.log(index);
+
 
   var length = 0;
   try {
@@ -301,6 +271,19 @@ window.viewPosts = function(){
         contractInstance.totalVotesFor.call(web3.eth.coinbase).then(function(v){
           console.log(v.toString());
         });
+        contractInstance.total.call().then(function(v){
+          console.log(v.toString());
+        });
+        contractInstance.tokenAddress.call().then(function(v){
+          console.log(v.toString());
+        });
+        contractInstance.getBalance.call({from: web3.eth.coinbase}).then(function(v){
+          console.log(v.toString());
+        });
+        contractInstance.sender({from: web3.eth.coinbase}).then(function(v){
+          console.log(v.toString());
+        });
+
 
         contractInstance.listLength.call().then(function(v) {
            length = parseInt(v);
@@ -352,13 +335,15 @@ $( document ).ready(function() {
 
   Token.setProvider(web3.currentProvider);
   Hashes.setProvider(web3.currentProvider);
-  Account.setProvider(web3.currentProvider);
+
 
 
 
 
   getHashList();
   showWinner();
+
+  web3.eth.defaultAccount = web3.eth.coinbase;
 
 
 
