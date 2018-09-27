@@ -7,15 +7,6 @@ import { default as contract } from 'truffle-contract'
 
 var submitted = false
 
-/*
- * When you compile and deploy your Voting contract,
- * truffle stores the abi and deployed address in a json
- * file in the build directory. We will use this information
- * to setup a Voting abstraction. We will use this abstraction
- * later to create an instance of the Voting contract.
- * Compare this against the index.js from our previous tutorial to see the difference
- * https://gist.github.com/maheshmurthy/f6e96d6b3fff4cd4fa7f892de8a1a1b4#file-index-js
- */
 
 //import voting_artifacts from '../../build/contracts/Voting.json'
 import hashing_artifacts from '../../build/contracts/Hashes.json'
@@ -26,26 +17,12 @@ var Hashes = contract(hashing_artifacts);
 var Token = contract(token_artifacts);
 
 var index = 0;
-var hashes = [];
-var winner = 0;
-var winnerAdd;
-var winnerHash;
-
-
-
 
 window.voteForPhoto = function(){
 
-
 console.log(index);
 try {
-  $("#msg").html("Vote has been submitted. The vote count will increment as soon as the vote is recorded on the blockchain. Please wait.")
-  $("#candidate").val("");
 
-  /* Voting.deployed() returns an instance of the contract. Every call
-   * in Truffle returns a promise which is why we have used then()
-   * everywhere we have a transaction call
-   */
 
   Hashes.deployed().then(function(contractInstance) {
 
@@ -140,7 +117,7 @@ function getHashList(){
               contractInstance.getList.call(i).then(function(v) {
 
 
-                hashes.push(v.toString());
+
 
             });
 
@@ -184,7 +161,7 @@ window.uploadFile = function() {
             try {
 
                 Hashes.deployed().then(function(contractInstance) {
-                contractInstance.addHash(hash, web3.eth.coinbase, {from: web3.eth.coinbase}).then(function() {
+                contractInstance.addHash(hash, "My Photo", web3.eth.coinbase, {from: web3.eth.coinbase}).then(function() {
 
 
                 });
@@ -238,30 +215,18 @@ window.transferCoins = function(){
     contractInstance.transfer(address.toString(), (parseFloat(amount)*1000000000000000000), {from: web3.eth.coinbase}).then(function(){
 
     });
-    contractInstance.returnContractAddress.call().then(function(v){
-      console.log(v);
-    });
 
   });
 }
 
-
 window.newround = function(){
 
-
-
         Hashes.deployed().then(function(contractInstance) {
-          contractInstance.newRound({from: web3.eth.coinbase}).then(function() {
-
-          });
+          contractInstance.newRound({from: web3.eth.coinbase});
         });
-
-
-
 }
 
 window.viewPosts = function(){
-
 
 
   var length = 0;
@@ -271,20 +236,9 @@ window.viewPosts = function(){
         contractInstance.totalVotesFor.call(web3.eth.coinbase).then(function(v){
           console.log(v.toString());
         });
-        contractInstance.total.call().then(function(v){
+        contractInstance.numActions.call(1).then(function(v){
           console.log(v.toString());
         });
-        contractInstance.tokenAddress.call().then(function(v){
-          console.log(v.toString());
-        });
-        contractInstance.getBalance.call({from: web3.eth.coinbase}).then(function(v){
-          console.log(v.toString());
-        });
-        contractInstance.sender({from: web3.eth.coinbase}).then(function(v){
-          console.log(v.toString());
-        });
-
-
         contractInstance.listLength.call().then(function(v) {
            length = parseInt(v);
            console.log(length);
@@ -300,14 +254,12 @@ window.viewPosts = function(){
              let url = `https://ipfs.io/ipfs/${v.toString()}`
              document.getElementById("output").src = url;
            });
+           contractInstance.getCaption.call(index).then(function(v){
+             document.getElementById("Caption").innerHTML = v.toString();
+           });
            index++;
          }
         });
-
-
-
-
-
 
       });
 
@@ -337,15 +289,9 @@ $( document ).ready(function() {
   Hashes.setProvider(web3.currentProvider);
 
 
-
-
-
   getHashList();
   showWinner();
 
-  web3.eth.defaultAccount = web3.eth.coinbase;
-
-
-
+  
 
 });

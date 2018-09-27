@@ -1,130 +1,105 @@
 {
-  "contractName": "SafeMath",
+  "contractName": "Hashes1",
   "abi": [
     {
       "constant": true,
-      "inputs": [
-        {
-          "name": "a",
-          "type": "uint256"
-        },
-        {
-          "name": "b",
-          "type": "uint256"
-        }
-      ],
-      "name": "safeAdd",
+      "inputs": [],
+      "name": "returnWinnerAddress",
       "outputs": [
         {
-          "name": "c",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "returnTotalVotes",
+      "outputs": [
+        {
+          "name": "",
           "type": "uint256"
         }
       ],
       "payable": false,
-      "stateMutability": "pure",
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "returnTotalPhotos",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
       "type": "function"
     },
     {
       "constant": true,
       "inputs": [
         {
-          "name": "a",
-          "type": "uint256"
-        },
-        {
-          "name": "b",
+          "name": "x",
           "type": "uint256"
         }
       ],
-      "name": "safeSub",
+      "name": "numActions",
       "outputs": [
         {
-          "name": "c",
+          "name": "",
           "type": "uint256"
         }
       ],
       "payable": false,
-      "stateMutability": "pure",
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "numParticipants",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
       "type": "function"
     },
     {
       "constant": true,
       "inputs": [
         {
-          "name": "a",
-          "type": "uint256"
-        },
-        {
-          "name": "b",
+          "name": "x",
           "type": "uint256"
         }
       ],
-      "name": "safeMul",
+      "name": "getParticipant",
       "outputs": [
         {
-          "name": "c",
-          "type": "uint256"
+          "name": "",
+          "type": "address"
         }
       ],
       "payable": false,
-      "stateMutability": "pure",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "a",
-          "type": "uint256"
-        },
-        {
-          "name": "b",
-          "type": "uint256"
-        }
-      ],
-      "name": "safeDiv",
-      "outputs": [
-        {
-          "name": "c",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "pure",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "a",
-          "type": "uint256"
-        },
-        {
-          "name": "b",
-          "type": "uint256"
-        },
-        {
-          "name": "precision",
-          "type": "uint256"
-        }
-      ],
-      "name": "precisionDiv",
-      "outputs": [
-        {
-          "name": "c",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "pure",
+      "stateMutability": "view",
       "type": "function"
     }
   ],
-  "bytecode": "0x608060405234801561001057600080fd5b506102d3806100206000396000f30060806040526004361061006d576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff168063a293d1e814610072578063b5931f7c146100bd578063d05c78da14610108578063d12a3edf14610153578063e6cb9013146101a8575b600080fd5b34801561007e57600080fd5b506100a760048036038101908080359060200190929190803590602001909291905050506101f3565b6040518082815260200191505060405180910390f35b3480156100c957600080fd5b506100f2600480360381019080803590602001909291908035906020019092919050505061020f565b6040518082815260200191505060405180910390f35b34801561011457600080fd5b5061013d6004803603810190808035906020019092919080359060200190929190505050610233565b6040518082815260200191505060405180910390f35b34801561015f57600080fd5b50610192600480360381019080803590602001909291908035906020019092919080359060200190929190505050610264565b6040518082815260200191505060405180910390f35b3480156101b457600080fd5b506101dd600480360381019080803590602001909291908035906020019092919050505061028b565b6040518082815260200191505060405180910390f35b600082821115151561020457600080fd5b818303905092915050565b6000808211151561021f57600080fd5b818381151561022a57fe5b04905092915050565b600081830290506000831480610253575081838281151561025057fe5b04145b151561025e57600080fd5b92915050565b6000808311151561027457600080fd5b8282850281151561028157fe5b0490509392505050565b600081830190508281101515156102a157600080fd5b929150505600a165627a7a723058207300e965f7203d95b5ba68616428f697ccb9fdc8e36d01be6b09fe1b49e4a5620029",
-  "deployedBytecode": "0x60806040526004361061006d576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff168063a293d1e814610072578063b5931f7c146100bd578063d05c78da14610108578063d12a3edf14610153578063e6cb9013146101a8575b600080fd5b34801561007e57600080fd5b506100a760048036038101908080359060200190929190803590602001909291905050506101f3565b6040518082815260200191505060405180910390f35b3480156100c957600080fd5b506100f2600480360381019080803590602001909291908035906020019092919050505061020f565b6040518082815260200191505060405180910390f35b34801561011457600080fd5b5061013d6004803603810190808035906020019092919080359060200190929190505050610233565b6040518082815260200191505060405180910390f35b34801561015f57600080fd5b50610192600480360381019080803590602001909291908035906020019092919080359060200190929190505050610264565b6040518082815260200191505060405180910390f35b3480156101b457600080fd5b506101dd600480360381019080803590602001909291908035906020019092919050505061028b565b6040518082815260200191505060405180910390f35b600082821115151561020457600080fd5b818303905092915050565b6000808211151561021f57600080fd5b818381151561022a57fe5b04905092915050565b600081830290506000831480610253575081838281151561025057fe5b04145b151561025e57600080fd5b92915050565b6000808311151561027457600080fd5b8282850281151561028157fe5b0490509392505050565b600081830190508281101515156102a157600080fd5b929150505600a165627a7a723058207300e965f7203d95b5ba68616428f697ccb9fdc8e36d01be6b09fe1b49e4a5620029",
-  "sourceMap": "31:698:2:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;31:698:2;;;;;;;",
-  "deployedSourceMap": "31:698:2:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;183:119;;8:9:-1;5:2;;;30:1;27;20:12;5:2;183:119:2;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;449:118;;8:9:-1;5:2;;;30:1;27;20:12;5:2;449:118:2;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;309:133;;8:9:-1;5:2;;;30:1;27;20:12;5:2;309:133:2;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;574:151;;8:9:-1;5:2;;;30:1;27;20:12;5:2;574:151:2;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;57:119;;8:9:-1;5:2;;;30:1;27;20:12;5:2;57:119:2;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;183;237:6;270:1;265;:6;;257:15;;;;;;;;292:1;288;:5;284:9;;183:119;;;;:::o;449:118::-;503:6;535:1;531;:5;523:14;;;;;;;;557:1;553;:5;;;;;;;;549:9;;449:118;;;;:::o;309:133::-;363:6;391:1;387;:5;383:9;;417:1;412;:6;:20;;;;431:1;426;422;:5;;;;;;;;:10;412:20;404:29;;;;;;;;309:133;;;;:::o;574:151::-;649:6;681:1;677;:5;669:14;;;;;;;;715:1;702:9;700:1;:11;699:17;;;;;;;;695:21;;574:151;;;;;:::o;57:119::-;111:6;139:1;135;:5;131:9;;165:1;160;:6;;152:15;;;;;;;;57:119;;;;:::o",
+  "bytecode": "0x608060405234801561001057600080fd5b50610251806100206000396000f300608060405260043610610078576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff168063186d45ac1461007d5780631b9db2ef146100be5780634e76a8461461012b578063a7eb9e2e14610156578063bb0bd6e514610181578063e36fccc9146101d8575b600080fd5b34801561008957600080fd5b506100a860048036038101908080359060200190929190505050610203565b6040518082815260200191505060405180910390f35b3480156100ca57600080fd5b506100e96004803603810190808035906020019092919050505061020a565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b34801561013757600080fd5b50610140610211565b6040518082815260200191505060405180910390f35b34801561016257600080fd5b5061016b610216565b6040518082815260200191505060405180910390f35b34801561018d57600080fd5b5061019661021b565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b3480156101e457600080fd5b506101ed610220565b6040518082815260200191505060405180910390f35b6000919050565b6000919050565b600090565b600090565b600090565b6000905600a165627a7a72305820a7958ae57c77b2af5de37ffec441b1be35ff0bbb30e4ab1e7ea043c160ea81dc0029",
+  "deployedBytecode": "0x608060405260043610610078576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff168063186d45ac1461007d5780631b9db2ef146100be5780634e76a8461461012b578063a7eb9e2e14610156578063bb0bd6e514610181578063e36fccc9146101d8575b600080fd5b34801561008957600080fd5b506100a860048036038101908080359060200190929190505050610203565b6040518082815260200191505060405180910390f35b3480156100ca57600080fd5b506100e96004803603810190808035906020019092919050505061020a565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b34801561013757600080fd5b50610140610211565b6040518082815260200191505060405180910390f35b34801561016257600080fd5b5061016b610216565b6040518082815260200191505060405180910390f35b34801561018d57600080fd5b5061019661021b565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b3480156101e457600080fd5b506101ed610220565b6040518082815260200191505060405180910390f35b6000919050565b6000919050565b600090565b600090565b600090565b6000905600a165627a7a72305820a7958ae57c77b2af5de37ffec441b1be35ff0bbb30e4ab1e7ea043c160ea81dc0029",
+  "sourceMap": "734:416:2:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;734:416:2;;;;;;;",
+  "deployedSourceMap": "734:416:2:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;954:60;;8:9:-1;5:2;;;30:1;27;20:12;5:2;954:60:2;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1079:67;;8:9:-1;5:2;;;30:1;27;20:12;5:2;1079:67:2;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1017:59;;8:9:-1;5:2;;;30:1;27;20:12;5:2;1017:59:2;;;;;;;;;;;;;;;;;;;;;;;889:62;;8:9:-1;5:2;;;30:1;27;20:12;5:2;889:62:2;;;;;;;;;;;;;;;;;;;;;;;755:67;;8:9:-1;5:2;;;30:1;27;20:12;5:2;755:67:2;;;;;;;;;;;;;;;;;;;;;;;;;;;825:61;;8:9:-1;5:2;;;30:1;27;20:12;5:2;825:61:2;;;;;;;;;;;;;;;;;;;;;;;954:60;1007:4;954:60;;;:::o;1079:67::-;1136:7;1079:67;;;:::o;1017:59::-;1069:4;1017:59;:::o;889:62::-;943:4;889:62;:::o;755:67::-;811:7;755:67;:::o;825:61::-;878:4;825:61;:::o",
   "source": "  pragma solidity ^0.4.20;\n\n\n  contract SafeMath {\n      function safeAdd(uint a, uint b) public pure returns (uint c) {\n          c = a + b;\n          require(c >= a);\n      }\n      function safeSub(uint a, uint b) public pure returns (uint c) {\n          require(b <= a);\n          c = a - b;\n      }\n      function safeMul(uint a, uint b) public pure returns (uint c) {\n          c = a * b;\n          require(a == 0 || c / a == b);\n      }\n      function safeDiv(uint a, uint b) public pure returns (uint c) {\n          require(b > 0);\n          c = a / b;\n      }\n      function precisionDiv(uint a, uint b, uint precision) public pure returns (uint c) {\n          require(b > 0);\n          c = (a*precision) / b;\n      }\n  }\n\n\n  contract Hashes1 {\n  function returnWinnerAddress() public constant returns (address) {}\n  function returnTotalVotes() public constant returns (uint) {}\n  function returnTotalPhotos() public constant returns (uint) {}\n  function numActions(uint x) public constant returns (uint){}\n  function numParticipants() public constant returns (uint){}\n  function getParticipant(uint x) public constant returns (address){}\n  }\n\n  contract MyToken is SafeMath{\n      string public symbol;\n      string public  name;\n      uint8 public decimals;\n      uint public _totalSupply;\n      mapping(address => uint) balances;\n      address public creator;\n      Hashes1 public hashes;\n      bool addressSet = false;\n      address hash_addr;\n\n\n      function MyToken() public {\n          symbol = \"RAC\";\n          name = \"My Token\";\n          decimals = 18;\n          _totalSupply = 100000000000000000000000000;\n          creator = tx.origin;\n          balances[creator] = _totalSupply;\n\n      }\n\n      function setAddress(address _hashesAddress) public {\n          require(!addressSet);\n          addressSet = true;\n          hashes = Hashes1(_hashesAddress);\n          hash_addr = _hashesAddress;\n      }\n\n      function returnCreator() public constant returns(address){\n      \treturn creator;\n      }\n\n      function totalSupply() public constant returns (uint) {\n          return _totalSupply;\n      }\n\n      function balanceOf(address tokenOwner) public constant returns (uint) {\n          return balances[tokenOwner];\n      }\n\n      function transfer(address to, uint tokens) public returns (bool) {\n          balances[tx.origin] = safeSub(balances[tx.origin], tokens);\n          balances[to] = safeAdd(balances[to], tokens);\n          return true;\n      }\n\n      function buy() public payable{\n          creator.transfer(msg.value);\n  \t      uint tokens = msg.value * 100;\n  \t      balances[tx.origin] = safeAdd(balances[tx.origin], tokens);\n  \t      _totalSupply = safeAdd(_totalSupply, tokens);\n      }\n\n      function winner() internal constant returns (address){\n          return hashes.returnWinnerAddress();\n      }\n\n      function activity() internal {\n          uint total_votes = hashes.returnTotalVotes();\n          uint total_photos = hashes.returnTotalPhotos();\n          uint total_actions = total_votes + total_photos;\n          for (uint i = 0; i < hashes.numParticipants(); i++){\n            uint actions = hashes.numActions(i);\n            if (actions > 0){\n              uint reward = safeMul(precisionDiv(actions, total_actions, 100), 1e19);\n              getCoins(hashes.getParticipant(i), reward);\n            }\n          }\n      }\n\n      function getCoins(address tokenOwner, uint amount) internal{\n          balances[tokenOwner] = safeAdd(balances[tokenOwner], amount);\n          _totalSupply = safeAdd(_totalSupply, amount);\n\n      }\n\n      function redeem() public{\n\n          address roundWinner = winner();\n          getCoins(roundWinner, 1e21);\n          getCoins(tx.origin, 1e19);\n          activity();\n\n      }\n\n\n  }\n",
   "sourcePath": "contracts/Token.sol",
   "ast": {
@@ -12223,5 +12198,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-09-27T01:18:16.037Z"
+  "updatedAt": "2018-09-27T01:18:16.034Z"
 }

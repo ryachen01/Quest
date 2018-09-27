@@ -3,67 +3,77 @@ pragma solidity ^0.4.20;
 
 import "contracts/Token.sol";
 
-contract Hashes {
+
+contract Hashes{
 
   uint totalVotes;
+  uint totalPhotos;
   address winnerAddress;
   string winnerHash;
 
   struct hashes{
          string hash;
+         string caption;
          address addr;
-         uint index;
+
   }
 
-  // uint timestamp
 
-  mapping (address => uint256) public votesReceived;
+  mapping (address => uint) public votesReceived;
+  mapping (address => uint) public actionsDone;
   mapping (address => hashes) public registry;
+  mapping (address => bool) public participated;
   address[] public participants;
-  uint256 minTokens;
+  address[] public all_participants;
+  uint minTokens;
   MyToken token;
   address _tokenAddress;
 
-  function Hashes(uint256 _minTokens, address _myToken){
+
+  function Hashes(uint _minTokens, address _myToken){
     minTokens = _minTokens;
     token = MyToken(_myToken);
+    token.setAddress(address(this));
     _tokenAddress = _myToken;
-    //timestamp = block.height + 6000;
+
   }
 
-  //look into whether underscore notation is good form
-  function addHash(string _ipfsHash, address _ipfsAddress) public enoughCoins{
+  function addHash(string _ipfsHash, string _caption, address _ipfsAddress) public enoughCoins{
+         require (bytes(_ipfsHash).length == 46);
+         require (bytes(_caption).length < 100);
          hashes memory myHash;
          myHash.hash = _ipfsHash;
          myHash.addr = _ipfsAddress;
-         myHash.index = participants.length;
-         participants.push(msg.sender);
-         registry[msg.sender] = myHash;
+         myHash.caption = _caption;
+         registry[tx.origin] = myHash;
+         totalPhotos += 1;
+         actionsDone[tx.origin] += 1;
+         participants.push(tx.origin);
+         if (!participated[tx.origin]){
+            participated[tx.origin] = true;
+            all_participants.push(tx.origin);
+         }
+
   }
 
   modifier enoughCoins() {
-		if (!(token.balanceOf(msg.sender) > minTokens)) revert();
+		if (!(token.balanceOf(tx.origin) > minTokens)) revert();
 		_;
 	}
 
-  function total() public returns (uint) {
-      return token.totalSupply();
-  }
-
-  function tokenAddress() public returns (address) {
-      return _tokenAddress;
-  }
-  function getBalance() public constant returns (uint) {
-      return token.balanceOf(msg.sender);
-  }
   function sender() public constant returns (address){
-      return msg.sender;
+      return tx.origin;
   }
 
   function voteForCandidate(address candidate) public enoughCoins{
-  	require (keccak256(msg.sender) != keccak256(candidate));
+  	require (keccak256(tx.origin) != keccak256(candidate));
   	votesReceived[candidate] += 1;
   	totalVotes += 1;
+    actionsDone[tx.origin] += 1;
+    if (!participated[tx.origin]){
+       participated[tx.origin] = true;
+       all_participants.push(tx.origin);
+    }
   }
 
   function getWinner() internal {
@@ -91,26 +101,49 @@ contract Hashes {
   	return winnerAddress;
   }
 
-  function getList(uint256 x) public constant returns (string){
+  function getList(uint x) public constant returns (string){
   	return registry[participants[x]].hash;
   }
 
-  function getAddress(uint256 x) public constant returns (address){
+  function getCaption(uint x) public constant returns (string){
+    return registry[participants[x]].caption;
+  }
+
+  function getAddress(uint x) public constant returns (address){
   	return registry[participants[x]].addr;
   }
 
-  function totalVotesFor(address x) public constant returns(uint256){
+  function returnTotalVotes() public constant returns (uint){
+    return totalVotes;
+  }
+
+  function returnTotalPhotos() public constant returns (uint){
+    return totalPhotos;
+  }
+
+  function totalVotesFor(address x) public constant returns(uint){
   	return votesReceived[x];
   }
 
-  function listLength() public constant returns (uint256){
+  function listLength() public constant returns (uint){
   	return participants.length;
   }
 
+  function numParticipants() public constant returns (uint){
+    return all_participants.length;
+  }
+
+  function getParticipant(uint x) public constant returns (address){
+    return all_participants[x];
+  }
+
+  function numActions(uint x) public constant returns (uint){
+    return actionsDone[all_participants[x]];
+  }
+
   function newRound() public enoughCoins{
-    //require(block.height > timestamp);
     getWinner();
-    //timestamp = timestamp + 6000;
+    token.redeem();
   }
 
 }
