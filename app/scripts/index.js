@@ -11,40 +11,37 @@ var submitted = false
 //import voting_artifacts from '../../build/contracts/Voting.json'
 import hashing_artifacts from '../../build/contracts/Hashes.json'
 import token_artifacts from '../../build/contracts/MyToken.json'
+import trophy_artifacts from '../../build/contracts/MyTrophy.json'
 
 //var Voting = contract(voting_artifacts);
 var Hashes = contract(hashing_artifacts);
 var Token = contract(token_artifacts);
+var Trophy = contract(trophy_artifacts);
 
 var index = 0;
+
+var votes = []
 
 window.voteForPhoto = function(){
 
 console.log(index);
-try {
+votes.push(index-1);
+}
+window.saveVotes = function(){
 
-
-  Hashes.deployed().then(function(contractInstance) {
-
-
-
-    contractInstance.getAddress.call(index - 1).then(function(v){
-
-
-       contractInstance.voteForCandidate(v, {from: web3.eth.coinbase}).then(function() {
-
-       });
-    });
+  console.log(votes)
+  Hashes.deployed().then(function(contractInstance){
 
 
 
+      contractInstance.voteForListByIndex(votes, {from: web3.eth.coinbase}).then(function(){
+
+      });
+      contractInstance.voteForListByBitString(31, {from: web3.eth.coinbase}).then(function(){
+
+      });
 
   });
-} catch (err) {
-  console.log(err);
-}
-
-
 }
 
 function showWinner(){
@@ -189,7 +186,7 @@ window.uploadFile = function() {
 window.buyCoins = function(){
 
   Token.deployed().then(function(contractInstance){
-    contractInstance.balanceOf.call(web3.eth.coinbase.toString()).then(function(v) {
+    contractInstance.balanceOf.call(web3.eth.coinbase).then(function(v) {
         console.log(v.toString());
     });
     contractInstance.totalSupply.call().then(function(v) {
@@ -225,6 +222,16 @@ window.newround = function(){
           contractInstance.newRound({from: web3.eth.coinbase});
         });
 }
+
+window.getTrophy = function(){
+
+
+
+        Trophy.deployed().then(function(contractInstance) {
+          contractInstance.createTrophy('QmXhxAmGxbX7HiotRxyuGCU6kJC2oW964pBoJ6TEAoQr6G', {from: web3.eth.coinbase});
+        });
+}
+
 
 window.viewPosts = function(){
 
@@ -286,12 +293,14 @@ $( document ).ready(function() {
   }
 
   Token.setProvider(web3.currentProvider);
+  Trophy.setProvider(web3.currentProvider);
   Hashes.setProvider(web3.currentProvider);
 
 
   getHashList();
   showWinner();
 
-  
+
+
 
 });
