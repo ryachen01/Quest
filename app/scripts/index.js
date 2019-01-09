@@ -225,7 +225,7 @@ window.newround = function(){
 
 window.getTrophy = function(){
 
-
+        
 
         Trophy.deployed().then(function(contractInstance) {
           contractInstance.createTrophy('QmXhxAmGxbX7HiotRxyuGCU6kJC2oW964pBoJ6TEAoQr6G', {from: web3.eth.coinbase});

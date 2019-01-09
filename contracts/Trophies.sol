@@ -19,8 +19,9 @@ contract MyTrophy is ERC721{
   mapping(uint256 => string) tokenLinks;
   mapping(uint256 => uint) trophyValue;
   mapping (address => uint256[]) ownedTokens;
+  mapping (address => bool) tokenRedeemed;
   Hashes1 public hashes;
-  bool addressSet;
+  address public currentWinner;
 
 
   function MyTrophy() public {
