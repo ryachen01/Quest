@@ -25,7 +25,7 @@ var votes = []
 window.voteForPhoto = function(){
 
 console.log(index);
-votes.push(index-1);
+votes.push(index - 1);
 }
 window.saveVotes = function(){
 
@@ -37,7 +37,23 @@ window.saveVotes = function(){
       contractInstance.voteForListByIndex(votes, {from: web3.eth.coinbase}).then(function(){
 
       });
-      contractInstance.voteForListByBitString(31, {from: web3.eth.coinbase}).then(function(){
+
+      var largest = 0;
+      for (var i = 0; i < votes.length; i++){
+        if (votes[i] > largest) {
+          largest = votes[i]
+        }
+      }
+      var shift = Math.floor(largest/256);
+      console.log(shift)
+
+      var total = 0
+      for (var i = 0; i < votes.length; i++){
+          total += (2 ** votes[i])
+      }
+      console.log(total)
+
+      contractInstance.voteForListByBitString(total, shift, {from: web3.eth.coinbase}).then(function(){
 
       });
 
@@ -113,15 +129,8 @@ function getHashList(){
 
               contractInstance.getList.call(i).then(function(v) {
 
-
-
-
             });
-
-
 }
-
-
 
       });
 
@@ -129,9 +138,6 @@ function getHashList(){
 
 
 }
-
-
-
 
 
 window.uploadFile = function() {
@@ -225,7 +231,7 @@ window.newround = function(){
 
 window.getTrophy = function(){
 
-        
+
 
         Trophy.deployed().then(function(contractInstance) {
           contractInstance.createTrophy('QmXhxAmGxbX7HiotRxyuGCU6kJC2oW964pBoJ6TEAoQr6G', {from: web3.eth.coinbase});

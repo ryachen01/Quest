@@ -1,17 +1,17 @@
-pragma solidity ^0.4.20;
+pragma solidity ^0.5.0;
 
 
-import "SafeMath.sol";
-import "ERC20.sol";
+import "../contracts/SafeMath.sol";
+import "../contracts/ERC20.sol";
 
   contract Hashes1 {
-    function returnWinnerAddress() public constant returns (address);
-    function returnTotalVotes() public constant returns (uint);
-    function returnTotalPhotos() public constant returns (uint);
-    function numActions(uint x) public constant returns (uint);
-    function numParticipants() public constant returns (uint);
-    function getParticipant(uint x) public constant returns (address);
-    function totalVotesFor(address x) public constant returns(uint);
+    function returnWinnerAddress() public view returns (address);
+    function returnTotalVotes() public view returns (uint);
+    function returnTotalPhotos() public view returns (uint);
+    function numActions(uint x) public view returns (uint);
+    function numParticipants() public view returns (uint);
+    function getParticipant(uint x) public view returns (address);
+    function totalVotesFor(address x) public view returns(uint);
 
   }
 
@@ -25,13 +25,13 @@ import "ERC20.sol";
       uint public _totalSupply;
       mapping(address => uint) balances;
       mapping(address => mapping (address => uint256)) allowed;
-      address public creator;
+      address payable public creator;
       Hashes1 public hashes;
       bool addressSet = false;
 
 
 
-      function MyToken() public {
+     constructor() public {
           symbol = "RAC";
           name = "My Token";
           decimals = 18;
@@ -48,7 +48,7 @@ import "ERC20.sol";
 
       }
 
-      function returnCreator() public constant returns(address){
+      function returnCreator() public view returns(address){
       	return creator;
       }
 
@@ -65,7 +65,7 @@ import "ERC20.sol";
           address tokenOwner = msg.sender;
           balances[tokenOwner] = balances[tokenOwner].sub(tokens);
           balances[to] = balances[to].add(tokens);
-          Transfer(msg.sender, to, tokens);
+          emit Transfer(msg.sender, to, tokens);
 
       }
 
@@ -75,27 +75,28 @@ import "ERC20.sol";
 
       function approve(address spender, uint tokens) public{
         allowed[msg.sender][spender] = tokens;
-        Approval(msg.sender, spender, tokens);
+        emit Approval(msg.sender, spender, tokens);
       }
 
       function transferFrom(address from, address to, uint tokens) public{
        balances[from] = balances[from].sub(tokens);
        allowed[from][msg.sender] = allowed[from][msg.sender].sub(tokens);
        balances[to] = balances[to].add(tokens);
-       Transfer(from, to, tokens);
+       emit Transfer(from, to, tokens);
 
       }
 
       function buy() public payable {
+
           creator.transfer(msg.value);
-  	      uint tokens = msg.value * 100;
+  	      uint tokens = msg.value * 500;
   	      balances[msg.sender] = balances[msg.sender].add(tokens);
   	      _totalSupply = _totalSupply.add(tokens);
-          Transfer(address(0), msg.sender, tokens);
+          emit Transfer(address(0), msg.sender, tokens);
 
       }
 
-      function winner() internal constant returns (address){
+      function winner() internal view returns (address){
           return hashes.returnWinnerAddress();
       }
 
@@ -120,7 +121,7 @@ import "ERC20.sol";
       function getCoins(address tokenOwner, uint amount) internal{
           balances[tokenOwner] = balances[tokenOwner].add(amount);
           _totalSupply = _totalSupply.add(amount);
-          Transfer(address(0), tokenOwner, amount);
+          emit Transfer(address(0), tokenOwner, amount);
 
       }
 

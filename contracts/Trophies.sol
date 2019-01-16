@@ -1,8 +1,8 @@
-pragma solidity ^0.4.20;
+pragma solidity ^0.5.0;
 
-import "Token.sol";
-import "SafeMath.sol";
-import "ERC721.sol";
+import "../contracts/Token.sol";
+import "../contracts/SafeMath.sol";
+import "../contracts/ERC721.sol";
 
 contract MyTrophy is ERC721{
 
@@ -19,12 +19,12 @@ contract MyTrophy is ERC721{
   mapping(uint256 => string) tokenLinks;
   mapping(uint256 => uint) trophyValue;
   mapping (address => uint256[]) ownedTokens;
-  mapping (address => bool) tokenRedeemed;
+  mapping(address => mapping (uint256 => bool)) tokenRedeemed;
   Hashes1 public hashes;
-  address public currentWinner;
+  bool addressSet;
 
 
-  function MyTrophy() public {
+  constructor() public {
       symbol = "TRP";
       name = "My Trophy";
       decimals = 0;
@@ -55,7 +55,7 @@ contract MyTrophy is ERC721{
     return tokenOwners[_tokenId];
   }
 
-  function transfer(address _to, uint256 _tokenId){
+  function transfer(address _to, uint256 _tokenId) public{
     address currentOwner = msg.sender;
     address newOwner = _to;
     require(tokenExists[_tokenId]);
@@ -66,11 +66,11 @@ contract MyTrophy is ERC721{
     tokenOwners[_tokenId] = newOwner;
     balances[newOwner] = balances[newOwner].add(1);
 
-    Transfer(msg.sender, _to, _tokenId);
+    emit Transfer(msg.sender, _to, _tokenId);
 
   }
 
-  function tokenMetadata(uint256 _tokenId) public view returns (string infoUrl) {
+  function tokenMetadata(uint256 _tokenId) public view returns (string memory infoUrl) {
     require(tokenExists[_tokenId]);
     return tokenLinks[_tokenId];
   }
@@ -80,15 +80,17 @@ contract MyTrophy is ERC721{
     return trophyValue[_tokenId];
   }
 
-  function tokensOfOwner(address _tokenOwner) public view returns (uint256[] tokenIds){
+  function tokensOfOwner(address _tokenOwner) public view returns (uint256[] memory tokenIds){
     return ownedTokens[_tokenOwner];
   }
 
-  function createTrophy(string _trophyLink) public {
+  function createTrophy(string memory _trophyLink) public {
 
     address tokenOwner = msg.sender;
     address winner = hashes.returnWinnerAddress();
-    require (keccak256(tokenOwner) == keccak256(winner));
+    require (keccak256(abi.encodePacked(tokenOwner)) == keccak256(abi.encodePacked(winner)));
+    require (tokenRedeemed[winner][_totalSupply] == false);
+    tokenRedeemed[winner][_totalSupply] = true;
     uint256 tokenIndex = _totalSupply.add(1);
     balances[tokenOwner] = balances[tokenOwner].add(1);
     tokenExists[tokenIndex] = true;
@@ -97,7 +99,7 @@ contract MyTrophy is ERC721{
     ownedTokens[tokenOwner].push(tokenIndex);
     uint value = hashes.totalVotesFor(winner);
     trophyValue[tokenIndex] = value;
-    Transfer(address(0), tokenOwner, tokenIndex);
+    emit Transfer(address(0), tokenOwner, tokenIndex);
 
   }
 

@@ -1,4 +1,4 @@
-pragma solidity ^0.4.20;
+pragma solidity ^0.5.0;
 
 contract ERC721 {
     // Methods
@@ -8,8 +8,8 @@ contract ERC721 {
     function approve(address _to, uint256 _tokenId) public {}
     function transfer(address _to, uint256 _tokenId) public {}
     function transferFrom(address _from, address _to, uint256 _tokenId) public {}
-    function tokensOfOwner(address _owner) public view returns (uint256[] tokenIds) {}
-    function tokenMetadata(uint256 _tokenId) public view returns (string infoUrl) {}
+    function tokensOfOwner(address _owner) public view returns (uint256[] memory tokenIds) {}
+    function tokenMetadata(uint256 _tokenId) public view returns (string memory infoUrl) {}
 
     // Events
     event Transfer(address from, address to, uint256 tokenId);

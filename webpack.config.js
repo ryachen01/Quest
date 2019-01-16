@@ -4,13 +4,13 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 module.exports = {
   entry: {
 
-	a: './app/scripts/index.js',
-	b: './app/scripts/trophySelect.js'
+	main: './app/scripts/index.js',
+	trophySelect: './app/scripts/trophySelect.js'
   },  
   mode: 'production',
   output: {
     path: path.resolve(__dirname, 'build'),
-    filename: "[name].entry.js"
+    filename: "[name].bundle.js"
   },
     
 
@@ -21,7 +21,7 @@ module.exports = {
       { from: './app/trophySelect.html', to: 'trophySelect.html' },
     ])
   ],
-  devtool: 'source-map',
+  devtool: false,
   module: {
     rules: [
       { test: /\.s?css$/, use: [ 'style-loader', 'css-loader', 'sass-loader' ] },
@@ -29,6 +29,7 @@ module.exports = {
         test: /\.js$/,
         exclude: /(node_modules|bower_components)/,
         loader: 'babel-loader',
+
         query: {
           presets: ['env'],
           plugins: ['transform-react-jsx', 'transform-object-rest-spread', 'transform-runtime']

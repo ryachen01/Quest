@@ -15,7 +15,7 @@ module.exports = function(deployer) {
    deployer.deploy(ERC721);
    deployer.deploy(Token).then(function() {
 	
-    return deployer.deploy(Hashes, 100000000000000, Token.address, Trophy.address)
+    return deployer.deploy(Hashes, 1e15, Token.address, Trophy.address)
 
    });
 	
