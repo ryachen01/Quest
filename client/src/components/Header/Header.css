@@ -1,0 +1,41 @@
+i.Nav {
+  background-color: #fff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.0975);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 2;
+  -webkit-transition: height 0.2s ease-in-out;
+  transition: height 0.2s ease-in-out;
+  height: 77px;
+}
+
+.Nav-menus {
+  display: flex;
+  flex-direction: row;
+  height: 77px;
+  /* justify-content: center; */
+  width: 70%;
+  margin: 0 auto;
+  padding: 26px 40px;
+}
+
+.Nav-brand {
+  /* height: auto; */
+  font-size: 36px;
+  font-style: italic;
+  font-family: "Times New Roman";
+
+
+}
+
+.Nav-brand-logo {
+  display: block;
+  background-position: 120px 0px;
+  background-image: url(../../sprite.png);
+  background-size: 100px 100px;
+  background-repeat: no-repeat;
+  height: 100px;
+  width: 220px;
+  text-indent: -1000%;
+}
