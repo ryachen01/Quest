@@ -1,6 +1,6 @@
-button.Upload{
-  position: relative;
-  top: 0px;
-  left: -25px;
+.Buy{
+  position: absolute;
+  margin-top: -50%;
+  margin-left: 75%;
 
 }

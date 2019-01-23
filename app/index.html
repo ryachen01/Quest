@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ethereum DApp</title>
+
+  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.16.0/mapbox-gl.js'></script>
+  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.16.0/mapbox-gl.css' rel='stylesheet' />
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+  <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+</head>
+<body class="container">
+  <h1>Photo Voting DApp</h1>
+
+  <div>
+  <input type="file" id="file" name="file" multiple>
+</div>
+<div>
+  <button onclick = "uploadFile()">Upload Photo</button>
+</div>
+
+
+<img id="output" height="400" width="600">
+<h3 id="Caption"></h3>
+
+
+<br>
+<br>
+<input type="text" id="address"  placeholder="Address Sending Tokens To:"/>
+<br>
+<br>
+<input type="text" id="amount" placeholder="Amount to Send:"/>
+<br>
+<br>
+
+
+<div>
+  <button onclick = "viewPosts()">Click here to see posts!</button>
+  <button onclick = "voteForPhoto()">Like</button>
+  <button onclick = "newround()">New Round</button>
+  <button onclick = "buyCoins()">Buy</button>
+  <button onclick = "saveVotes()">Save</button>
+  <a href="http://localhost:8080/trophySelect.html">Redeem Trophy</a>
+
+
+
+</div>
+<h3 id="winnerAddress"></h3>
+<img id="winner" height="400" width="600">
+
+</body>
+<script type="text/javascript"><!--
+
+
+
+
+</script>
+<script src="https://cdn.rawgit.com/ethereum/web3.js/develop/dist/web3.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
+<script src="main.bundle.js"></script>
+</html>

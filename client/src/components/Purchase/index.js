@@ -1,9 +1,11 @@
+//imports
 import React, { Component } from "react";
-import TokenContract from "../../contracts/Token.json";
+import TokenContract from "../../contracts/MyToken.json";
 import "./Purchase.css"
 
 class TokenPurchase extends Component{
 
+  //initialize web3 to connect with smart contracts and wallets
   state = {web3: null, accounts: null, contract: null};
 
   componentDidMount = async () => {
@@ -13,9 +15,6 @@ class TokenPurchase extends Component{
       const web3 = this.props.web3;
 
       const accounts = this.props.accounts;
-
-      const reader = new FileReader();
-
       // Get the contract instance.
       const networkId = await web3.eth.net.getId();
       const deployedNetwork = TokenContract.networks[networkId];
@@ -36,9 +35,21 @@ class TokenPurchase extends Component{
     }
   };
 
+  buyCoins = async () => {
+    //Purchase Tokens
+    const { accounts, contract } = this.state;
+    const amount = document.getElementById("Value").value;
+    await contract.methods.buy().send({from: accounts[0], value: (1e18 * amount)});
 
+  };
 
+  updateValue = async () => {
+    //Conversion between Ether to ERC20 Token
+    const amount = document.getElementById("Value").value;
+    const tokenValue = amount * 500;
+    document.getElementById("Token Value").value = tokenValue;
 
+  }
 
     render(){
 
@@ -47,11 +58,12 @@ class TokenPurchase extends Component{
         <div className = "Buy">
 
 
-      <h1> Buy Tokens! </h2>
+      <h1> Buy Tokens! </h1>
 
-      <button onClick = {this.uploadFile} className = "Buy" >Upload Photo</button>
-
-
+      Amount in Ether: <input type="text" onChange = {this.updateValue} id = "Value"></input>
+      <button onClick = {this.buyCoins} id = "Buy" >Purchase Coins</button>
+      <p> </p>
+      Amount in Tokens: <input type="text" id = "Token Value" value = "0"></input>
       <p> </p>
         </div>
 

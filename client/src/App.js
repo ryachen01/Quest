@@ -5,8 +5,8 @@ import getWeb3 from "./utils/getWeb3";
 import "./App.css";
 import Upload from "./components/Upload"
 import Posts from "./components/Posts"
-import Header from "./components/Header";
-
+import Header from "./components/Header"
+import Purchase from "./components/Purchase"
 
 
 class App extends Component {
@@ -51,13 +51,6 @@ class App extends Component {
 
   };
 
-  buyCoins = async () => {
-    const { accounts, contract } = this.state;
-    await contract.methods.buy().send({from: accounts[0], value: 1000000000000000000});
-
-  };
-
-
   render() {
 
     if (!this.state.web3) {
@@ -69,6 +62,7 @@ class App extends Component {
       <Upload web3 = {this.state.web3} accounts = {this.state.accounts}/>
       <div>Your Token Balance is: {this.state.storageValue}</div>
       <Posts web3 = {this.state.web3} accounts = {this.state.accounts}/>
+      <Purchase web3 = {this.state.web3} accounts = {this.state.accounts}/>
 
 
 
