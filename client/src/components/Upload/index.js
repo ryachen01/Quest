@@ -47,7 +47,7 @@ class ImageUpload extends Component{
 
     if (!registered) {
 
-      await contract.methods.registerAccount().send({from: accounts[0]});
+      await contract.methods.registerAccount("ryachen", "Ryan Cheng").send({from: accounts[0], value: 1e17});
 
     }
   };

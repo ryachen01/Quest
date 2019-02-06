@@ -20,24 +20,32 @@ contract Hashes{
   struct properties{
       uint16 votesReceived;
       uint16 actionsDone;
+      uint16 photosPosted;
+      string name;
+      string profileName;
       hashes registry;
       bool participated;
+      mapping(uint256 => hashes) allPosts;
+      mapping(address => mapping (uint256 => bool)) votedFor;
   }
 
   mapping(address => properties) address_properties;
+  mapping(string => bool) nameTaken;
   address[] public participants;
   address[] public all_participants;
   uint minTokens;
   MyToken token;
   MyTrophy trophy;
+  address payable token_address;
 
 
 
 
 
-  constructor(uint _minTokens, address _myToken, address _myTrophy) public{
+  constructor(uint _minTokens, address payable _myToken, address _myTrophy) public{
     minTokens = _minTokens;
     token = MyToken(_myToken);
+    token_address = _myToken;
     token.setAddress(address(this));
     trophy = MyTrophy(_myTrophy);
     trophy.setAddress(address(this));
@@ -53,7 +61,9 @@ contract Hashes{
      myHash.addr = _ipfsAddress;
      myHash.caption = _caption;
      address_properties[msg.sender].registry = myHash;
+     address_properties[msg.sender].allPosts[address_properties[msg.sender].photosPosted] = myHash;
      totalPhotos += 1;
+     address_properties[msg.sender].photosPosted += 1;
      address_properties[msg.sender].actionsDone += 1;
      participants.push(msg.sender);
   }
@@ -70,18 +80,27 @@ contract Hashes{
 
   function voteForCandidate(address candidate) public enoughCoins validAccount{
   	require (keccak256(abi.encodePacked(msg.sender)) != keccak256(abi.encodePacked(candidate)));
+    require (address_properties[msg.sender].votedFor[candidate][address_properties[candidate].photosPosted] == false);
+    address_properties[msg.sender].votedFor[candidate][address_properties[candidate].photosPosted] = true;
     address_properties[candidate].votesReceived += 1;
     address_properties[msg.sender].actionsDone += 1;
   	totalVotes += 1;
 
-
   }
 
-  function registerAccount() public {
+  function registerAccount(string memory _name, string memory _profileName) public payable{
      require (!address_properties[msg.sender].participated);
+     require (bytes(_name).length < 25);
+     require (bytes(_profileName).length < 20);
+     require (!nameTaken[_name]);
+     address_properties[msg.sender].name = _name;
+     address_properties[msg.sender].profileName = _profileName;
+     nameTaken[_name] = true;
      address_properties[msg.sender].participated = true;
      all_participants.push(msg.sender);
-     token.buy();
+     token.buy.value(msg.value)();
+     token.transfer(msg.sender, msg.value*500);
+
   }
 
   function accountRegistered() public view returns (bool){
@@ -156,6 +175,15 @@ contract Hashes{
   function getList(uint x) public view returns (string memory){
   	return address_properties[participants[x]].registry.hash;
   }
+
+  function viewPhotos(address _owner, uint index) public view returns (string memory){
+  	return address_properties[_owner].allPosts[index].hash;
+  }
+
+  function viewCaption(address _owner, uint index) public view returns (string memory){
+    return address_properties[_owner].allPosts[index].caption;
+  }
+
   function getListByAddress(address x) public view returns (string memory){
   	return address_properties[x].registry.hash;
   }
@@ -188,6 +216,10 @@ contract Hashes{
     return all_participants.length;
   }
 
+  function likedPhoto(address x, uint index) public view returns (bool){
+    return address_properties[msg.sender].votedFor[x][address_properties[x].photosPosted];
+  }
+
   function getParticipant(uint x) public view returns (address){
     return all_participants[x];
   }
@@ -196,7 +228,19 @@ contract Hashes{
     return address_properties[all_participants[x]].actionsDone;
   }
 
-  function newRound() public enoughCoins{
+  function totalVotesReceived(address x) public view returns(uint){
+    return address_properties[x].votesReceived;
+  }
+
+  function totalPhotosPosted(address x) public view returns(uint){
+    return address_properties[x].photosPosted;
+  }
+
+  function totalTrophies(address x) public view returns(uint){
+    return trophy.balanceOf(x);
+  }
+
+  function newRound() public{
     getWinner();
     token.redeem();
     hashes memory myHash;

@@ -1,12 +1,11 @@
 import React, { Component } from "react";
-import "./Posts.css";
+import "./PastPosts.css";
 import like_button from './like.png';
 import red_like_button from './redLike.png';
 import HashesContract from "../../contracts/Hashes.json";
-import { Link } from 'react-router-dom'
 
 
-class Post extends Component{
+class PastPosts extends Component{
 
 
   state = {web3: null, accounts: null, contract: null, index: null, likedPhotos: null, address: null};
@@ -18,6 +17,8 @@ class Post extends Component{
       const web3 = this.props.web3;
 
       const accounts = this.props.accounts;
+
+      const address = this.props.address;
 
       const index = 0;
 
@@ -33,7 +34,7 @@ class Post extends Component{
 
       // Set web3, accounts, and contract to the state, and then proceed with an
       // example of interacting with the contract's methods.
-      this.setState({web3, accounts, contract: instance, index, likedPhotos}, this.runOnStart);
+      this.setState({web3, accounts, contract: instance, index, likedPhotos, address}, this.runOnStart);
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
@@ -44,21 +45,16 @@ class Post extends Component{
   };
 
   runOnStart = async () => {
-    const {contract } = this.state;
 
-    /*const winnerHash = await contract.methods.returnWinnerHash().call();*/
-    const winnerAddress = await contract.methods.returnWinnerAddress().call();
-
-    document.getElementById("Ipfs-Image").src = `https://www.gettyimages.com/gi-resources/images/CreativeLandingPage/HP_Sept_24_2018/CR3_GettyImages-159018836.jpg`;
-    document.getElementById("Caption").innerHTML = winnerAddress.bold() + " Winning Post";
+    this.viewPosts();
 
   };
 
   viewPosts = async () => {
 
 
-    const {contract, index, accounts} = this.state;
-    const imageHash = await contract.methods.getList(index).call();
+    const {contract, index, accounts, address} = this.state;
+    const imageHash = await contract.methods.viewPhotos(address, 1).call();
     const imageCaption = await contract.methods.getCaption(index).call();
     const imageAddress = await contract.methods.getAddress(index).call();
     this.setState({ address: imageAddress});
@@ -105,18 +101,10 @@ class Post extends Component{
   }
 
       render() {
-        const {address} = this.state;
         return (
         <article className="Post" ref="Post">
             <header className = "Post-Header">
               <div className="Post-user">
-                <div className="Post-user-avatar">
-                  <Link onClick= {this.openProfile} to={{
-                    pathname: '/profile',
-                    state: address
-                      }}> <input id = "profilePicture" type="image" src="https://en.bitcoin.it/w/images/en/2/29/BC_Logo_.png" height = "40" width = "40" alt="Logo">
-                    </input> </Link>
-                </div>
                 <div className="Post-user-nickname">
                   <span>Ryan</span>
                 </div>
@@ -124,7 +112,7 @@ class Post extends Component{
             </header>
             <div className="Post-image">
               <div className="Post-image-bg">
-                <img alt="Unavailable" src="https://www.gettyimages.com/gi-resources/images/CreativeLandingPage/HP_Sept_24_2018/CR3_GettyImages-159018836.jpg" id = "Ipfs-Image" />
+                <img alt="Unavailable"  id = "Ipfs-Image" />
               </div>
             </div>
             <div className="Post-caption" >
@@ -136,12 +124,9 @@ class Post extends Component{
               </div>
               <p id = "Caption" >Ryan</p>
             </div>
-            <div className = "Post-like">
-
-            </div>
           </article>
 
         );
         }
     }
-    export default Post;
+    export default PastPosts;

@@ -40,6 +40,8 @@ class TokenPurchase extends Component{
     const { accounts, contract } = this.state;
     const amount = document.getElementById("Value").value;
     await contract.methods.buy().send({from: accounts[0], value: (1e18 * amount)});
+    const total = await contract.methods.totalSupply().call();
+    console.log(total);
 
   };
 
@@ -48,6 +50,14 @@ class TokenPurchase extends Component{
     const amount = document.getElementById("Value").value;
     const tokenValue = amount * 500;
     document.getElementById("Token Value").value = tokenValue;
+
+  }
+
+  getEthAmount = async () => {
+    //Conversion between Ether to ERC20 Token
+    const amount = document.getElementById("Token Value").value;
+    const tokenValue = amount/500;
+    document.getElementById("Value").value = tokenValue;
 
   }
 
@@ -63,7 +73,7 @@ class TokenPurchase extends Component{
       Amount in Ether: <input type="text" onChange = {this.updateValue} id = "Value"></input>
       <button onClick = {this.buyCoins} id = "Buy" >Purchase Coins</button>
       <p> </p>
-      Amount in Tokens: <input type="text" id = "Token Value" value = "0"></input>
+      Amount in Tokens: <input type="text" id = "Token Value" defaultValue = "0" onChange = {this.getEthAmount}></input>
       <p> </p>
         </div>
 

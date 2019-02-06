@@ -8,7 +8,7 @@ module.exports = {
       host: 'localhost',
       port: 8545,
       network_id: '1234',
-      gas: '5000000'
+      gas: '10000000'
     }
   }
 };

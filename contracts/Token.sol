@@ -23,7 +23,7 @@ import "../contracts/ERC20.sol";
       string public  name;
       uint8 public decimals;
       uint public _totalSupply;
-      mapping(address => uint) balances;
+      mapping(address => uint256) balances;
       mapping(address => mapping (address => uint256)) allowed;
       address payable public creator;
       Hashes1 public hashes;
@@ -86,7 +86,7 @@ import "../contracts/ERC20.sol";
 
       }
 
-      function buy() public payable {
+      function buy() external payable {
 
           creator.transfer(msg.value);
   	      uint tokens = msg.value * 500;
@@ -94,6 +94,11 @@ import "../contracts/ERC20.sol";
   	      _totalSupply = _totalSupply.add(tokens);
           emit Transfer(address(0), msg.sender, tokens);
 
+      }
+
+      function () external payable{
+
+      
       }
 
       function winner() internal view returns (address){
