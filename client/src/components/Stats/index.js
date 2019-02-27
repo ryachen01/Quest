@@ -1,9 +1,9 @@
 //imports
 import React, { Component } from "react";
-import TokenContract from "../../contracts/MyToken.json";
+import HashesContract from "../../contracts/Hashes.json";
 import "./Stats.css"
 
-class HashesContract extends Component{
+class Stats extends Component{
 
   //initialize web3 to connect with smart contracts and wallets
   state = {web3: null, accounts: null, contract: null, address: null};
@@ -27,7 +27,7 @@ class HashesContract extends Component{
 
       // Set web3, accounts, and contract to the state, and then proceed with an
       // example of interacting with the contract's methods.
-      this.setState({web3, accounts, contract: instance});
+      this.setState({web3, accounts, contract: instance, address}, this.runOnStart);
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
@@ -35,6 +35,18 @@ class HashesContract extends Component{
       );
       console.error(error);
     }
+  };
+
+  runOnStart = async () => {
+    const {contract, address} = this.state;
+
+    /*const winnerHash = await contract.methods.returnWinnerHash().call();*/
+    const totalVotes = await contract.methods.totalVotesReceived(address).call();
+    const totalPhotos = await contract.methods.totalPhotosPosted(address).call();
+    const totalTrophies = await contract.methods.totalTrophies(address).call();
+    document.getElementById("numPhotos").innerHTML = " Total Photos Posted: " + totalPhotos;
+    document.getElementById("numVotes").innerHTML = " Total Votes Received: " + totalVotes;
+    document.getElementById("totalTrophies").innerHTML = " Total Trophies Won: " + totalTrophies;
   };
 
 
@@ -47,9 +59,11 @@ class HashesContract extends Component{
 
       <h1> User Stats! </h1>
 
-      <h3> Total Photos</h3>
+      <h3 id = "numPhotos">Total Photos Posted: 0</h3>
+      <h3 id = "numVotes">Total Votes Received: 0</h3>
+      <h3 id = "totalTrophies">Total Trophies Won: 0</h3>
 
-      Amount in Tokens: <input type="text" id = "Token Value" defaultValue = "0" onChange = {this.getEthAmount}></input>
+
       <p> </p>
         </div>
 
@@ -59,4 +73,4 @@ class HashesContract extends Component{
 
     }
 
-export default TokenPurchase;
+export default Stats;

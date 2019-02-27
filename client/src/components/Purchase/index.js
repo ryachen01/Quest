@@ -39,7 +39,7 @@ class TokenPurchase extends Component{
     //Purchase Tokens
     const { accounts, contract } = this.state;
     const amount = document.getElementById("Value").value;
-    await contract.methods.buy().send({from: accounts[0], value: (1e18 * amount)});
+    await contract.methods.buy().send({from: accounts[0], value: (1e18 * amount), gasPrice: 1e9});
     const total = await contract.methods.totalSupply().call();
     console.log(total);
 
@@ -61,6 +61,8 @@ class TokenPurchase extends Component{
 
   }
 
+
+
     render(){
 
         return (
@@ -69,6 +71,7 @@ class TokenPurchase extends Component{
 
 
       <h1> Buy Tokens! </h1>
+
 
       Amount in Ether: <input type="text" onChange = {this.updateValue} id = "Value"></input>
       <button onClick = {this.buyCoins} id = "Buy" >Purchase Coins</button>

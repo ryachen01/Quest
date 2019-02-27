@@ -4,7 +4,7 @@ import getWeb3 from "./utils/getWeb3";
 import "./App.css";
 import PastPosts from "./components/PastPosts"
 import Header from "./components/Header"
-
+import Stats from "./components/Stats"
 
 class Profile extends Component {
   state = { storageValue: 0, web3: null, accounts: null, contract: null, address: null};
@@ -41,11 +41,6 @@ class Profile extends Component {
 
   runOnStart = async () => {
 
-    const {contract, address} = this.state;
-
-    const response = await contract.methods.balanceOf(address).call();
-
-    this.setState({ storageValue: (response/1000000000000000000)});
 
   };
 
@@ -65,9 +60,8 @@ class Profile extends Component {
     return (
       <div className="App">
       <Header />
-      <div>Token Balance: {this.state.storageValue}</div>
       <PastPosts web3 = {this.state.web3} accounts = {this.state.accounts} address = {this.state.address}/>
-      
+      <Stats web3 = {this.state.web3} accounts = {this.state.accounts} address = {this.state.address}/>
 
       </div>
     );

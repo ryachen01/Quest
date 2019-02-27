@@ -54,7 +54,7 @@ class PastPosts extends Component{
 
 
     const {contract, index, accounts, address} = this.state;
-    const imageHash = await contract.methods.viewPhotos(address, 1).call();
+    const imageHash = await contract.methods.viewPhotos(address, 0).call();
     const imageCaption = await contract.methods.getCaption(index).call();
     const imageAddress = await contract.methods.getAddress(index).call();
     this.setState({ address: imageAddress});

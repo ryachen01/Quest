@@ -37,6 +37,8 @@ class ImageUpload extends Component{
   };
 
   runOnStart = async () => {
+
+
     const { accounts, contract } = this.state;
 
     const response = await contract.methods.returnTotalPhotos().call();
@@ -47,10 +49,64 @@ class ImageUpload extends Component{
 
     if (!registered) {
 
-      await contract.methods.registerAccount("ryachen", "Ryan Cheng").send({from: accounts[0], value: 1e17});
+
+      this.getInput();
 
     }
   };
+  getInput = async () => {
+
+
+  const { accounts, contract } = this.state;
+
+  var createAccount = window.confirm ("You have not created an account yet. Would you like to do so? ")
+
+  if (createAccount){
+
+  var username = prompt("Please enter an username: ", "e.g. joesmith1234");
+
+
+  const nameTaken = await contract.methods.isNameTaken(username).call();
+  if (username != null && !nameTaken) {
+      var name = prompt("Please enter a name: ", "Ryan");
+      if (name != null){
+
+      await contract.methods.registerAccount(username, name).send({from: accounts[0], value: 1e17, gasPrice: 1e9});
+    }
+  }
+  else{
+    this.getInput();
+  }
+}
+}
+
+  triggerClick = async () => {
+
+    console.log("x")
+    document.getElementById("fileUpload").click()
+
+  }
+
+  getResult = async () => {
+
+  }
+
+  myFunction = async () => {
+    document.getElementById("fileUpload").click()
+  }
+
+  click = async () => {
+
+
+    var x = window.confirm("Please Upload A Profile Photo");
+
+    if (x){
+
+       await document.getElementById("fileUpload").click()
+    }
+
+
+  }
 
 
     captureFile =(event) => {
@@ -61,6 +117,7 @@ class ImageUpload extends Component{
     };
 
     uploadFile = async () => {
+
 
         const { accounts, contract } = this.state;
 
@@ -80,7 +137,7 @@ class ImageUpload extends Component{
         //document.getElementById("output").src = url
         let hash = result[0].hash;
 
-        contract.methods.addHash(hash, "My Photo", accounts[0]).send({from: accounts[0]});
+        contract.methods.addHash(hash, "My Photo", accounts[0]).send({from: accounts[0], gasPrice: 1e9});
 
 
       })
@@ -95,11 +152,20 @@ class ImageUpload extends Component{
         <div>
 
 
+
+
       <h2> Choose photo to upload </h2>
+
       <input
         type = "file" id = "fileUpload"
         onChange = {this.captureFile}
       />
+
+
+
+    {/*<button onClick = {this.click} id = "test" className = "Upload" >Create Account</button>*/}
+
+
       <button onClick = {this.uploadFile} className = "Upload" >Upload Photo</button>
 
 

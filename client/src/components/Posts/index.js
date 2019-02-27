@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./Posts.css";
 import like_button from './like.png';
 import red_like_button from './redLike.png';
+import save_button from './SaveButton.png';
 import HashesContract from "../../contracts/Hashes.json";
 import { Link } from 'react-router-dom'
 
@@ -9,7 +10,7 @@ import { Link } from 'react-router-dom'
 class Post extends Component{
 
 
-  state = {web3: null, accounts: null, contract: null, index: null, likedPhotos: null, address: null};
+  state = {web3: null, accounts: null, contract: null, index: null, likedPhotos: null, isLiking: false, address: null};
 
   componentDidMount = async () => {
 
@@ -63,13 +64,17 @@ class Post extends Component{
     const imageAddress = await contract.methods.getAddress(index).call();
     this.setState({ address: imageAddress});
     const numLikes = await contract.methods.totalVotesFor(imageAddress).call();
+    const name = await contract.methods.getProfielName(imageAddress).call();
+    const username = await contract.methods.getUserName(imageAddress).call();
+    document.getElementById("Name").innerHTML = name
     document.getElementById("Ipfs-Image").src = `https://ipfs.io/ipfs/${imageHash}`;
-    document.getElementById("Caption").innerHTML = imageAddress.bold() + "  " + imageCaption;
+    document.getElementById("Caption").innerHTML = username.bold() + "  " + imageCaption;
     document.getElementById("Num-likes").innerHTML = numLikes + " Likes"
     const hasLiked = await contract.methods.likedPhoto(imageAddress, 0).call({from: accounts[0]});
     if (hasLiked === false){
       document.getElementById("likeButton").src = like_button;
     }else{
+      this.setState({ isLiking: true})
       document.getElementById("likeButton").src = red_like_button;
     }
     this.setState({ index: (index+1)});
@@ -80,12 +85,19 @@ class Post extends Component{
 
   likePost = async () => {
 
-    const {contract, index, accounts, likedPhotos} = this.state;
+    const {contract, index, accounts, likedPhotos, isLiking} = this.state;
     const imageAddress = await contract.methods.getAddress(index - 1).call();
     const hasLiked = await contract.methods.likedPhoto(imageAddress, 0).call({from: accounts[0]});
     if (hasLiked === false){
+      if (!isLiking){
         document.getElementById("likeButton").src = red_like_button;
         likedPhotos.push(index - 1);
+        this.setState({ isLiking: true})
+      }else{
+        document.getElementById("likeButton").src = like_button
+        likedPhotos.splice(likedPhotos.indexOf(index - 1), 1 );
+        this.setState({ isLiking: false})
+      }
    }
 
   };
@@ -94,7 +106,7 @@ class Post extends Component{
 
     const {contract, accounts, likedPhotos} = this.state;
     console.log(likedPhotos);
-    await contract.methods.voteForListByIndex(likedPhotos).send({from: accounts[0]});
+    await contract.methods.voteForListByIndex(likedPhotos).send({from: accounts[0], gasPrice: 1e9});
 
   };
 
@@ -118,7 +130,7 @@ class Post extends Component{
                     </input> </Link>
                 </div>
                 <div className="Post-user-nickname">
-                  <span>Ryan</span>
+                  <span id = "Name" >Ryan</span>
                 </div>
               </div>
             </header>
@@ -130,8 +142,8 @@ class Post extends Component{
             <div className="Post-caption" >
               <div className ="Post-buttons" >
                 <input id = "likeButton" onClick = {this.likePost} className="Like-button" type="image" src = {like_button} height = "40" width = "40" alt ="like" />
+                <input onClick = {this.saveLikes} className="Save-button" type="image" src = {save_button} height = "40" width = "80" alt ="save" />
                 <h3 id = "Num-likes"> 0 Likes </h3>
-                <input onClick = {this.saveLikes} className="Save-button" type="image" src = "https://www.clipartmax.com/png/middle/4-47145_save-button-svg-clip-arts-600-x-230-px-save-button-icon.png" height = "40" width = "80" alt ="save" />
                 <button onClick = {this.viewPosts} className = "Post-Next" >Next</button>
               </div>
               <p id = "Caption" >Ryan</p>
