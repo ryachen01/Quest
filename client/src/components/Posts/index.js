@@ -58,6 +58,8 @@ class Post extends Component{
   viewPosts = async () => {
 
 
+
+
     const {contract, index, accounts} = this.state;
     const imageHash = await contract.methods.getList(index).call();
     const imageCaption = await contract.methods.getCaption(index).call();
@@ -72,12 +74,47 @@ class Post extends Component{
     document.getElementById("Num-likes").innerHTML = numLikes + " Likes"
     const hasLiked = await contract.methods.likedPhoto(imageAddress, 0).call({from: accounts[0]});
     if (hasLiked === false){
+      this.setState({ isLiking: false})
       document.getElementById("likeButton").src = like_button;
     }else{
       this.setState({ isLiking: true})
       document.getElementById("likeButton").src = red_like_button;
     }
+
     this.setState({ index: (index+1)});
+
+
+
+
+  };
+
+  previewPost = async () => {
+
+
+
+    const {contract, index, accounts} = this.state;
+    const imageHash = await contract.methods.getList(index - 1).call();
+    const imageCaption = await contract.methods.getCaption(index - 1).call();
+    const imageAddress = await contract.methods.getAddress(index - 1).call();
+    this.setState({ address: imageAddress});
+    const numLikes = await contract.methods.totalVotesFor(imageAddress).call();
+    const name = await contract.methods.getProfielName(imageAddress).call();
+    const username = await contract.methods.getUserName(imageAddress).call();
+    document.getElementById("Name").innerHTML = name
+    document.getElementById("Ipfs-Image").src = `https://ipfs.io/ipfs/${imageHash}`;
+    document.getElementById("Caption").innerHTML = username.bold() + "  " + imageCaption;
+    document.getElementById("Num-likes").innerHTML = numLikes + " Likes"
+    const hasLiked = await contract.methods.likedPhoto(imageAddress, 0).call({from: accounts[0]});
+    if (hasLiked === false){
+      this.setState({ isLiking: false})
+      document.getElementById("likeButton").src = like_button;
+    }else{
+      this.setState({ isLiking: true})
+      document.getElementById("likeButton").src = red_like_button;
+    }
+
+    this.setState({ index: (index - 1)});
+
 
 
 

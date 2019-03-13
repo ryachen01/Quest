@@ -1,6 +1,29 @@
 import React, { Component } from "react";
 import HashesContract from "../../contracts/Hashes.json";
 import "./Upload.css"
+import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+
+import ReactCrop from 'react-image-crop';
+import 'react-image-crop/dist/ReactCrop.css';
+
+const styles = theme => ({
+  button: {
+    margin: theme.spacing.unit,
+  },
+  leftIcon: {
+    marginRight: theme.spacing.unit,
+  },
+  rightIcon: {
+    marginLeft: theme.spacing.unit,
+  },
+  iconSmall: {
+    fontSize: 20,
+  },
+});
+
+
 
 class ImageUpload extends Component{
 
@@ -43,8 +66,6 @@ class ImageUpload extends Component{
 
     const response = await contract.methods.returnTotalPhotos().call();
 
-    console.log(response);
-
     const registered = await contract.methods.accountRegistered().call({from: accounts[0]});
 
     if (!registered) {
@@ -80,20 +101,8 @@ class ImageUpload extends Component{
 }
 }
 
-  triggerClick = async () => {
 
-    console.log("x")
-    document.getElementById("fileUpload").click()
 
-  }
-
-  getResult = async () => {
-
-  }
-
-  myFunction = async () => {
-    document.getElementById("fileUpload").click()
-  }
 
   click = async () => {
 
@@ -109,12 +118,26 @@ class ImageUpload extends Component{
   }
 
 
-    captureFile =(event) => {
+    captureFile = async event => {
         event.stopPropagation()
         event.preventDefault()
         const myFile = event.target.files[0]
-        this.state.reader.readAsArrayBuffer(myFile)
+
+        //this.state.reader.readAsArrayBuffer(myFile)
+        this.state.reader.readAsDataURL(myFile)
+
+
+        setTimeout(() => {
+
+            document.getElementById("preview").style.display = ""
+            document.getElementById("preview").src = this.state.reader.result
+            document.getElementById("upload").style.display = ""
+
+        }, 10);
+
     };
+
+
 
     uploadFile = async () => {
 
@@ -126,6 +149,7 @@ class ImageUpload extends Component{
         // connect to ipfs daemon API server
         var ipfs = ipfsAPI('ipfs.infura.io', '5001', {protocol: 'https'})
         // Connect to IPFS
+
         const buf = Buffer.from(this.state.reader.result) // Convert data into buffer
         ipfs.files.add(buf, (err, result) => { // Upload buffer to IPFS
         if(err) {
@@ -144,8 +168,20 @@ class ImageUpload extends Component{
 
     }
 
+    triggerInput = async () => {
+      document.getElementById("fileUpload").click()
+    }
 
-    render(){
+    previewImage = async () => {
+      document.getElementById("fileUpload").click()
+    }
+
+
+
+
+    render(props){
+
+        const { classes} = this.props;
 
         return (
 
@@ -154,19 +190,32 @@ class ImageUpload extends Component{
 
 
 
-      <h2> Choose photo to upload </h2>
+      <h1> Upload Photo </h1>
 
       <input
-        type = "file" id = "fileUpload"
+        type = "file" id = "fileUpload" style={{display: "none"}}
         onChange = {this.captureFile}
       />
 
+      <Button variant="contained" color="primary" className={classes.button} onClick = {this.triggerInput}>
+        New Post
+        <CloudUploadIcon className={classes.rightIcon} />
+
+      </Button>
+      <p> </p>
+
+      <img alt="Unavailable" style={{display: "none"}} id = "preview" height = "200" width = "200"/>
+
+      <p> </p>
+      <div>
+      <Button variant = "contained" id = "upload" style={{display: "none"}} onClick = {this.uploadFile} type="submit" className ="uploadButton"> Post Photo</Button>
+      </div>
 
 
     {/*<button onClick = {this.click} id = "test" className = "Upload" >Create Account</button>*/}
 
 
-      <button onClick = {this.uploadFile} className = "Upload" >Upload Photo</button>
+    {/*<button onClick = {this.uploadFile} className = "Upload" >Upload Photo</button>*/}
 
 
       <p> </p>
@@ -176,6 +225,11 @@ class ImageUpload extends Component{
 
       }
 
+
+
+
+
     }
 
-export default ImageUpload;
+
+export default withStyles(styles)(ImageUpload);
