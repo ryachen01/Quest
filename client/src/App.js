@@ -32,7 +32,7 @@ class App extends Component {
 
       // Set web3, accounts, and contract to the state, and then proceed with an
       // example of interacting with the contract's methods.
-      this.setState({ web3, accounts, contract: instance, reader}, this.runOnStart);
+      this.setState({ web3, accounts, contract: instance, reader});
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
@@ -42,14 +42,7 @@ class App extends Component {
     }
   };
 
-  runOnStart = async () => {
-    const { accounts, contract } = this.state;
 
-    const response = await contract.methods.balanceOf(accounts[0]).call();
-
-    this.setState({ storageValue: (response/1000000000000000000)});
-
-  };
 
   render() {
 
@@ -60,7 +53,6 @@ class App extends Component {
       <div className="App">
       <Header />
       <Upload web3 = {this.state.web3} accounts = {this.state.accounts}/>
-      <div>Your Token Balance is: {this.state.storageValue}</div>
       <Posts web3 = {this.state.web3} accounts = {this.state.accounts}/>
       <Purchase web3 = {this.state.web3} accounts = {this.state.accounts}/>
 

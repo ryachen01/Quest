@@ -240,6 +240,16 @@ contract Hashes{
     return trophy.balanceOf(x);
   }
 
+  function getUserName (address x) public view returns(string memory){
+    return address_properties[x].name;
+  }
+  function getProfielName (address x) public view returns(string memory){
+    return address_properties[x].profileName;
+  }
+  function isNameTaken (string memory _name) public view returns(bool){
+    return (nameTaken[_name]);
+  }
+
   function newRound() public{
     getWinner();
     token.redeem();

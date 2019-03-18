@@ -6,7 +6,7 @@ import "./Purchase.css"
 class TokenPurchase extends Component{
 
   //initialize web3 to connect with smart contracts and wallets
-  state = {web3: null, accounts: null, contract: null};
+  state = {web3: null, accounts: null, contract: null, response:null};
 
   componentDidMount = async () => {
 
@@ -25,7 +25,7 @@ class TokenPurchase extends Component{
 
       // Set web3, accounts, and contract to the state, and then proceed with an
       // example of interacting with the contract's methods.
-      this.setState({web3, accounts, contract: instance});
+      this.setState({web3, accounts, contract: instance}, this.runOnStart);
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
@@ -33,6 +33,15 @@ class TokenPurchase extends Component{
       );
       console.error(error);
     }
+  };
+
+  runOnStart = async () => {
+    const { accounts, contract } = this.state;
+
+    const response = await contract.methods.balanceOf(accounts[0]).call();
+
+    this.setState({ storageValue: (response/1000000000000000000)});
+
   };
 
   buyCoins = async () => {
@@ -71,6 +80,10 @@ class TokenPurchase extends Component{
 
 
       <h1> Buy Tokens! </h1>
+
+      <div>Your Token Balance is: {this.state.storageValue}</div>
+
+      <p> </p>
 
 
       Amount in Ether: <input type="text" onChange = {this.updateValue} id = "Value"></input>

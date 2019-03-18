@@ -57,11 +57,13 @@ class PastPosts extends Component{
     const imageHash = await contract.methods.viewPhotos(address, 0).call();
     const imageCaption = await contract.methods.getCaption(index).call();
     const imageAddress = await contract.methods.getAddress(index).call();
+    const name = await contract.methods.getProfielName(imageAddress).call();
     this.setState({ address: imageAddress});
     const numLikes = await contract.methods.totalVotesFor(imageAddress).call();
     document.getElementById("Ipfs-Image").src = `https://ipfs.io/ipfs/${imageHash}`;
     document.getElementById("Caption").innerHTML = imageAddress.bold() + "  " + imageCaption;
     document.getElementById("Num-likes").innerHTML = numLikes + " Likes"
+    document.getElementById("Name").innerHTML = name
     const hasLiked = await contract.methods.likedPhoto(imageAddress, 0).call({from: accounts[0]});
     if (hasLiked === false){
       document.getElementById("likeButton").src = like_button;
@@ -106,7 +108,7 @@ class PastPosts extends Component{
             <header className = "Post-Header">
               <div className="Post-user">
                 <div className="Post-user-nickname">
-                  <span>Ryan</span>
+                  <span id = "Name">Ryan</span>
                 </div>
               </div>
             </header>
@@ -117,9 +119,7 @@ class PastPosts extends Component{
             </div>
             <div className="Post-caption" >
               <div className ="Post-buttons" >
-                <input id = "likeButton" onClick = {this.likePost} className="Like-button" type="image" src = {like_button} height = "40" width = "40" alt ="like" />
                 <h3 id = "Num-likes"> 0 Likes </h3>
-                <input onClick = {this.saveLikes} className="Save-button" type="image" src = "https://www.clipartmax.com/png/middle/4-47145_save-button-svg-clip-arts-600-x-230-px-save-button-icon.png" height = "40" width = "80" alt ="save" />
                 <button onClick = {this.viewPosts} className = "Post-Next" >Next</button>
               </div>
               <p id = "Caption" >Ryan</p>

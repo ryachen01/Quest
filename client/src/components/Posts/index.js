@@ -58,12 +58,13 @@ class Post extends Component{
   viewPosts = async () => {
 
 
-
-
     const {contract, index, accounts} = this.state;
-    const imageHash = await contract.methods.getList(index).call();
-    const imageCaption = await contract.methods.getCaption(index).call();
-    const imageAddress = await contract.methods.getAddress(index).call();
+
+    const adjusted_index = index + 1
+
+    const imageHash = await contract.methods.getList(adjusted_index - 1).call();
+    const imageCaption = await contract.methods.getCaption(adjusted_index - 1).call();
+    const imageAddress = await contract.methods.getAddress(adjusted_index - 1).call();
     this.setState({ address: imageAddress});
     const numLikes = await contract.methods.totalVotesFor(imageAddress).call();
     const name = await contract.methods.getProfielName(imageAddress).call();
@@ -81,7 +82,10 @@ class Post extends Component{
       document.getElementById("likeButton").src = red_like_button;
     }
 
-    this.setState({ index: (index+1)});
+    this.setState({ index: (index + 1)});
+
+
+
 
 
 
@@ -91,11 +95,15 @@ class Post extends Component{
   previewPost = async () => {
 
 
-
     const {contract, index, accounts} = this.state;
-    const imageHash = await contract.methods.getList(index - 1).call();
-    const imageCaption = await contract.methods.getCaption(index - 1).call();
-    const imageAddress = await contract.methods.getAddress(index - 1).call();
+
+    const adjusted_index = index - 1
+
+    console.log(adjusted_index)
+
+    const imageHash = await contract.methods.getList(adjusted_index - 1).call();
+    const imageCaption = await contract.methods.getCaption(adjusted_index - 1).call();
+    const imageAddress = await contract.methods.getAddress(adjusted_index - 1).call();
     this.setState({ address: imageAddress});
     const numLikes = await contract.methods.totalVotesFor(imageAddress).call();
     const name = await contract.methods.getProfielName(imageAddress).call();
@@ -182,6 +190,7 @@ class Post extends Component{
                 <input onClick = {this.saveLikes} className="Save-button" type="image" src = {save_button} height = "40" width = "80" alt ="save" />
                 <h3 id = "Num-likes"> 0 Likes </h3>
                 <button onClick = {this.viewPosts} className = "Post-Next" >Next</button>
+                <button onClick = {this.previewPost} className = "Post-Previous" >Previous</button>
               </div>
               <p id = "Caption" >Ryan</p>
             </div>

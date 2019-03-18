@@ -101,9 +101,6 @@ class ImageUpload extends Component{
 }
 }
 
-
-
-
   click = async () => {
 
 
@@ -123,7 +120,7 @@ class ImageUpload extends Component{
         event.preventDefault()
         const myFile = event.target.files[0]
 
-        //this.state.reader.readAsArrayBuffer(myFile)
+
         this.state.reader.readAsDataURL(myFile)
 
 
@@ -132,8 +129,11 @@ class ImageUpload extends Component{
             document.getElementById("preview").style.display = ""
             document.getElementById("preview").src = this.state.reader.result
             document.getElementById("upload").style.display = ""
+            this.state.reader.readAsArrayBuffer(myFile)
 
         }, 10);
+
+
 
     };
 
@@ -171,12 +171,6 @@ class ImageUpload extends Component{
     triggerInput = async () => {
       document.getElementById("fileUpload").click()
     }
-
-    previewImage = async () => {
-      document.getElementById("fileUpload").click()
-    }
-
-
 
 
     render(props){
