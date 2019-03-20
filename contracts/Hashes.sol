@@ -23,6 +23,7 @@ contract Hashes{
       uint16 photosPosted;
       string name;
       string profileName;
+      string profileImage;
       hashes registry;
       bool participated;
       mapping(uint256 => hashes) allPosts;
@@ -88,13 +89,15 @@ contract Hashes{
 
   }
 
-  function registerAccount(string memory _name, string memory _profileName) public payable{
+  function registerAccount(string memory _name, string memory _profileName, string memory _ipfsHash) public payable{
      require (!address_properties[msg.sender].participated);
      require (bytes(_name).length < 25);
      require (bytes(_profileName).length < 20);
      require (!nameTaken[_name]);
+     //require (bytes(_ipfsHash).length == 46);
      address_properties[msg.sender].name = _name;
      address_properties[msg.sender].profileName = _profileName;
+     address_properties[msg.sender].profileImage = _ipfsHash;
      nameTaken[_name] = true;
      address_properties[msg.sender].participated = true;
      all_participants.push(msg.sender);
@@ -245,6 +248,9 @@ contract Hashes{
   }
   function getProfielName (address x) public view returns(string memory){
     return address_properties[x].profileName;
+  }
+  function getProfileImage (address x) public view returns(string memory){
+    return address_properties[x].profileImage;
   }
   function isNameTaken (string memory _name) public view returns(bool){
     return (nameTaken[_name]);

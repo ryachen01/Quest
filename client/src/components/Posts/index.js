@@ -62,6 +62,7 @@ class Post extends Component{
 
     const adjusted_index = index + 1
 
+
     const imageHash = await contract.methods.getList(adjusted_index - 1).call();
     const imageCaption = await contract.methods.getCaption(adjusted_index - 1).call();
     const imageAddress = await contract.methods.getAddress(adjusted_index - 1).call();
@@ -69,10 +70,13 @@ class Post extends Component{
     const numLikes = await contract.methods.totalVotesFor(imageAddress).call();
     const name = await contract.methods.getProfielName(imageAddress).call();
     const username = await contract.methods.getUserName(imageAddress).call();
+    const profileImage = await contract.methods.getProfileImage(imageAddress).call();
     document.getElementById("Name").innerHTML = name
     document.getElementById("Ipfs-Image").src = `https://ipfs.io/ipfs/${imageHash}`;
     document.getElementById("Caption").innerHTML = username.bold() + "  " + imageCaption;
     document.getElementById("Num-likes").innerHTML = numLikes + " Likes"
+    console.log(`https://ipfs.io/ipfs/${profileImage}`)
+    document.getElementById("profilePicture").src = `https://ipfs.io/ipfs/${profileImage}`;
     const hasLiked = await contract.methods.likedPhoto(imageAddress, 0).call({from: accounts[0]});
     if (hasLiked === false){
       this.setState({ isLiking: false})

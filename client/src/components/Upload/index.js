@@ -27,7 +27,7 @@ const styles = theme => ({
 
 class ImageUpload extends Component{
 
-  state = {web3: null, accounts: null, contract: null, reader: null};
+  state = {web3: null, accounts: null, contract: null, reader: null, username: null, name: null};
 
   componentDidMount = async () => {
 
@@ -71,7 +71,7 @@ class ImageUpload extends Component{
     if (!registered) {
 
 
-      this.getInput();
+      //this.getInput();
 
     }
   };
@@ -91,8 +91,18 @@ class ImageUpload extends Component{
   if (username != null && !nameTaken) {
       var name = prompt("Please enter a name: ", "Ryan");
       if (name != null){
+        this.setState({ username: username});
+        this.setState({ name: name});
 
-      await contract.methods.registerAccount(username, name).send({from: accounts[0], value: 1e17, gasPrice: 1e9});
+        var x = window.confirm("Please Upload A Profile Photo");
+
+        if (x){
+
+           await document.getElementById("profileUpload").click()
+
+        }
+
+
     }
   }
   else{
@@ -101,41 +111,79 @@ class ImageUpload extends Component{
 }
 }
 
-  click = async () => {
+createProfile = async () => {
 
+  const { accounts, contract, username, name, } = this.state;
+  var ipfsAPI = require('ipfs-api')
 
-    var x = window.confirm("Please Upload A Profile Photo");
+  // connect to ipfs daemon API server
+  var ipfs = ipfsAPI('ipfs.infura.io', '5001', {protocol: 'https'})
+  // Connect to IPFS
 
-    if (x){
-
-       await document.getElementById("fileUpload").click()
-    }
-
-
+  const buf = Buffer.from(this.state.reader.result) // Convert data into buffer
+  ipfs.files.add(buf, (err, result) => { // Upload buffer to IPFS
+  if(err) {
+    console.error(err)
+    return
   }
+  let url = `https://ipfs.io/ipfs/${result[0].hash}`
+
+  let hash = result[0].hash;
+
+  console.log(hash)
+
+  console.log(username)
+
+  console.log(name)
+
+  contract.methods.registerAccount(name, username, hash).send({from: accounts[0], value: 1e17, gasPrice: 1e9});
+
+})
+
+}
+
+captureProfileUpload = async event => {
+
+  event.stopPropagation()
+  event.preventDefault()
+  const myFile = event.target.files[0]
+
+  this.state.reader.readAsArrayBuffer(myFile)
+
+  setTimeout(() => {
+
+      this.createProfile();
+  },10);
+
+  this.state.reader.abort()
+
+}
 
 
-    captureFile = async event => {
-        event.stopPropagation()
-        event.preventDefault()
-        const myFile = event.target.files[0]
+
+captureFile = async event => {
+
+  this.state.reader.abort()
+
+  event.stopPropagation()
+  event.preventDefault()
+  const myFile = event.target.files[0]
 
 
-        this.state.reader.readAsDataURL(myFile)
+  this.state.reader.readAsDataURL(myFile)
 
 
-        setTimeout(() => {
+  setTimeout(() => {
 
-            document.getElementById("preview").style.display = ""
-            document.getElementById("preview").src = this.state.reader.result
-            document.getElementById("upload").style.display = ""
-            this.state.reader.readAsArrayBuffer(myFile)
+      document.getElementById("preview").style.display = ""
+      document.getElementById("preview").src = this.state.reader.result
+      document.getElementById("upload").style.display = ""
+      this.state.reader.readAsArrayBuffer(myFile)
 
-        }, 10);
+  }, 10);
 
 
-
-    };
+};
 
 
 
@@ -172,6 +220,17 @@ class ImageUpload extends Component{
       document.getElementById("fileUpload").click()
     }
 
+    click = async () => {
+      var x = window.confirm("Please Upload A Profile Photo");
+
+      if (x){
+
+         await document.getElementById("profileUpload").click()
+      }
+    }
+
+
+
 
     render(props){
 
@@ -191,19 +250,38 @@ class ImageUpload extends Component{
         onChange = {this.captureFile}
       />
 
-      <Button variant="contained" color="primary" className={classes.button} onClick = {this.triggerInput}>
+      <input
+        type = "file" id = "profileUpload" style={{display: "none"}}
+        onChange = {this.captureProfileUpload}
+      />
+
+      <Button variant="contained" color="primary" onClick = {this.triggerInput}>
         New Post
         <CloudUploadIcon className={classes.rightIcon} />
 
       </Button>
+
       <p> </p>
 
       <img alt="Unavailable" style={{display: "none"}} id = "preview" height = "200" width = "200"/>
 
       <p> </p>
+
       <div>
       <Button variant = "contained" id = "upload" style={{display: "none"}} onClick = {this.uploadFile} type="submit" className ="uploadButton"> Post Photo</Button>
       </div>
+
+      <h1> Create Account </h1>
+
+      <div>
+      <Button variant="contained" color="default" onClick = {this.getInput}>
+        Create Acount
+        <CloudUploadIcon className={classes.rightIcon} />
+
+      </Button>
+      </div>
+
+
 
 
     {/*<button onClick = {this.click} id = "test" className = "Upload" >Create Account</button>*/}
