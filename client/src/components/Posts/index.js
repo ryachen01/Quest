@@ -108,7 +108,7 @@ class Post extends Component{
     const imageAddress = await contract.methods.getAddress(adjusted_index - 1).call();
     this.setState({ address: imageAddress});
     const numLikes = await contract.methods.totalVotesFor(imageAddress).call();
-    const name = await contract.methods.getProfielName(imageAddress).call();
+    const name = await contract.methods.getProfileName(imageAddress).call();
     const username = await contract.methods.getUserName(imageAddress).call();
     const profileImage = await contract.methods.getProfileImage(imageAddress).call();
     document.getElementById("Name").innerHTML = name
