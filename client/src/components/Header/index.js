@@ -2,8 +2,10 @@ import React from "react";
 import HashesContract from "../../contracts/Hashes.json";
 import "./Header.css";
 import { withStyles } from '@material-ui/core/styles';
+import home_button from './HomeButton.png';
 import Button from '@material-ui/core/Button';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import { Link } from 'react-router-dom'
 
 
 const styles = theme => ({
@@ -120,6 +122,11 @@ createProfile = async () => {
 })
 
 }
+openProfile = async () => {
+
+  window.location.href = "/following"
+
+}
 
 captureProfileUpload = async event => {
 
@@ -169,7 +176,12 @@ captureProfileUpload = async event => {
               <CloudUploadIcon className={classes.rightIcon}/>
             </Button>
             </div>
-
+            <div className="Feed-button">
+            <Link onClick= {this.openProfile} to={{
+              pathname: '/following'
+            }}> <input  type="image" src={home_button} height = "60" width = "60" alt="Feed">
+              </input>  <h2> My Feed</h2> </Link>
+            </div>
            </nav>
 
        );

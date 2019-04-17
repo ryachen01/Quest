@@ -57,9 +57,8 @@ class FollowingPosts extends Component{
     firebase.auth().signInWithEmailAndPassword(process.env.REACT_APP_EMAIL, process.env.REACT_APP_PASSWORD)
     let ref = firebase.database().ref('followers');
     var following = []
-
-
     ref.on('value', function(snapshot){
+
         snapshot.forEach(function(childSnapshot) {
           const childData = childSnapshot.val();
           const data = (childData[Object.keys(childData)[0]])
@@ -73,7 +72,7 @@ class FollowingPosts extends Component{
     });
     this.setState({ postList: following});
     setTimeout(() => {
-
+      this.randomizeList();
       this.viewPosts();
   }, 1000);
 
@@ -83,13 +82,24 @@ class FollowingPosts extends Component{
   randomizeList = async () => {
 
     const {postList} = this.state;
-
+    if (typeof postList[0] == "string"){
+      return false;
+    }else{
+      for (var i = postList[0].length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = postList[0][i];
+        postList[0][i] = postList[0][j];
+        postList[0][j] = temp;
+    }
+    }
+    this.setState({ postList: postList});
+    console.log("y")
 
   }
 
   viewPosts = async () => {
 
-
+    console.log("x")
     const {contract, index, accounts, postList} = this.state;
     var address;
     if (typeof postList[0] == "string"){
