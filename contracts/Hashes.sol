@@ -219,7 +219,7 @@ contract Hashes{
     return all_participants.length;
   }
 
-  function likedPhoto(address x, uint index) public view returns (bool){
+  function likedPhoto(address x) public view returns (bool){
     return address_properties[msg.sender].votedFor[x][address_properties[x].photosPosted];
   }
 
@@ -246,7 +246,7 @@ contract Hashes{
   function getUserName (address x) public view returns(string memory){
     return address_properties[x].name;
   }
-  function getProfielName (address x) public view returns(string memory){
+  function getProfileName (address x) public view returns(string memory){
     return address_properties[x].profileName;
   }
   function getProfileImage (address x) public view returns(string memory){
@@ -254,6 +254,9 @@ contract Hashes{
   }
   function isNameTaken (string memory _name) public view returns(bool){
     return (nameTaken[_name]);
+  }
+  function alreadyPosted (address x) public view returns(bool){
+    return (address_properties[msg.sender].registry.addr == address(0));
   }
 
   function newRound() public{

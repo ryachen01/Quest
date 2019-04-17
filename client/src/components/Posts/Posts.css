@@ -1,12 +1,11 @@
-.Post {
-      margin-top: 50px;
-      border-radius: 3px;
-      border: 1px solid #e6e6e6;
-      background-color: #fff;
-      margin-left : 30%;
-      margin-right: 30%;
-
-    }
+.Main-Post {
+    margin-top: 3%;
+    border-radius: 3px;
+    border: 1px solid #e6e6e6;
+    background-color: #fff;
+    margin-left: 30%;
+    margin-right: 30%;
+}
 
 
 .Post-user {
@@ -44,6 +43,11 @@
     }
 .Like-button {
   margin-right:800px;
+}
+
+.Follow-button {
+  position:absolute;
+  left: 63%
 }
 
 

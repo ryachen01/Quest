@@ -21,6 +21,9 @@
 .App-link {
   color: #61dafb;
 }
+.App-Components{
+  margin-top: 300px
+}
 body {
   background-color: WhiteSmoke;
 }

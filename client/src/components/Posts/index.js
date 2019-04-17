@@ -3,7 +3,9 @@ import "./Posts.css";
 import like_button from './like.png';
 import red_like_button from './redLike.png';
 import save_button from './SaveButton.png';
+import firebase from '../Firebase/index.js'
 import HashesContract from "../../contracts/Hashes.json";
+import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom'
 
 
@@ -62,13 +64,14 @@ class Post extends Component{
 
     const adjusted_index = index + 1
 
+    console.log(adjusted_index)
 
     const imageHash = await contract.methods.getList(adjusted_index - 1).call();
     const imageCaption = await contract.methods.getCaption(adjusted_index - 1).call();
     const imageAddress = await contract.methods.getAddress(adjusted_index - 1).call();
     this.setState({ address: imageAddress});
     const numLikes = await contract.methods.totalVotesFor(imageAddress).call();
-    const name = await contract.methods.getProfielName(imageAddress).call();
+    const name = await contract.methods.getProfileName(imageAddress).call();
     const username = await contract.methods.getUserName(imageAddress).call();
     const profileImage = await contract.methods.getProfileImage(imageAddress).call();
     document.getElementById("Name").innerHTML = name
@@ -89,14 +92,9 @@ class Post extends Component{
     this.setState({ index: (index + 1)});
 
 
-
-
-
-
-
   };
 
-  previewPost = async () => {
+  previousPost = async () => {
 
 
     const {contract, index, accounts} = this.state;
@@ -112,10 +110,12 @@ class Post extends Component{
     const numLikes = await contract.methods.totalVotesFor(imageAddress).call();
     const name = await contract.methods.getProfielName(imageAddress).call();
     const username = await contract.methods.getUserName(imageAddress).call();
+    const profileImage = await contract.methods.getProfileImage(imageAddress).call();
     document.getElementById("Name").innerHTML = name
     document.getElementById("Ipfs-Image").src = `https://ipfs.io/ipfs/${imageHash}`;
     document.getElementById("Caption").innerHTML = username.bold() + "  " + imageCaption;
     document.getElementById("Num-likes").innerHTML = numLikes + " Likes"
+    document.getElementById("profilePicture").src = `https://ipfs.io/ipfs/${profileImage}`;
     const hasLiked = await contract.methods.likedPhoto(imageAddress, 0).call({from: accounts[0]});
     if (hasLiked === false){
       this.setState({ isLiking: false})
@@ -165,10 +165,75 @@ class Post extends Component{
 
   }
 
+  follow = async () => {
+
+    const {contract, index, accounts} = this.state;
+
+    const myAddress = accounts[0]
+    const followerAddress = await contract.methods.getAddress(index - 1).call();
+
+    firebase.auth().signInWithEmailAndPassword(process.env.REACT_APP_EMAIL, process.env.REACT_APP_PASSWORD)
+
+    let ref = firebase.database().ref('followers');
+    var following = []
+    var key = ""
+    var done = false;
+    ref.on('value', function(snapshot) {
+        snapshot.forEach(function(childSnapshot) {
+          const childData = childSnapshot.val();
+          const data = (childData[Object.keys(childData)[0]])
+          if (Object.keys(childData)[0] == myAddress){
+            if (typeof data == "string"){
+              if (data == followerAddress){
+                done = true
+                return false;
+              }else{
+              following.push(data)
+            }
+            }else{
+            for (var i = 0; i < data.length; i++){
+              if (data[i] == followerAddress){
+                done = true
+                return false;
+              }else{
+              following.push(data[i])
+            }
+            }
+          }
+
+            key = childSnapshot.key;
+          }
+
+        });
+
+        if (!done){
+
+        following.push(followerAddress)
+        if(key != ""){
+          done = true;
+          const follower = {
+          }
+          follower[myAddress] = following
+          ref.child(key).update(follower);
+          return true;
+        }else{
+          const follower = {
+          }
+          follower[myAddress] = followerAddress
+          done = true
+          ref.push(follower);
+        }
+
+      }
+
+    });
+
+  }
+
       render() {
         const {address} = this.state;
         return (
-        <article className="Post" ref="Post">
+        <article className="Main-Post" ref="Post">
             <header className = "Post-Header">
               <div className="Post-user">
                 <div className="Post-user-avatar">
@@ -180,6 +245,9 @@ class Post extends Component{
                 </div>
                 <div className="Post-user-nickname">
                   <span id = "Name" >Ryan</span>
+                </div>
+                <div className = "Follow-button">
+                  <Button onClick = {this.follow} variant="outlined">Follow</Button>
                 </div>
               </div>
             </header>
@@ -194,7 +262,7 @@ class Post extends Component{
                 <input onClick = {this.saveLikes} className="Save-button" type="image" src = {save_button} height = "40" width = "80" alt ="save" />
                 <h3 id = "Num-likes"> 0 Likes </h3>
                 <button onClick = {this.viewPosts} className = "Post-Next" >Next</button>
-                <button onClick = {this.previewPost} className = "Post-Previous" >Previous</button>
+                <button onClick = {this.previousPost} className = "Post-Previous" >Previous</button>
               </div>
               <p id = "Caption" >Ryan</p>
             </div>

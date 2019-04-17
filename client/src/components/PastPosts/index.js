@@ -54,22 +54,15 @@ class PastPosts extends Component{
 
 
     const {contract, index, accounts, address} = this.state;
-    const imageHash = await contract.methods.viewPhotos(address, 0).call();
-    const imageCaption = await contract.methods.getCaption(index).call();
-    const imageAddress = await contract.methods.getAddress(index).call();
-    const name = await contract.methods.getProfielName(imageAddress).call();
-    this.setState({ address: imageAddress});
-    const numLikes = await contract.methods.totalVotesFor(imageAddress).call();
+    const imageHash = await contract.methods.viewPhotos(address, index).call();
+    const imageCaption = await contract.methods.viewCaption(address, index).call();
+    const name = await contract.methods.getProfileName(address).call();
+    const numLikes = await contract.methods.totalVotesFor(address).call();
     document.getElementById("Ipfs-Image").src = `https://ipfs.io/ipfs/${imageHash}`;
-    document.getElementById("Caption").innerHTML = imageAddress.bold() + "  " + imageCaption;
+    document.getElementById("Caption").innerHTML = address.bold() + "  " + imageCaption;
     document.getElementById("Num-likes").innerHTML = numLikes + " Likes"
     document.getElementById("Name").innerHTML = name
-    const hasLiked = await contract.methods.likedPhoto(imageAddress, 0).call({from: accounts[0]});
-    if (hasLiked === false){
-      document.getElementById("likeButton").src = like_button;
-    }else{
-      document.getElementById("likeButton").src = red_like_button;
-    }
+    const hasLiked = await contract.methods.likedPhoto(address, index).call({from: accounts[0]});
     this.setState({ index: (index+1)});
 
 

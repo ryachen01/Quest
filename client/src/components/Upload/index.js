@@ -5,8 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 
-import ReactCrop from 'react-image-crop';
-import 'react-image-crop/dist/ReactCrop.css';
+
 
 const styles = theme => ({
   button: {
@@ -64,100 +63,17 @@ class ImageUpload extends Component{
 
     const { accounts, contract } = this.state;
 
-    const response = await contract.methods.returnTotalPhotos().call();
-
     const registered = await contract.methods.accountRegistered().call({from: accounts[0]});
+
 
     if (!registered) {
 
 
-      //this.getInput();
-
     }
   };
-  getInput = async () => {
 
 
-  const { accounts, contract } = this.state;
 
-  var createAccount = window.confirm ("You have not created an account yet. Would you like to do so? ")
-
-  if (createAccount){
-
-  var username = prompt("Please enter an username: ", "e.g. joesmith1234");
-
-
-  const nameTaken = await contract.methods.isNameTaken(username).call();
-  if (username != null && !nameTaken) {
-      var name = prompt("Please enter a name: ", "Ryan");
-      if (name != null){
-        this.setState({ username: username});
-        this.setState({ name: name});
-
-        var x = window.confirm("Please Upload A Profile Photo");
-
-        if (x){
-
-           await document.getElementById("profileUpload").click()
-
-        }
-
-
-    }
-  }
-  else{
-    this.getInput();
-  }
-}
-}
-
-createProfile = async () => {
-
-  const { accounts, contract, username, name, } = this.state;
-  var ipfsAPI = require('ipfs-api')
-
-  // connect to ipfs daemon API server
-  var ipfs = ipfsAPI('ipfs.infura.io', '5001', {protocol: 'https'})
-  // Connect to IPFS
-
-  const buf = Buffer.from(this.state.reader.result) // Convert data into buffer
-  ipfs.files.add(buf, (err, result) => { // Upload buffer to IPFS
-  if(err) {
-    console.error(err)
-    return
-  }
-  let url = `https://ipfs.io/ipfs/${result[0].hash}`
-
-  let hash = result[0].hash;
-
-  console.log(hash)
-
-  console.log(username)
-
-  console.log(name)
-
-  contract.methods.registerAccount(name, username, hash).send({from: accounts[0], value: 1e17, gasPrice: 1e9});
-
-})
-
-}
-
-captureProfileUpload = async event => {
-
-  event.stopPropagation()
-  event.preventDefault()
-  const myFile = event.target.files[0]
-
-  this.state.reader.readAsArrayBuffer(myFile)
-
-  setTimeout(() => {
-
-      this.createProfile();
-  },10);
-
-  this.state.reader.abort()
-
-}
 
 
 
@@ -211,6 +127,9 @@ captureFile = async event => {
 
         contract.methods.addHash(hash, "My Photo", accounts[0]).send({from: accounts[0], gasPrice: 1e9});
 
+        document.getElementById("preview").style.display = "none"
+        document.getElementById("upload").style.display = "none"
+
 
       })
 
@@ -220,14 +139,6 @@ captureFile = async event => {
       document.getElementById("fileUpload").click()
     }
 
-    click = async () => {
-      var x = window.confirm("Please Upload A Profile Photo");
-
-      if (x){
-
-         await document.getElementById("profileUpload").click()
-      }
-    }
 
 
 
@@ -240,19 +151,11 @@ captureFile = async event => {
 
         <div>
 
-
-
-
       <h1> Upload Photo </h1>
 
       <input
         type = "file" id = "fileUpload" style={{display: "none"}}
         onChange = {this.captureFile}
-      />
-
-      <input
-        type = "file" id = "profileUpload" style={{display: "none"}}
-        onChange = {this.captureProfileUpload}
       />
 
       <Button variant="contained" color="primary" onClick = {this.triggerInput}>
@@ -271,26 +174,7 @@ captureFile = async event => {
       <Button variant = "contained" id = "upload" style={{display: "none"}} onClick = {this.uploadFile} type="submit" className ="uploadButton"> Post Photo</Button>
       </div>
 
-      <h1> Create Account </h1>
 
-      <div>
-      <Button variant="contained" color="default" onClick = {this.getInput}>
-        Create Acount
-        <CloudUploadIcon className={classes.rightIcon} />
-
-      </Button>
-      </div>
-
-
-
-
-    {/*<button onClick = {this.click} id = "test" className = "Upload" >Create Account</button>*/}
-
-
-    {/*<button onClick = {this.uploadFile} className = "Upload" >Upload Photo</button>*/}
-
-
-      <p> </p>
         </div>
 
         );

@@ -10561,10 +10561,16 @@
       "links": {},
       "address": "0xcC5C9fFc8EdF0E3b21ee264fe971BB9987E88F63",
       "transactionHash": "0xb19d8b0566c62c2af8d46e2da4949987ff3ead9bc3c377379d29c82141f76fd8"
+    },
+    "5777": {
+      "events": {},
+      "links": {},
+      "address": "0xcC5C9fFc8EdF0E3b21ee264fe971BB9987E88F63",
+      "transactionHash": "0xc53f7ef1ea53c7d73c59363b24b4af8917e7db06d6e78ea26b520ef5d8979331"
     }
   },
-  "schemaVersion": "3.0.1",
-  "updatedAt": "2019-03-20T16:07:18.905Z",
+  "schemaVersion": "3.0.6",
+  "updatedAt": "2019-04-16T23:09:48.485Z",
   "devdoc": {
     "methods": {}
   },

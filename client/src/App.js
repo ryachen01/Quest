@@ -7,6 +7,7 @@ import Upload from "./components/Upload"
 import Posts from "./components/Posts"
 import Header from "./components/Header"
 import Purchase from "./components/Purchase"
+import Follow from "./components/Follow"
 
 
 class App extends Component {
@@ -51,13 +52,12 @@ class App extends Component {
     }
     return (
       <div className="App">
-      <Header />
-      <Upload web3 = {this.state.web3} accounts = {this.state.accounts}/>
-      <Posts web3 = {this.state.web3} accounts = {this.state.accounts}/>
-      <Purchase web3 = {this.state.web3} accounts = {this.state.accounts}/>
-
-
-
+        <Header web3 = {this.state.web3} accounts = {this.state.accounts}/>
+      <div className ="App-Components">
+        <Upload web3 = {this.state.web3} accounts = {this.state.accounts}/>
+        <Posts web3 = {this.state.web3} accounts = {this.state.accounts}/>
+        <Purchase web3 = {this.state.web3} accounts = {this.state.accounts}/>
+      </div>
       </div>
     );
   }
