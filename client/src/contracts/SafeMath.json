@@ -7913,10 +7913,16 @@
       "links": {},
       "address": "0xe1F6f4E7B0FCB7DD0DFAEEbd88181a365E6EAEB5",
       "transactionHash": "0x9d8cece298aed3392d77ee6079861eee71601cd2679ae5bd200385a7d3ba05bd"
+    },
+    "5777": {
+      "events": {},
+      "links": {},
+      "address": "0xe1F6f4E7B0FCB7DD0DFAEEbd88181a365E6EAEB5",
+      "transactionHash": "0x1dc35cda1903a7fd44b44b9bbb2950de852fd8d377240498021577ddd1ef7557"
     }
   },
-  "schemaVersion": "3.0.1",
-  "updatedAt": "2019-03-20T16:07:18.892Z",
+  "schemaVersion": "3.0.6",
+  "updatedAt": "2019-04-16T23:09:48.472Z",
   "devdoc": {
     "methods": {}
   },

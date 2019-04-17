@@ -5,6 +5,7 @@ import {BrowserRouter, Route, Switch} from 'react-router-dom'
 import './index.css';
 import App from './App';
 import Profile from './Profile';
+import Following from './Following';
 
 import * as serviceWorker from './serviceWorker';
 
@@ -14,6 +15,7 @@ const routing = (
     <Switch>
       <Route exact path="/" component= {App}/>
       <Route path="/profile" component={Profile} />
+      <Route path="/following" component={Following} />
     </Switch>
     </div>
   </BrowserRouter>

@@ -13350,10 +13350,16 @@
       "links": {},
       "address": "0xb1e6F01cA8D1b5D58a90213fA57EeB5A7495E10A",
       "transactionHash": "0x2fd2b6d35757e069c8f1f3149cbbfb14db7c9dd261d5e675cc5846b8e7021b21"
+    },
+    "5777": {
+      "events": {},
+      "links": {},
+      "address": "0xb1e6F01cA8D1b5D58a90213fA57EeB5A7495E10A",
+      "transactionHash": "0xe17ab12f092db2eaa4e265504783e4253accfb9b948304e6d6609a47ac1546f8"
     }
   },
-  "schemaVersion": "3.0.1",
-  "updatedAt": "2019-03-20T16:07:18.899Z",
+  "schemaVersion": "3.0.6",
+  "updatedAt": "2019-04-16T23:09:48.477Z",
   "devdoc": {
     "methods": {}
   },

@@ -2102,10 +2102,16 @@
       "links": {},
       "address": "0x3ACCeC3FD5BA8e76aB79d3554E5D411e38bB0f7a",
       "transactionHash": "0x8a3d3b39f459758b54027a53f53be0b7b91af858b4b27f723f99481761d477c6"
+    },
+    "5777": {
+      "events": {},
+      "links": {},
+      "address": "0x3ACCeC3FD5BA8e76aB79d3554E5D411e38bB0f7a",
+      "transactionHash": "0x28b45e24ade9824ae4fd0222f848ac20e92e0fddf5ef2be9139728251c499cc9"
     }
   },
-  "schemaVersion": "3.0.1",
-  "updatedAt": "2019-03-20T16:07:18.889Z",
+  "schemaVersion": "3.0.6",
+  "updatedAt": "2019-04-16T23:09:48.470Z",
   "devdoc": {
     "methods": {}
   },
