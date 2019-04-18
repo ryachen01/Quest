@@ -75,7 +75,7 @@ class FollowingPosts extends Component{
     this.setState({ postList: following});
     setTimeout(() => {
 
-      this.randomizeList();
+      this.viewPosts();
   }, 1000);
 
 
@@ -103,8 +103,7 @@ class FollowingPosts extends Component{
   viewPosts = async () => {
 
 
-    const {contract, index, accounts, postList} = this.state;
-
+    const {contract, index, accounts, postList, listSet} = this.state;
     var address;
     if (typeof postList[0] == "string"){
       address = postList[index];
@@ -112,13 +111,20 @@ class FollowingPosts extends Component{
       address = postList[0][index];
     }
 
-
     if (address != null){
-          document.getElementById("Error").innerHTML = '';
+
+      if (!listSet){
+        const postList = this.randomizeList();
+        this.setState({ listSet: true});
+        return false;
+      }
 
     }else{
         return false;
     }
+
+
+    document.getElementById("Error").innerHTML = '';
 
     const imageHash = await contract.methods.viewPhotos(address, 0).call();
     const imageCaption = await contract.methods.viewCaption(address, 0).call();
@@ -142,6 +148,53 @@ class FollowingPosts extends Component{
 
 
     this.setState({ index: (index+1)});
+
+
+
+  };
+
+  previousPost = async () => {
+
+
+    const {contract, index, accounts, postList, listSet} = this.state;
+    var address;
+    if (typeof postList[0] == "string"){
+      address = postList[index - 2];
+    }else{
+      address = postList[0][index - 2];
+    }
+
+
+    if (address == null){
+
+        return false;
+    }
+
+
+    document.getElementById("Error").innerHTML = '';
+
+    const imageHash = await contract.methods.viewPhotos(address, 0).call();
+    const imageCaption = await contract.methods.viewCaption(address, 0).call();
+    const name = await contract.methods.getProfileName(address).call();
+    const numLikes = await contract.methods.totalVotesFor(address).call();
+    const username = await contract.methods.getUserName(address).call();
+    const profileImage = await contract.methods.getProfileImage(address).call();
+    document.getElementById("Ipfs-Image").src = `https://ipfs.io/ipfs/${imageHash}`;
+    document.getElementById("Caption").innerHTML = username.bold() + "  " + imageCaption;
+    document.getElementById("Num-likes").innerHTML = numLikes + " Likes"
+    document.getElementById("Name").innerHTML = name
+    document.getElementById("profilePicture").src = `https://ipfs.io/ipfs/${profileImage}`;
+    const hasLiked = await contract.methods.likedPhoto(address, 0).call({from: accounts[0]});
+    if (hasLiked === false){
+      this.setState({ isLiking: false})
+      document.getElementById("likeButton").src = like_button;
+    }else{
+      this.setState({ isLiking: true})
+      document.getElementById("likeButton").src = red_like_button;
+    }
+
+
+    this.setState({ index: (index-1)});
 
 
 

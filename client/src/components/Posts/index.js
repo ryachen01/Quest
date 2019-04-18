@@ -62,13 +62,9 @@ class Post extends Component{
 
     const {contract, index, accounts} = this.state;
 
-    const adjusted_index = index + 1
-
-    console.log(adjusted_index)
-
-    const imageHash = await contract.methods.getList(adjusted_index - 1).call();
-    const imageCaption = await contract.methods.getCaption(adjusted_index - 1).call();
-    const imageAddress = await contract.methods.getAddress(adjusted_index - 1).call();
+    const imageHash = await contract.methods.getList(index).call();
+    const imageCaption = await contract.methods.getCaption(index).call();
+    const imageAddress = await contract.methods.getAddress(index).call();
     this.setState({ address: imageAddress});
     const numLikes = await contract.methods.totalVotesFor(imageAddress).call();
     const name = await contract.methods.getProfileName(imageAddress).call();
@@ -99,13 +95,9 @@ class Post extends Component{
 
     const {contract, index, accounts} = this.state;
 
-    const adjusted_index = index - 1
-
-    console.log(adjusted_index)
-
-    const imageHash = await contract.methods.getList(adjusted_index - 1).call();
-    const imageCaption = await contract.methods.getCaption(adjusted_index - 1).call();
-    const imageAddress = await contract.methods.getAddress(adjusted_index - 1).call();
+    const imageHash = await contract.methods.getList(index - 2).call();
+    const imageCaption = await contract.methods.getCaption(index - 2).call();
+    const imageAddress = await contract.methods.getAddress(index - 2).call();
     this.setState({ address: imageAddress});
     const numLikes = await contract.methods.totalVotesFor(imageAddress).call();
     const name = await contract.methods.getProfileName(imageAddress).call();
