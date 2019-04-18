@@ -180,7 +180,7 @@ captureProfileUpload = async event => {
             <Link onClick= {this.openProfile} to={{
               pathname: '/following'
             }}> <input  type="image" src={home_button} height = "60" width = "60" alt="Feed">
-              </input>  <h2> My Feed</h2> </Link>
+              </input>  <h3> My Feed</h3> </Link>
             </div>
            </nav>
 

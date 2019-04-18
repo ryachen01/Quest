@@ -9,7 +9,7 @@ import firebase from '../Firebase/index.js'
 class FollowingPosts extends Component{
 
 
-  state = {web3: null, accounts: null, contract: null, index: null, likedPhotos: null, address: null, postList:null};
+  state = {web3: null, accounts: null, contract: null, index: null, likedPhotos: null, address: null, postList:null, listSet:null};
 
   componentDidMount = async () => {
 
@@ -25,7 +25,9 @@ class FollowingPosts extends Component{
 
       const likedPhotos = [];
 
-      const postList = [];
+      const postList = []
+
+      const listSet = false;
 
       // Get the contract instance.
       const networkId = await web3.eth.net.getId();
@@ -37,7 +39,7 @@ class FollowingPosts extends Component{
 
       // Set web3, accounts, and contract to the state, and then proceed with an
       // example of interacting with the contract's methods.
-      this.setState({web3, accounts, contract: instance, index, likedPhotos, postList, address}, this.runOnStart);
+      this.setState({web3, accounts, contract: instance, index, likedPhotos, postList, listSet}, this.runOnStart);
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
@@ -72,9 +74,10 @@ class FollowingPosts extends Component{
     });
     this.setState({ postList: following});
     setTimeout(() => {
+
       this.randomizeList();
-      this.viewPosts();
   }, 1000);
+
 
   };
 
@@ -93,14 +96,15 @@ class FollowingPosts extends Component{
     }
     }
     this.setState({ postList: postList});
-    console.log("y")
+    return postList
 
   }
 
   viewPosts = async () => {
 
-    console.log("x")
+
     const {contract, index, accounts, postList} = this.state;
+
     var address;
     if (typeof postList[0] == "string"){
       address = postList[index];
@@ -110,11 +114,12 @@ class FollowingPosts extends Component{
 
 
     if (address != null){
+          document.getElementById("Error").innerHTML = '';
 
-        document.getElementById("Error").innerHTML = '';
     }else{
         return false;
     }
+
     const imageHash = await contract.methods.viewPhotos(address, 0).call();
     const imageCaption = await contract.methods.viewCaption(address, 0).call();
     const name = await contract.methods.getProfileName(address).call();
@@ -187,7 +192,7 @@ class FollowingPosts extends Component{
               <div className="Post-user">
                 <img id = "profilePicture" src="https://en.bitcoin.it/w/images/en/2/29/BC_Logo_.png" height = "40" width = "40" alt="Logo"/>
                 <div className="Post-user-nickname">
-                  <span id = "Name">Ryan</span>
+                  <span id = "Name"></span>
                 </div>
               </div>
             </header>
@@ -204,9 +209,9 @@ class FollowingPosts extends Component{
               <button onClick = {this.viewPosts} className = "Post-Next" >Next</button>
               <button onClick = {this.previousPost} className = "Post-Previous" >Previous</button>
             </div>
-              <p id = "Caption" >Ryan</p>
+              <p id = "Caption" ></p>
             </div>
-            <p id = "Error"> Can't Load Photos. Try Following More Accounts or connecting to a stronger WiFi Network.</p>
+            <p id = "Error"> Press next to view Photos. If no Photos are shown try following more accounts or connecting to a stronger WiFi Network.</p>
           </article>
 
 
