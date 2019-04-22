@@ -10,6 +10,7 @@ contract Hashes{
   uint16 totalPhotos;
   address winnerAddress;
   string winnerHash;
+  string winnerCaption;
 
   struct hashes{
          string hash;
@@ -19,6 +20,7 @@ contract Hashes{
 
   struct properties{
       uint16 votesReceived;
+      uint16
       uint16 actionsDone;
       uint16 photosPosted;
       string name;
@@ -164,6 +166,7 @@ contract Hashes{
     }
     winnerHash = getList(winnerIndex);
     winnerAddress = getAddress(winnerIndex);
+    winnerCaption = getCaption(winnerIndex);
 
   }
 
@@ -264,6 +267,7 @@ contract Hashes{
     token.redeem();
     hashes memory myHash;
     for (uint i = 0; i < participants.length; i++){
+      address_properties[participants[i]].registry = myHash;
       address_properties[participants[i]].registry = myHash;
     }
     participants.length = 0;

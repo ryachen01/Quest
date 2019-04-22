@@ -48,7 +48,7 @@ class Header extends React.Component{
 
       // Set web3, accounts, and contract to the state, and then proceed with an
       // example of interacting with the contract's methods.
-      this.setState({web3, accounts, contract: instance, reader});
+      this.setState({web3, accounts, contract: instance, reader}, this.runOnStart);
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
@@ -57,6 +57,28 @@ class Header extends React.Component{
       console.error(error);
     }
   };
+
+  runOnStart = async () => {
+    const {contract, accounts} = this.state;
+
+    const registered = await contract.methods.accountRegistered().call({from: accounts[0]});
+
+    if (registered){
+
+        document.getElementById("createButton").style.display = "none";
+        const profileImage = await contract.methods.getProfileImage(accounts[0]).call();
+        document.getElementById("profile").src = `https://ipfs.io/ipfs/${profileImage}`;
+
+    }else{
+      document.getElementById("myProfile").style.display = "none";
+    }
+
+    /*const winnerHash = await contract.methods.returnWinnerHash().call();*/
+
+
+  };
+
+
   getInput = async () => {
 
 
@@ -79,7 +101,6 @@ class Header extends React.Component{
         var x = window.confirm("Please Upload A Profile Photo");
 
         if (x){
-          console.log('clicked')
         document.getElementById("profileUpload").click()
 
         }
@@ -109,13 +130,19 @@ createProfile = async () => {
   }
 
   let hash = result[0].hash;
-  
+
   contract.methods.registerAccount(username, name, hash).send({from: accounts[0], value: 1e17, gasPrice: 1e9});
 
 })
 
 }
 openProfile = async () => {
+
+  window.location.href = "/profile"
+
+}
+
+openFeed = async () => {
 
   window.location.href = "/following"
 
@@ -143,7 +170,7 @@ captureProfileUpload = async event => {
 
     render(){
 
-        const { classes} = this.props;
+        const { classes, accounts} = this.props;
         return (
 
            <nav className="Nav">
@@ -164,13 +191,18 @@ captureProfileUpload = async event => {
               onChange = {this.captureProfileUpload}
             />
             <div className="Account-button">
-            <Button variant="contained" color="default" onClick = {this.getInput}>
+            <Button id = "createButton" variant="contained" color="default" onClick = {this.getInput}>
               Create Account
               <CloudUploadIcon className={classes.rightIcon}/>
             </Button>
+            <Link id = "myProfile" onClick= {this.openProfile} to={{
+              state: accounts[0],
+              pathname: '/profile'
+            }}> <input id = "profile" type="image" src={home_button} height = "60" width = "60" alt="Feed">
+              </input>  <h3> My Profile</h3> </Link>
             </div>
             <div className="Feed-button">
-            <Link onClick= {this.openProfile} to={{
+            <Link onClick= {this.openFeed} to={{
               pathname: '/following'
             }}> <input  type="image" src={home_button} height = "60" width = "60" alt="Feed">
               </input>  <h3> My Feed</h3> </Link>
