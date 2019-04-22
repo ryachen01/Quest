@@ -7,8 +7,6 @@ import Upload from "./components/Upload"
 import Posts from "./components/Posts"
 import Header from "./components/Header"
 import Purchase from "./components/Purchase"
-import Follow from "./components/Follow"
-
 
 class App extends Component {
   state = { storageValue: 0, web3: null, accounts: null, contract: null, reader: null};

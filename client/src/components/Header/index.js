@@ -60,7 +60,7 @@ class Header extends React.Component{
   getInput = async () => {
 
 
-  const { accounts, contract } = this.state;
+  const {contract } = this.state;
 
   var createAccount = window.confirm ("You have not created an account yet. Would you like to do so? ")
 
@@ -107,16 +107,9 @@ createProfile = async () => {
     console.error(err)
     return
   }
-  let url = `https://ipfs.io/ipfs/${result[0].hash}`
 
   let hash = result[0].hash;
-
-  console.log(hash)
-
-  console.log(username)
-
-  console.log(name)
-
+  
   contract.methods.registerAccount(username, name, hash).send({from: accounts[0], value: 1e17, gasPrice: 1e9});
 
 })

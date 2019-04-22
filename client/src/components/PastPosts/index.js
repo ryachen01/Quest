@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import "./PastPosts.css";
-import like_button from './like.png';
-import red_like_button from './redLike.png';
 import HashesContract from "../../contracts/Hashes.json";
 import Button from '@material-ui/core/Button';
 import firebase from '../Firebase/index.js'
@@ -57,7 +55,7 @@ class PastPosts extends Component{
   viewPosts = async () => {
 
 
-    const {contract, index, accounts, address} = this.state;
+    const {contract, index, address} = this.state;
 
     const photosPosted = await contract.methods.totalPhotosPosted(address).call();
 
@@ -81,7 +79,7 @@ class PastPosts extends Component{
 
   follow = async () => {
 
-    const {contract, index, accounts, address} = this.state;
+    const {accounts, address} = this.state;
 
     const myAddress = accounts[0]
 
@@ -96,7 +94,7 @@ class PastPosts extends Component{
 
           const childData = childSnapshot.val();
           const data = (childData[Object.keys(childData)[0]])
-          if (Object.keys(childData)[0] == myAddress){
+          if (Object.keys(childData)[0] === myAddress){
             if (typeof data == "string"){
               if (data === address){
                 done = true
@@ -106,7 +104,7 @@ class PastPosts extends Component{
               }
             }else{
             for (var i = 0; i < data.length; i++){
-              if (data[i] == address){
+              if (data[i] === address){
                 done = true
                 return false;
               }else{
@@ -130,7 +128,7 @@ class PastPosts extends Component{
 
         following.push(address)
         console.log(following)
-        if(key != ""){
+        if(key !== ""){
           done = true;
           const follower = {
           }
@@ -154,7 +152,7 @@ class PastPosts extends Component{
 
   unfollow = async () => {
 
-    const {contract, accounts, index, address} = this.state;
+    const {accounts, address} = this.state;
 
     const myAddress = accounts[0]
 
@@ -171,16 +169,16 @@ class PastPosts extends Component{
         snapshot.forEach(function(childSnapshot) {
           const childData = childSnapshot.val();
           const data = (childData[Object.keys(childData)[0]])
-          if (Object.keys(childData)[0] == myAddress){
+          if (Object.keys(childData)[0] === myAddress){
               if (typeof data == "string"){
-                if (data == address){
+                if (data === address){
                   isFollowing = true;
                 }else{
                 following.push(data)
                 }
               }else{
               for (var i = 0; i < data.length; i++){
-                if (data[i] == address){
+                if (data[i] === address){
                   isFollowing = true;
                 }else{
                 following.push(data[i])
@@ -213,10 +211,9 @@ class PastPosts extends Component{
   }
 
   isFollowing = async (followerAddress) => {
-    const {accounts, isFollowing} = this.state;
+    const {accounts} = this.state;
     let ref = firebase.database().ref('followers');
-    var following = []
-
+    
     ref.on('value', function(snapshot){
 
         snapshot.forEach(function(childSnapshot) {
@@ -261,18 +258,6 @@ class PastPosts extends Component{
 
   }
 
-
-  likePost = async () => {
-
-    const {contract, index, accounts, likedPhotos} = this.state;
-    const imageAddress = await contract.methods.getAddress(index - 1).call();
-    const hasLiked = await contract.methods.likedPhoto(imageAddress, 0).call({from: accounts[0]});
-    if (hasLiked === false){
-        document.getElementById("likeButton").src = red_like_button;
-        likedPhotos.push(index - 1);
-   }
-
-  };
 
   saveLikes = async () => {
 
