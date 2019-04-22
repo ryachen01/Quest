@@ -170,7 +170,6 @@ class Post extends Component{
   isFollowing = async (followerAddress) => {
     const {accounts} = this.state;
     let ref = firebase.database().ref('followers');
-    var following = []
     var alreadyFollowing = false;
     ref.on('value', function(snapshot){
 
@@ -223,9 +222,9 @@ class Post extends Component{
         snapshot.forEach(function(childSnapshot) {
           const childData = childSnapshot.val();
           const data = (childData[Object.keys(childData)[0]])
-          if (Object.keys(childData)[0] == myAddress){
+          if (Object.keys(childData)[0] === myAddress){
             if (typeof data == "string"){
-              if (data == followerAddress){
+              if (data === followerAddress){
                 done = true
                 return false;
               }else{
@@ -233,7 +232,7 @@ class Post extends Component{
               }
             }else{
             for (var i = 0; i < data.length; i++){
-              if (data[i] == followerAddress){
+              if (data[i] === followerAddress){
                 done = true
                 return false;
               }else{
@@ -254,7 +253,7 @@ class Post extends Component{
         }
 
         following.push(followerAddress)
-        if(key != ""){
+        if(key !== ""){
           done = true;
           const follower = {
           }

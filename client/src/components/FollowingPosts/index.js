@@ -5,6 +5,7 @@ import red_like_button from './redLike.png';
 import save_button from './SaveButton.png';
 import HashesContract from "../../contracts/Hashes.json";
 import firebase from '../Firebase/index.js'
+import { Link } from 'react-router-dom'
 
 class FollowingPosts extends Component{
 
@@ -18,8 +19,6 @@ class FollowingPosts extends Component{
       const web3 = this.props.web3;
 
       const accounts = this.props.accounts;
-
-      const address = this.props.address;
 
       const index = 0;
 
@@ -51,7 +50,7 @@ class FollowingPosts extends Component{
 
   runOnStart = async () => {
 
-    const {accounts, postList} = this.state;
+    const {accounts} = this.state;
 
     const myAddress = accounts[0]
     //const followerAddress = await contract.methods.getAddress(index - 1).call();
@@ -64,7 +63,7 @@ class FollowingPosts extends Component{
         snapshot.forEach(function(childSnapshot) {
           const childData = childSnapshot.val();
           const data = (childData[Object.keys(childData)[0]])
-          if (Object.keys(childData)[0] == myAddress){
+          if (Object.keys(childData)[0] === myAddress){
 
               following.push(data);
 
@@ -108,13 +107,16 @@ class FollowingPosts extends Component{
     if (typeof postList[0] == "string"){
       address = postList[index];
     }else{
+      try {
       address = postList[0][index];
+    }catch {
+      console.log("not following any accounts")
+    }
     }
 
     if (address != null){
 
       if (!listSet){
-        const postList = this.randomizeList();
         this.setState({ listSet: true});
         this.viewPosts();
       }
@@ -125,6 +127,8 @@ class FollowingPosts extends Component{
 
 
     document.getElementById("Error").innerHTML = '';
+
+    this.setState({ address: address});
 
     const imageHash = await contract.methods.viewPhotos(address, 0).call();
     const imageCaption = await contract.methods.viewCaption(address, 0).call();
@@ -156,12 +160,16 @@ class FollowingPosts extends Component{
   previousPost = async () => {
 
 
-    const {contract, index, accounts, postList, listSet} = this.state;
+    const {contract, index, accounts, postList} = this.state;
     var address;
     if (typeof postList[0] == "string"){
       address = postList[index - 2];
     }else{
-      address = postList[0][index - 2];
+      try {
+      address = postList[0][index];
+    }catch {
+      console.log("not following any accounts")
+    }
     }
 
 
@@ -172,6 +180,8 @@ class FollowingPosts extends Component{
 
 
     document.getElementById("Error").innerHTML = '';
+
+    this.setState({ address: address});
 
     const imageHash = await contract.methods.viewPhotos(address, 0).call();
     const imageCaption = await contract.methods.viewCaption(address, 0).call();
@@ -234,19 +244,26 @@ class FollowingPosts extends Component{
 
   openProfile = async () => {
 
-    window.location.href = "/following"
+    window.location.href = "/profile"
 
   }
 
       render() {
+        const {address} = this.state;
         return (
         <article className="Post" ref="Post">
             <header className = "Post-Header">
               <div className="Post-user">
-                <img id = "profilePicture" src="https://en.bitcoin.it/w/images/en/2/29/BC_Logo_.png" height = "40" width = "40" alt="Logo"/>
-                <div className="Post-user-nickname">
-                  <span id = "Name"></span>
-                </div>
+              <div className="Post-user-avatar">
+                <Link onClick= {this.openProfile} to={{
+                  pathname: '/profile',
+                  state: address
+                    }}> <input id = "profilePicture" type="image" src="https://en.bitcoin.it/w/images/en/2/29/BC_Logo_.png" height = "40" width = "40" alt="Logo">
+                  </input> </Link>
+              </div>
+              <div className="Post-user-nickname">
+                <span id = "Name" ></span>
+              </div>
               </div>
             </header>
             <div className="Post-image">
