@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom'
 class Post extends Component{
 
 
-  state = {web3: null, accounts: null, contract: null, index: null, likedPhotos: null, isLiking: false, address: null};
+  state = {web3: null, accounts: null, contract: null, index: null, likedPhotos: null, isLiking: false, listOrder: null, address: null};
 
   componentDidMount = async () => {
 
@@ -57,14 +57,23 @@ class Post extends Component{
 
   };
 
+  randomizeOrder = async () => {
+    const {contract } = this.state;
+    const numPhotos = await contract.methods.returnTotalPhotos().call();
+    var order = []
+    for (var i = 0; i < numPhotos - 1; i++){
+      order.push(i);
+    }
+  }
+
+
   viewPosts = async () => {
 
-
     const {contract, index, accounts} = this.state;
-
     const imageHash = await contract.methods.getList(index).call();
     const imageCaption = await contract.methods.getCaption(index).call();
     const imageAddress = await contract.methods.getAddress(index).call();
+    this.isFollowing(imageAddress);
     this.setState({ address: imageAddress});
     const numLikes = await contract.methods.totalVotesFor(imageAddress).call();
     const name = await contract.methods.getProfileName(imageAddress).call();
@@ -98,6 +107,7 @@ class Post extends Component{
     const imageHash = await contract.methods.getList(index - 2).call();
     const imageCaption = await contract.methods.getCaption(index - 2).call();
     const imageAddress = await contract.methods.getAddress(index - 2).call();
+    this.isFollowing(imageAddress);
     this.setState({ address: imageAddress});
     const numLikes = await contract.methods.totalVotesFor(imageAddress).call();
     const name = await contract.methods.getProfileName(imageAddress).call();
@@ -157,6 +167,45 @@ class Post extends Component{
 
   }
 
+  isFollowing = async (followerAddress) => {
+    const {accounts} = this.state;
+    let ref = firebase.database().ref('followers');
+    var following = []
+    var alreadyFollowing = false;
+    ref.on('value', function(snapshot){
+
+        snapshot.forEach(function(childSnapshot) {
+          const childData = childSnapshot.val();
+          const data = (childData[Object.keys(childData)[0]])
+          if (Object.keys(childData)[0] === accounts[0]){
+
+            if (typeof data == "string"){
+              if (data === followerAddress){
+                document.getElementById("followButton").innerHTML = "following"
+                alreadyFollowing = true;
+                return true;
+              }
+            }else{
+            for (var i = 0; i < data.length; i++){
+              if (data[i] === followerAddress){
+                document.getElementById("followButton").innerHTML = "following"
+                alreadyFollowing = true;
+                return true;
+              }
+            }
+          }
+
+
+          };
+        });
+        if (!alreadyFollowing){
+          document.getElementById("followButton").innerHTML = "follow"
+      }
+
+    });
+  }
+
+
   follow = async () => {
 
     const {contract, index, accounts} = this.state;
@@ -181,7 +230,7 @@ class Post extends Component{
                 return false;
               }else{
               following.push(data)
-            }
+              }
             }else{
             for (var i = 0; i < data.length; i++){
               if (data[i] == followerAddress){
@@ -199,6 +248,10 @@ class Post extends Component{
         });
 
         if (!done){
+
+        if (followerAddress in following){
+          return false;
+        }
 
         following.push(followerAddress)
         if(key != ""){
@@ -236,10 +289,10 @@ class Post extends Component{
                     </input> </Link>
                 </div>
                 <div className="Post-user-nickname">
-                  <span id = "Name" >Ryan</span>
+                  <span id = "Name" ></span>
                 </div>
                 <div className = "Follow-button">
-                  <Button onClick = {this.follow} variant="outlined">Follow</Button>
+                  <Button id = "followButton" onClick = {this.follow} variant="outlined">Follow</Button>
                 </div>
               </div>
             </header>
@@ -256,7 +309,7 @@ class Post extends Component{
                 <button onClick = {this.viewPosts} className = "Post-Next" >Next</button>
                 <button onClick = {this.previousPost} className = "Post-Previous" >Previous</button>
               </div>
-              <p id = "Caption" >Ryan</p>
+              <p id = "Caption" ></p>
             </div>
             <div className = "Post-like">
 

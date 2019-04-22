@@ -116,7 +116,7 @@ class FollowingPosts extends Component{
       if (!listSet){
         const postList = this.randomizeList();
         this.setState({ listSet: true});
-        return false;
+        this.viewPosts();
       }
 
     }else{
