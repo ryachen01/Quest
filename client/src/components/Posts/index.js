@@ -47,13 +47,22 @@ class Post extends Component{
   };
 
   runOnStart = async () => {
-    const {contract } = this.state;
+    const {contract} = this.state;
 
     /*const winnerHash = await contract.methods.returnWinnerHash().call();*/
     const winnerAddress = await contract.methods.returnWinnerAddress().call();
+    const winnerHash = await contract.methods.returnWinnerHash().call();
+    const numLikes = await contract.methods.totalVotesFor(winnerAddress).call();
+    const name = await contract.methods.getProfileName(winnerAddress).call();
+    const username = await contract.methods.getUserName(winnerAddress).call();
+    const profileImage = await contract.methods.getProfileImage(winnerAddress).call();
+    this.setState({ address: winnerAddress});
 
-    document.getElementById("Ipfs-Image").src = `https://www.gettyimages.com/gi-resources/images/CreativeLandingPage/HP_Sept_24_2018/CR3_GettyImages-159018836.jpg`;
-    document.getElementById("Caption").innerHTML = winnerAddress.bold() + " Winning Post";
+    document.getElementById("Ipfs-Image").src = `https://ipfs.io/ipfs/${winnerHash}`;
+    document.getElementById("Caption").innerHTML = username.bold() + " Winning Post";
+    document.getElementById("Name").innerHTML = name;
+    document.getElementById("Num-likes").innerHTML = numLikes + " Likes"
+    document.getElementById("profilePicture").src = `https://ipfs.io/ipfs/${profileImage}`;
 
   };
 
@@ -95,6 +104,8 @@ class Post extends Component{
     }
 
     this.setState({ index: (index + 1)});
+
+    await contract.methods.newRound().send({from: accounts[0], gasPrice: 1e9});
 
 
   };
@@ -139,6 +150,7 @@ class Post extends Component{
     const {contract, index, accounts, likedPhotos, isLiking} = this.state;
     const imageAddress = await contract.methods.getAddress(index - 1).call();
     const hasLiked = await contract.methods.likedPhoto(imageAddress, 0).call({from: accounts[0]});
+    if (imageAddress != accounts[0]){
     if (hasLiked === false){
       if (!isLiking){
         document.getElementById("likeButton").src = red_like_button;
@@ -150,6 +162,7 @@ class Post extends Component{
         this.setState({ isLiking: false})
       }
    }
+ }
 
   };
 
@@ -157,8 +170,9 @@ class Post extends Component{
 
     const {contract, accounts, likedPhotos} = this.state;
     console.log(likedPhotos);
+    if (likedPhotos.length > 0){
     await contract.methods.voteForListByIndex(likedPhotos).send({from: accounts[0], gasPrice: 1e9});
-
+  }
   };
 
   openProfile = async () => {
