@@ -48,7 +48,7 @@ class ImageUpload extends Component{
 
       // Set web3, accounts, and contract to the state, and then proceed with an
       // example of interacting with the contract's methods.
-      this.setState({web3, accounts, contract: instance, reader}, this.runOnStart);
+      this.setState({web3, accounts, contract: instance, reader});
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
@@ -58,19 +58,6 @@ class ImageUpload extends Component{
     }
   };
 
-  runOnStart = async () => {
-
-
-    const { accounts, contract } = this.state;
-
-    const registered = await contract.methods.accountRegistered().call({from: accounts[0]});
-
-
-    if (!registered) {
-
-
-    }
-  };
 
 
 
@@ -96,7 +83,7 @@ captureFile = async event => {
       document.getElementById("upload").style.display = ""
       this.state.reader.readAsArrayBuffer(myFile)
 
-  }, 10);
+  }, 25);
 
 
 };

@@ -29,7 +29,7 @@ class Profile extends Component {
 
       // Set web3, accounts, and contract to the state, and then proceed with an
       // example of interacting with the contract's methods.
-      this.setState({ web3, accounts, contract: instance, address}, this.runOnStart);
+      this.setState({ web3, accounts, contract: instance, address});
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
@@ -39,10 +39,6 @@ class Profile extends Component {
     }
   };
 
-  runOnStart = async () => {
-
-
-  };
 
 
 
