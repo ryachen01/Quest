@@ -126,7 +126,7 @@ createProfile = async () => {
   ipfs.files.add(buf, (err, result) => { // Upload buffer to IPFS
   if(err) {
     console.error(err)
-    return
+    return false;
   }
 
   let hash = result[0].hash;
@@ -145,6 +145,12 @@ openProfile = async () => {
 openFeed = async () => {
 
   window.location.href = "/following"
+
+}
+
+newAccount = async () => {
+
+  window.location.href = "/new"
 
 }
 
@@ -191,7 +197,7 @@ captureProfileUpload = async event => {
               onChange = {this.captureProfileUpload}
             />
             <div className="Account-button">
-            <Button id = "createButton" variant="contained" color="default" onClick = {this.getInput}>
+            <Button id = "createButton" variant="contained" color="default" onClick = {this.newAccount}>
               Create Account
               <CloudUploadIcon className={classes.rightIcon}/>
             </Button>
