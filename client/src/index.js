@@ -6,6 +6,7 @@ import './index.css';
 import App from './App';
 import Profile from './Profile';
 import Following from './Following';
+import NewAccount from './NewAccount'
 
 import * as serviceWorker from './serviceWorker';
 
@@ -16,6 +17,7 @@ const routing = (
       <Route exact path="/" component= {App}/>
       <Route path="/profile" component={Profile} />
       <Route path="/following" component={Following} />
+      <Route path="/new" component={NewAccount} />
     </Switch>
     </div>
   </BrowserRouter>
