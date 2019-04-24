@@ -1,0 +1,17 @@
+input[type=text], input[type=password] {
+  width: 25%;
+  padding: 30px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: white;
+}
+
+.form-group{
+  margin-top: 200px;
+}
+
+.container {
+  padding: 16px;
+  background:
+}
