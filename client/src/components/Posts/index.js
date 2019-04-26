@@ -64,6 +64,8 @@ class Post extends Component{
     document.getElementById("Num-likes").innerHTML = numLikes + " Likes"
     document.getElementById("profilePicture").src = `https://ipfs.io/ipfs/${profileImage}`;
 
+    this.isFollowing(winnerAddress);
+
   };
 
   randomizeOrder = async () => {
@@ -105,7 +107,7 @@ class Post extends Component{
 
     this.setState({ index: (index + 1)});
 
-    await contract.methods.newRound().send({from: accounts[0], gasPrice: 1e9});
+    //await contract.methods.newRound().send({from: accounts[0], gasPrice: 1e9});
 
 
   };
@@ -224,7 +226,16 @@ class Post extends Component{
     const {contract, index, accounts} = this.state;
 
     const myAddress = accounts[0]
-    const followerAddress = await contract.methods.getAddress(index - 1).call();
+
+    var followerAddress = ""
+    try {
+      followerAddress = await contract.methods.getAddress(index - 1).call();
+    }
+    catch {
+      followerAddress = await contract.methods.returnWinnerAddress().call();
+    }
+
+    console.log(followerAddress)
 
     firebase.auth().signInWithEmailAndPassword(process.env.REACT_APP_EMAIL, process.env.REACT_APP_PASSWORD)
 
