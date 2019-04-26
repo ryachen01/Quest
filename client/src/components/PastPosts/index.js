@@ -77,11 +77,45 @@ class PastPosts extends Component{
 
   }};
 
+  previousPost = async () => {
+
+
+
+    const {contract, index, address} = this.state;
+
+    console.log(index)
+
+    const photosPosted = await contract.methods.totalPhotosPosted(address).call();
+
+    if (index > 0){
+    const imageHash = await contract.methods.viewPhotos(address, index - 2).call();
+    const imageCaption = await contract.methods.viewCaption(address, index - 2).call();
+    const name = await contract.methods.getProfileName(address).call();
+    const numLikes = await contract.methods.totalVotesFor(address).call();
+    const username = await contract.methods.getUserName(address).call();
+    const profileImage = await contract.methods.getProfileImage(address).call();
+    document.getElementById("Ipfs-Image").src = `https://ipfs.io/ipfs/${imageHash}`;
+    document.getElementById("Caption").innerHTML = username.bold() + "  " + imageCaption;
+    document.getElementById("Num-likes").innerHTML = numLikes + " Likes"
+    document.getElementById("Name").innerHTML = name
+    document.getElementById("profilePicture").src = `https://ipfs.io/ipfs/${profileImage}`;
+
+
+    this.setState({ index: (index - 1)});
+
+  }
+
+}
+
   follow = async () => {
 
     const {accounts, address} = this.state;
 
     const myAddress = accounts[0]
+
+    if (address === myAddress){
+      return false;
+    }
 
     firebase.auth().signInWithEmailAndPassword(process.env.REACT_APP_EMAIL, process.env.REACT_APP_PASSWORD)
 
@@ -213,7 +247,7 @@ class PastPosts extends Component{
   isFollowing = async (followerAddress) => {
     const {accounts} = this.state;
     let ref = firebase.database().ref('followers');
-    
+
     ref.on('value', function(snapshot){
 
         snapshot.forEach(function(childSnapshot) {
@@ -296,6 +330,7 @@ class PastPosts extends Component{
               <div className ="Post-buttons" >
                 <h3 id = "Num-likes"> 0 Likes </h3>
                 <button onClick = {this.viewPosts} className = "Post-Next" >Next</button>
+                <button onClick = {this.previousPost} className = "Post-Previous" >Previous</button>
               </div>
               <p id = "Caption" >Ryan</p>
             </div>
