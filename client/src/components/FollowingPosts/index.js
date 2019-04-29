@@ -73,7 +73,7 @@ class FollowingPosts extends Component{
     });
     this.setState({ postList: following});
     setTimeout(() => {
-
+      this.randomizeList();
       this.viewPosts();
   }, 1000);
 
@@ -95,7 +95,7 @@ class FollowingPosts extends Component{
     }
     }
     this.setState({ postList: postList});
-    return postList
+
 
   }
 
@@ -114,18 +114,11 @@ class FollowingPosts extends Component{
     }
     }
 
-    if (address != null){
+    if (address == null){
 
-      if (!listSet){
-        this.setState({ listSet: true});
-        this.viewPosts();
-      }
-
-    }else{
         return false;
     }
 
-    console.log(address)
     document.getElementById("Error").innerHTML = '';
 
     this.setState({ address: address});
@@ -133,7 +126,6 @@ class FollowingPosts extends Component{
 
     const photosPosted = await contract.methods.totalPhotosPosted(address).call();
 
-    console.log(photosPosted)
     const imageHash = await contract.methods.viewPhotos(address, photosPosted - 1).call();
 
     const imageCaption = await contract.methods.viewCaption(address, photosPosted - 1).call();
@@ -171,7 +163,7 @@ class FollowingPosts extends Component{
       address = postList[index - 2];
     }else{
       try {
-      address = postList[0][index];
+      address = postList[0][index - 2];
     }catch {
       console.log("not following any accounts")
     }
@@ -199,7 +191,7 @@ class FollowingPosts extends Component{
     document.getElementById("Num-likes").innerHTML = numLikes + " Likes"
     document.getElementById("Name").innerHTML = name
     document.getElementById("profilePicture").src = `https://ipfs.io/ipfs/${profileImage}`;
-    const hasLiked = await contract.methods.likedPhoto(address, 0).call({from: accounts[0]});
+    const hasLiked = await contract.methods.likedPhoto(address).call({from: accounts[0]});
     if (hasLiked === false){
       this.setState({ isLiking: false})
       document.getElementById("likeButton").src = like_button;
