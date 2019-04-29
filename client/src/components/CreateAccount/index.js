@@ -123,7 +123,7 @@ class CreateAccount extends Component{
         window.alert("Please choose a different username")
         return false
       }
-      if (username == "" || name == "" || hash == ""){
+      if (username === "" || name === "" || hash === ""){
         window.alert("Please fill in all forms")
         return false;
       }else{

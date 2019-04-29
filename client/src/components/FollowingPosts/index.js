@@ -125,13 +125,18 @@ class FollowingPosts extends Component{
         return false;
     }
 
-
+    console.log(address)
     document.getElementById("Error").innerHTML = '';
 
     this.setState({ address: address});
 
-    const imageHash = await contract.methods.viewPhotos(address, 0).call();
-    const imageCaption = await contract.methods.viewCaption(address, 0).call();
+
+    const photosPosted = await contract.methods.totalPhotosPosted(address).call();
+
+    console.log(photosPosted)
+    const imageHash = await contract.methods.viewPhotos(address, photosPosted - 1).call();
+
+    const imageCaption = await contract.methods.viewCaption(address, photosPosted - 1).call();
     const name = await contract.methods.getProfileName(address).call();
     const numLikes = await contract.methods.totalVotesFor(address).call();
     const username = await contract.methods.getUserName(address).call();
@@ -141,7 +146,7 @@ class FollowingPosts extends Component{
     document.getElementById("Num-likes").innerHTML = numLikes + " Likes"
     document.getElementById("Name").innerHTML = name
     document.getElementById("profilePicture").src = `https://ipfs.io/ipfs/${profileImage}`;
-    const hasLiked = await contract.methods.likedPhoto(address, 0).call({from: accounts[0]});
+    const hasLiked = await contract.methods.likedPhoto(address).call({from: accounts[0]});
     if (hasLiked === false){
       this.setState({ isLiking: false})
       document.getElementById("likeButton").src = like_button;

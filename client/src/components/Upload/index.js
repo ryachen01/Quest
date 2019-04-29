@@ -112,10 +112,17 @@ captureFile = async event => {
         //document.getElementById("output").src = url
         let hash = result[0].hash;
 
-        contract.methods.addHash(hash, "My Photo", accounts[0]).send({from: accounts[0], gasPrice: 1e9});
+        let caption = window.prompt("Please enter a caption for your post")
 
-        document.getElementById("preview").style.display = "none"
-        document.getElementById("upload").style.display = "none"
+        if (caption === ""){
+          return false
+        }else{
+          contract.methods.addHash(hash, caption, accounts[0]).send({from: accounts[0], gasPrice: 1e9});
+          document.getElementById("preview").style.display = "none"
+          document.getElementById("upload").style.display = "none"
+        }
+
+
 
 
       })
