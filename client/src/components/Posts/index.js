@@ -49,22 +49,29 @@ class Post extends Component{
   runOnStart = async () => {
     const {contract} = this.state;
 
-    /*const winnerHash = await contract.methods.returnWinnerHash().call();*/
+
+
     const winnerAddress = await contract.methods.returnWinnerAddress().call();
     const winnerHash = await contract.methods.returnWinnerHash().call();
+
     const numLikes = await contract.methods.totalVotesFor(winnerAddress).call();
     const name = await contract.methods.getProfileName(winnerAddress).call();
     const username = await contract.methods.getUserName(winnerAddress).call();
     const profileImage = await contract.methods.getProfileImage(winnerAddress).call();
     this.setState({ address: winnerAddress});
 
+
+    if (winnerAddress != null && winnerHash != null){
     document.getElementById("Ipfs-Image").src = `https://ipfs.io/ipfs/${winnerHash}`;
     document.getElementById("Caption").innerHTML = username.bold() + " Winning Post";
     document.getElementById("Name").innerHTML = name;
     document.getElementById("Num-likes").innerHTML = numLikes + " Likes"
     document.getElementById("profilePicture").src = `https://ipfs.io/ipfs/${profileImage}`;
-
     this.isFollowing(winnerAddress);
+    }
+
+
+
 
   };
 
@@ -96,7 +103,7 @@ class Post extends Component{
     document.getElementById("Num-likes").innerHTML = numLikes + " Likes"
     console.log(`https://ipfs.io/ipfs/${profileImage}`)
     document.getElementById("profilePicture").src = `https://ipfs.io/ipfs/${profileImage}`;
-    const hasLiked = await contract.methods.likedPhoto(imageAddress, 0).call({from: accounts[0]});
+    const hasLiked = await contract.methods.likedPhoto(imageAddress).call({from: accounts[0]});
     if (hasLiked === false){
       this.setState({ isLiking: false})
       document.getElementById("likeButton").src = like_button;
@@ -151,8 +158,8 @@ class Post extends Component{
 
     const {contract, index, accounts, likedPhotos, isLiking} = this.state;
     const imageAddress = await contract.methods.getAddress(index - 1).call();
-    const hasLiked = await contract.methods.likedPhoto(imageAddress, 0).call({from: accounts[0]});
-    if (imageAddress != accounts[0]){
+    const hasLiked = await contract.methods.likedPhoto(imageAddress).call({from: accounts[0]});
+    if (imageAddress !== accounts[0]){
     if (hasLiked === false){
       if (!isLiking){
         document.getElementById("likeButton").src = red_like_button;
@@ -235,7 +242,9 @@ class Post extends Component{
       followerAddress = await contract.methods.returnWinnerAddress().call();
     }
 
-    console.log(followerAddress)
+    if (myAddress === followerAddress){
+      return false;
+    }
 
     firebase.auth().signInWithEmailAndPassword(process.env.REACT_APP_EMAIL, process.env.REACT_APP_PASSWORD)
 

@@ -20,7 +20,6 @@ contract Hashes{
 
   struct properties{
       uint16 votesReceived;
-      uint16
       uint16 actionsDone;
       uint16 photosPosted;
       string name;
@@ -40,6 +39,8 @@ contract Hashes{
   MyToken token;
   MyTrophy trophy;
   address payable token_address;
+  uint pastBlockNumber;
+  uint rewardScalar;
 
 
 
@@ -52,6 +53,7 @@ contract Hashes{
     token.setAddress(address(this));
     trophy = MyTrophy(_myTrophy);
     trophy.setAddress(address(this));
+    pastBlockNumber = block.number;
 
   }
 
@@ -262,15 +264,31 @@ contract Hashes{
     return (address_properties[msg.sender].registry.addr == address(0));
   }
 
+  function timeLocked() public view returns(bool){
+    uint timeSince = pastBlockNumber - block.number;
+    return (timeSince < 7000 && timeSince > 6000);
+  }
+
   function newRound() public{
+    uint timeSince = pastBlockNumber - block.number;
+    require(timeSince < 7000);
+    require(timeSince > 6000);
+
     getWinner();
     token.redeem();
     hashes memory myHash;
     for (uint i = 0; i < participants.length; i++){
       address_properties[participants[i]].registry = myHash;
-      address_properties[participants[i]].registry = myHash;
     }
     participants.length = 0;
+      pastBlockNumber = block.number;
   }
+
+
+    function getTime() public view returns(uint) {
+      //This function should be deleted before production
+
+      return block.number;
+    }
 
 }
