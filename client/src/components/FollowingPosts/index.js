@@ -72,6 +72,7 @@ class FollowingPosts extends Component{
 
     });
     this.setState({ postList: following});
+
     setTimeout(() => {
       this.randomizeList();
       this.viewPosts();
@@ -84,6 +85,9 @@ class FollowingPosts extends Component{
   randomizeList = async () => {
 
     const {postList} = this.state;
+    if (postList.length < 1){
+      return false;
+    }
     if (typeof postList[0] == "string"){
       return false;
     }else{

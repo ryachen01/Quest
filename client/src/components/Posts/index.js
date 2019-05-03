@@ -138,7 +138,7 @@ class Post extends Component{
     document.getElementById("Caption").innerHTML = username.bold() + "  " + imageCaption;
     document.getElementById("Num-likes").innerHTML = numLikes + " Likes"
     document.getElementById("profilePicture").src = `https://ipfs.io/ipfs/${profileImage}`;
-    const hasLiked = await contract.methods.likedPhoto(imageAddress, 0).call({from: accounts[0]});
+    const hasLiked = await contract.methods.likedPhoto(imageAddress).call({from: accounts[0]});
     if (hasLiked === false){
       this.setState({ isLiking: false})
       document.getElementById("likeButton").src = like_button;
