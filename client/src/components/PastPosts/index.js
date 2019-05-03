@@ -78,7 +78,7 @@ class PastPosts extends Component{
 
     this.setState({ index: (index - 1)});
 
-  }};
+    }};
 
   previousPost = async () => {
 
