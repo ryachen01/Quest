@@ -69,87 +69,110 @@ class Post extends Component{
     document.getElementById("profilePicture").src = `https://ipfs.io/ipfs/${profileImage}`;
     this.isFollowing(winnerAddress);
     }
-
-
+    this.randomizeOrder();
 
 
   };
 
   randomizeOrder = async () => {
     const {contract } = this.state;
-    const numPhotos = await contract.methods.returnTotalPhotos().call();
+    const numPhotos = await contract.methods.listLength().call();
     var order = []
-    for (var i = 0; i < numPhotos - 1; i++){
+    for (var i = 0; i < numPhotos; i++){
       order.push(i);
     }
+    for (var i = order.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var temp = order[i];
+      order[i] = order[j];
+      order[j] = temp;
+  }
+    this.setState({ listOrder: order});
   }
 
 
   viewPosts = async () => {
 
-    const {contract, index, accounts} = this.state;
-    const imageHash = await contract.methods.getList(index).call();
-    const imageCaption = await contract.methods.getCaption(index).call();
-    const imageAddress = await contract.methods.getAddress(index).call();
-    this.isFollowing(imageAddress);
-    this.setState({ address: imageAddress});
-    const numLikes = await contract.methods.totalVotesFor(imageAddress).call();
-    const name = await contract.methods.getProfileName(imageAddress).call();
-    const username = await contract.methods.getUserName(imageAddress).call();
-    const profileImage = await contract.methods.getProfileImage(imageAddress).call();
-    document.getElementById("Name").innerHTML = name
-    document.getElementById("Ipfs-Image").src = `https://ipfs.io/ipfs/${imageHash}`;
-    document.getElementById("Caption").innerHTML = username.bold() + "  " + imageCaption;
-    document.getElementById("Num-likes").innerHTML = numLikes + " Likes"
-    console.log(`https://ipfs.io/ipfs/${profileImage}`)
-    document.getElementById("profilePicture").src = `https://ipfs.io/ipfs/${profileImage}`;
-    const hasLiked = await contract.methods.likedPhoto(imageAddress).call({from: accounts[0]});
-    if (hasLiked === false){
-      this.setState({ isLiking: false})
-      document.getElementById("likeButton").src = like_button;
-    }else{
-      this.setState({ isLiking: true})
-      document.getElementById("likeButton").src = red_like_button;
-    }
+    const {contract, index, accounts, listOrder} = this.state;
+    const numPosts = await contract.methods.listLength().call();
 
-    this.setState({ index: (index + 1)});
+
+    if (index < numPosts){
+      var value = listOrder[index]
+
+      const imageHash = await contract.methods.getList(value).call();
+      const imageCaption = await contract.methods.getCaption(value).call();
+      const imageAddress = await contract.methods.getAddress(value).call();
+      if (imageAddress !== accounts[0]){
+
+        this.isFollowing(imageAddress);
+        this.setState({ address: imageAddress});
+        const numLikes = await contract.methods.totalVotesFor(imageAddress).call();
+        const name = await contract.methods.getProfileName(imageAddress).call();
+        const username = await contract.methods.getUserName(imageAddress).call();
+        const profileImage = await contract.methods.getProfileImage(imageAddress).call();
+        document.getElementById("Name").innerHTML = name
+        document.getElementById("Ipfs-Image").src = `https://ipfs.io/ipfs/${imageHash}`;
+        document.getElementById("Caption").innerHTML = username.bold() + "  " + imageCaption;
+        document.getElementById("Num-likes").innerHTML = numLikes + " Likes"
+        console.log(`https://ipfs.io/ipfs/${profileImage}`)
+        document.getElementById("profilePicture").src = `https://ipfs.io/ipfs/${profileImage}`;
+        const hasLiked = await contract.methods.likedPhoto(imageAddress).call({from: accounts[0]});
+        if (hasLiked === false){
+          this.setState({ isLiking: false})
+          document.getElementById("likeButton").src = like_button;
+        }else{
+          this.setState({ isLiking: true})
+          document.getElementById("likeButton").src = red_like_button;
+        }
+      }else{
+        this.viewPosts();
+      }
+
+      this.setState({ index: (index + 1)});
+
+  }
 
     //await contract.methods.newRound().send({from: accounts[0], gasPrice: 1e9});
-
 
   };
 
   previousPost = async () => {
 
 
-    const {contract, index, accounts} = this.state;
+    const {contract, index, accounts, listOrder} = this.state;
+    if ((index - 2) > -1){
+      var value = listOrder[index - 2]
 
-    const imageHash = await contract.methods.getList(index - 2).call();
-    const imageCaption = await contract.methods.getCaption(index - 2).call();
-    const imageAddress = await contract.methods.getAddress(index - 2).call();
-    this.isFollowing(imageAddress);
-    this.setState({ address: imageAddress});
-    const numLikes = await contract.methods.totalVotesFor(imageAddress).call();
-    const name = await contract.methods.getProfileName(imageAddress).call();
-    const username = await contract.methods.getUserName(imageAddress).call();
-    const profileImage = await contract.methods.getProfileImage(imageAddress).call();
-    document.getElementById("Name").innerHTML = name
-    document.getElementById("Ipfs-Image").src = `https://ipfs.io/ipfs/${imageHash}`;
-    document.getElementById("Caption").innerHTML = username.bold() + "  " + imageCaption;
-    document.getElementById("Num-likes").innerHTML = numLikes + " Likes"
-    document.getElementById("profilePicture").src = `https://ipfs.io/ipfs/${profileImage}`;
-    const hasLiked = await contract.methods.likedPhoto(imageAddress).call({from: accounts[0]});
-    if (hasLiked === false){
-      this.setState({ isLiking: false})
-      document.getElementById("likeButton").src = like_button;
+      const imageHash = await contract.methods.getList(value).call();
+      const imageCaption = await contract.methods.getCaption(value).call();
+      const imageAddress = await contract.methods.getAddress(value).call();
+      if (imageAddress !== accounts[0]){
+        this.isFollowing(imageAddress);
+        this.setState({ address: imageAddress});
+        const numLikes = await contract.methods.totalVotesFor(imageAddress).call();
+        const name = await contract.methods.getProfileName(imageAddress).call();
+        const username = await contract.methods.getUserName(imageAddress).call();
+        const profileImage = await contract.methods.getProfileImage(imageAddress).call();
+        document.getElementById("Name").innerHTML = name
+        document.getElementById("Ipfs-Image").src = `https://ipfs.io/ipfs/${imageHash}`;
+        document.getElementById("Caption").innerHTML = username.bold() + "  " + imageCaption;
+        document.getElementById("Num-likes").innerHTML = numLikes + " Likes"
+        document.getElementById("profilePicture").src = `https://ipfs.io/ipfs/${profileImage}`;
+        const hasLiked = await contract.methods.likedPhoto(imageAddress).call({from: accounts[0]});
+        if (hasLiked === false){
+          this.setState({ isLiking: false})
+          document.getElementById("likeButton").src = like_button;
+        }else{
+          this.setState({ isLiking: true})
+          document.getElementById("likeButton").src = red_like_button;
+        }
     }else{
-      this.setState({ isLiking: true})
-      document.getElementById("likeButton").src = red_like_button;
+      this.viewPosts();
     }
+      this.setState({ index: (index - 1)});
 
-    this.setState({ index: (index - 1)});
-
-
+  }
 
 
   };
