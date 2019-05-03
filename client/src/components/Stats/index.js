@@ -47,6 +47,7 @@ class Stats extends Component{
     document.getElementById("numPhotos").innerHTML = " Total Photos Posted: " + totalPhotos;
     document.getElementById("numVotes").innerHTML = " Total Votes Received: " + totalVotes;
     document.getElementById("totalTrophies").innerHTML = " Total Trophies Won: " + totalTrophies;
+    document.getElementById("address").innerHTML = " Address: " + address;
   };
 
 
@@ -62,6 +63,7 @@ class Stats extends Component{
       <h3 id = "numPhotos">Total Photos Posted: 0</h3>
       <h3 id = "numVotes">Total Votes Received: 0</h3>
       <h3 id = "totalTrophies">Total Trophies Won: 0</h3>
+      <p id = "address">Address: </p>
 
 
       <p> </p>

@@ -46,9 +46,14 @@ class PastPosts extends Component{
 
   runOnStart = async () => {
 
-    const {address} = this.state;
+    const {address, contract} = this.state;
+
+    const photosPosted = await contract.methods.totalPhotosPosted(address).call();
+    this.setState({ index: photosPosted - 1});
+
     this.isFollowing(address);
     this.viewPosts();
+
 
   };
 
@@ -57,9 +62,7 @@ class PastPosts extends Component{
 
     const {contract, index, address} = this.state;
 
-    const photosPosted = await contract.methods.totalPhotosPosted(address).call();
-
-    if (index < photosPosted){
+    if (index > -1){
     const imageHash = await contract.methods.viewPhotos(address, index).call();
     const imageCaption = await contract.methods.viewCaption(address, index).call();
     const name = await contract.methods.getProfileName(address).call();
@@ -73,7 +76,7 @@ class PastPosts extends Component{
     document.getElementById("profilePicture").src = `https://ipfs.io/ipfs/${profileImage}`;
 
 
-    this.setState({ index: (index+1)});
+    this.setState({ index: (index - 1)});
 
   }};
 
@@ -82,14 +85,11 @@ class PastPosts extends Component{
 
 
     const {contract, index, address} = this.state;
-
-    console.log(index)
-
     const photosPosted = await contract.methods.totalPhotosPosted(address).call();
 
-    if (index > 0){
-    const imageHash = await contract.methods.viewPhotos(address, index - 2).call();
-    const imageCaption = await contract.methods.viewCaption(address, index - 2).call();
+    if ((index + 2) < photosPosted){
+    const imageHash = await contract.methods.viewPhotos(address, index + 2).call();
+    const imageCaption = await contract.methods.viewCaption(address, index + 2).call();
     const name = await contract.methods.getProfileName(address).call();
     const numLikes = await contract.methods.totalVotesFor(address).call();
     const username = await contract.methods.getUserName(address).call();
@@ -101,7 +101,7 @@ class PastPosts extends Component{
     document.getElementById("profilePicture").src = `https://ipfs.io/ipfs/${profileImage}`;
 
 
-    this.setState({ index: (index - 1)});
+    this.setState({ index: (index + 1)});
 
   }
 
