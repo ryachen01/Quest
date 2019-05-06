@@ -48,6 +48,10 @@ import "../contracts/ERC20.sol";
 
       }
 
+      function returnAddress() public view returns(address){
+        returns (address(this))
+      }
+
       function returnCreator() public view returns(address){
       	return creator;
       }
@@ -96,10 +100,6 @@ import "../contracts/ERC20.sol";
 
       }
 
-      function () external payable{
-
-      
-      }
 
       function winner() internal view returns (address){
           return hashes.returnWinnerAddress();

@@ -90,7 +90,8 @@ class TokenPurchase extends Component{
       <button onClick = {this.buyCoins} id = "Buy" >Purchase Coins</button>
       <p> </p>
       Amount in Tokens: <input type="text" id = "Token Value" defaultValue = "0" onChange = {this.getEthAmount}></input>
-      <p> </p>
+      <p> Token address: 0xc47763cd25154fD25B0CCaF0b03d48165CC850ee </p>
+  
         </div>
 
         );
