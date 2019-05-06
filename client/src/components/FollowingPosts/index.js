@@ -4,8 +4,8 @@ import like_button from './like.png';
 import red_like_button from './redLike.png';
 import save_button from './SaveButton.png';
 import HashesContract from "../../contracts/Hashes.json";
-import firebase from '../Firebase/index.js'
-import { Link } from 'react-router-dom'
+import firebase from '../Firebase/index.js';
+import { Link } from 'react-router-dom';
 
 class FollowingPosts extends Component{
 
@@ -24,7 +24,7 @@ class FollowingPosts extends Component{
 
       const likedPhotos = [];
 
-      const postList = []
+      const postList = [];
 
       const listSet = false;
 
@@ -52,17 +52,17 @@ class FollowingPosts extends Component{
 
     const {accounts} = this.state;
 
-    const myAddress = accounts[0]
+    const myAddress = accounts[0];
     //const followerAddress = await contract.methods.getAddress(index - 1).call();
 
-    firebase.auth().signInWithEmailAndPassword(process.env.REACT_APP_EMAIL, process.env.REACT_APP_PASSWORD)
+    firebase.auth().signInWithEmailAndPassword(process.env.REACT_APP_EMAIL, process.env.REACT_APP_PASSWORD);
     let ref = firebase.database().ref('followers');
-    var following = []
+    var following = [];
     ref.on('value', function(snapshot){
 
         snapshot.forEach(function(childSnapshot) {
           const childData = childSnapshot.val();
-          const data = (childData[Object.keys(childData)[0]])
+          const data = (childData[Object.keys(childData)[0]]);
           if (Object.keys(childData)[0] === myAddress){
 
               following.push(data);
@@ -139,8 +139,8 @@ class FollowingPosts extends Component{
     const profileImage = await contract.methods.getProfileImage(address).call();
     document.getElementById("Ipfs-Image").src = `https://ipfs.io/ipfs/${imageHash}`;
     document.getElementById("Caption").innerHTML = username.bold() + "  " + imageCaption;
-    document.getElementById("Num-likes").innerHTML = numLikes + " Likes"
-    document.getElementById("Name").innerHTML = name
+    document.getElementById("Num-likes").innerHTML = numLikes + " Likes";
+    document.getElementById("Name").innerHTML = name;
     document.getElementById("profilePicture").src = `https://ipfs.io/ipfs/${profileImage}`;
     const hasLiked = await contract.methods.likedPhoto(address).call({from: accounts[0]});
     if (hasLiked === false){
@@ -153,8 +153,6 @@ class FollowingPosts extends Component{
 
 
     this.setState({ index: (index+1)});
-
-
 
   };
 
@@ -169,7 +167,7 @@ class FollowingPosts extends Component{
       try {
       address = postList[0][index - 2];
     }catch {
-      console.log("not following any accounts")
+      console.log("not following any accounts");
     }
     }
 
@@ -192,8 +190,8 @@ class FollowingPosts extends Component{
     const profileImage = await contract.methods.getProfileImage(address).call();
     document.getElementById("Ipfs-Image").src = `https://ipfs.io/ipfs/${imageHash}`;
     document.getElementById("Caption").innerHTML = username.bold() + "  " + imageCaption;
-    document.getElementById("Num-likes").innerHTML = numLikes + " Likes"
-    document.getElementById("Name").innerHTML = name
+    document.getElementById("Num-likes").innerHTML = numLikes + " Likes";
+    document.getElementById("Name").innerHTML = name;
     document.getElementById("profilePicture").src = `https://ipfs.io/ipfs/${profileImage}`;
     const hasLiked = await contract.methods.likedPhoto(address).call({from: accounts[0]});
     if (hasLiked === false){
@@ -225,11 +223,11 @@ class FollowingPosts extends Component{
       if (!isLiking){
         document.getElementById("likeButton").src = red_like_button;
         likedPhotos.push(index - 1);
-        this.setState({ isLiking: true})
+        this.setState({ isLiking: true});
       }else{
         document.getElementById("likeButton").src = like_button
         likedPhotos.splice(likedPhotos.indexOf(index - 1), 1 );
-        this.setState({ isLiking: false})
+        this.setState({ isLiking: false});
       }
    }
 
@@ -245,7 +243,7 @@ class FollowingPosts extends Component{
 
   openProfile = async () => {
 
-    window.location.href = "/profile"
+    window.location.href = "/profile";
 
   }
 
