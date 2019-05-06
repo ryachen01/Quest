@@ -115,10 +115,8 @@ class CreateAccount extends Component{
 
     const name = document.getElementById('name-input').value;
 
-    console.log(username)
-
     const usernameTaken = contract.methods.isNameTaken(username).call().then(function(result) {
-      console.log(result)
+
       if (result){
         window.alert("Please choose a different username")
         return false
@@ -129,18 +127,16 @@ class CreateAccount extends Component{
       }else{
         var confirmed = window.confirm("Are you sure you would like to create this account?")
         if (confirmed){
-          contract.methods.registerAccount(username, name, hash).send({from: accounts[0], value: 1e17, gasPrice: 1e9});
+          contract.methods.registerAccount(username, name, hash).send({from: accounts[0], value: 1e17, gasPrice: 1e9}).then(function(){
+              window.alert("Congratulations! You have created your account. You can learn more at https://github.com/ryachen01/Social-Media-Blockchain-App/blob/master/README.md")
+              window.location.href = "/"
+          });
+
         }else{
           return false;
         }
       }
     });;
-
-
-
-
-
-
 
   })
 
