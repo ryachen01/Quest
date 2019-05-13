@@ -94,6 +94,7 @@ class FollowingPosts extends Component{
       for (var i = postList[0].length - 1; i > 0; i--) {
         var j = Math.floor(Math.random() * (i + 1));
         var temp = postList[0][i];
+        
         postList[0][i] = postList[0][j];
         postList[0][j] = temp;
     }
