@@ -49,7 +49,6 @@ class PastPosts extends Component{
     const {address, contract} = this.state;
 
     const photosPosted = await contract.methods.totalPhotosPosted(address).call();
-    console.log(address)
     this.setState({ index: photosPosted - 1});
 
     this.isFollowing(address);
