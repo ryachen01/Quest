@@ -49,7 +49,7 @@ import "../contracts/ERC20.sol";
       }
 
       function returnAddress() public view returns(address){
-        returns (address(this))
+        return (address(this));
       }
 
       function returnCreator() public view returns(address){
