@@ -125,7 +125,7 @@ captureProfileUpload = async event => {
 
 getFollowing = async () => {
   // Declare variables
-  const {accounts, followingList} = this.state;
+  const {accounts} = this.state;
 
   const myAddress = accounts[0];
 
@@ -161,7 +161,7 @@ getFollowing = async () => {
 }
 
 search = async () => {
-  const {followingList, contract, address1, address2, address3} = this.state;
+  const {followingList, contract} = this.state;
 
   const input = document.getElementById('myInput').value;
   for (var i = 0; i < followingList.length; i++){

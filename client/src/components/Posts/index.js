@@ -253,7 +253,7 @@ class Post extends Component{
 
   follow = async () => {
 
-    const {contract, index, accounts, address} = this.state;
+    const {accounts, address} = this.state;
 
     const myAddress = accounts[0];
 
