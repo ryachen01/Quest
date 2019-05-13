@@ -3,6 +3,7 @@ import HashesContract from "../../contracts/Hashes.json";
 import "./Header.css";
 import { withStyles } from '@material-ui/core/styles';
 import home_button from './HomeButton.png';
+import firebase from '../Firebase/index.js'
 import Button from '@material-ui/core/Button';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { Link } from 'react-router-dom'
@@ -26,7 +27,7 @@ const styles = theme => ({
 
 class Header extends React.Component{
 
-  state = {web3: null, accounts: null, contract: null, reader: null, username: null, name: null};
+  state = {web3: null, accounts: null, contract: null, reader: null, username: null, name: null, followingList: null, address1: null, address2: null, address3: null};
 
   componentDidMount = async () => {
 
@@ -38,6 +39,10 @@ class Header extends React.Component{
 
       const reader = new FileReader();
 
+      const address1 = "";
+
+      const followingList = [];
+
       // Get the contract instance.
       const networkId = await web3.eth.net.getId();
       const deployedNetwork = HashesContract.networks[networkId];
@@ -48,7 +53,7 @@ class Header extends React.Component{
 
       // Set web3, accounts, and contract to the state, and then proceed with an
       // example of interacting with the contract's methods.
-      this.setState({web3, accounts, contract: instance, reader}, this.runOnStart);
+      this.setState({web3, accounts, contract: instance, reader, followingList, address1}, this.runOnStart);
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
@@ -60,6 +65,8 @@ class Header extends React.Component{
 
   runOnStart = async () => {
     const {contract, accounts} = this.state;
+
+    this.getFollowing();
 
     const registered = await contract.methods.accountRegistered().call({from: accounts[0]});
 
@@ -110,9 +117,74 @@ captureProfileUpload = async event => {
   setTimeout(() => {
 
       this.createProfile();
-  },20);
+  },50);
 
 
+
+}
+
+getFollowing = async () => {
+  // Declare variables
+  const {accounts} = this.state;
+
+  const myAddress = accounts[0];
+
+  let ref = firebase.database().ref('followers');
+  var following = [];
+  ref.on('value', function(snapshot) {
+      snapshot.forEach(function(childSnapshot) {
+        const childData = childSnapshot.val();
+        const data = (childData[Object.keys(childData)[0]])
+
+        if (Object.keys(childData)[0] === myAddress){
+          if (typeof data == "string"){
+
+            following.push(data)
+
+          }else{
+          for (var i = 0; i < data.length; i++){
+
+            following.push(data[i])
+
+          }
+        }
+
+
+        }
+
+      });
+
+  });
+
+  this.setState({followingList: following})
+
+}
+
+search = async () => {
+  const {followingList, contract} = this.state;
+
+  const input = document.getElementById('myInput').value;
+  for (var i = 0; i < followingList.length; i++){
+      var username = await contract.methods.getUserName(followingList[i]).call();
+
+      if (username.includes(input.toString())){
+
+        var id = "link" + (i+1).toString();
+        document.getElementById(id).innerHTML = username;
+        document.getElementById(id).style.display = "";
+
+        if (i == 0){
+          this.setState({address1: followingList[i]});
+        }
+        else if (i == 1){
+          this.setState({address2: followingList[i]});
+        }
+        else if (i == 2){
+          this.setState({address3: followingList[i]});
+        }
+
+      }
+  }
 
 }
 
@@ -120,6 +192,9 @@ captureProfileUpload = async event => {
     render(){
 
         const { classes, accounts} = this.props;
+
+        const { address1, address2, address3} = this.state;
+
         return (
 
            <nav className="Nav">
@@ -149,6 +224,24 @@ captureProfileUpload = async event => {
               pathname: '/profile'
             }}> <input id = "profile" type="image" src={home_button} height = "60" width = "60" alt="Feed">
               </input>  <h3> My Profile</h3> </Link>
+            </div>
+
+            <div className="dropdown">
+              <input className = "inputField" type="text" id="myInput" onKeyUp= {this.search} placeholder="Search for names.."/>
+              <div className ="dropdown-content">
+              <Link id = "link1" style={{display: "none"}} onClick= {this.openProfile} to={{
+                pathname: '/profile',
+                state: address1
+              }}> Link 1</Link>
+              <Link id = "link2" style={{display: "none"}} onClick= {this.openProfile} to={{
+                pathname: '/profile',
+                state: address2
+              }}> Link 2</Link>
+              <Link id = "link3" style={{display: "none"}} onClick= {this.openProfile} to={{
+                pathname: '/profile',
+                state: address3
+              }}> Link 3</Link>
+              </div>
             </div>
             <div className="Feed-button">
             <Link onClick= {this.openFeed} to={{

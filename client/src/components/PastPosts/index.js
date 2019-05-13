@@ -154,9 +154,9 @@ class PastPosts extends Component{
 
         if (!done){
 
-          console.log("a")
+
         if (address in following){
-          console.log("b")
+
           return false;
         }
 
@@ -170,7 +170,7 @@ class PastPosts extends Component{
           ref.child(key).update(follower);
           return true;
         }else{
-          console.log("a")
+
           const follower = {
           }
           follower[myAddress] = address
