@@ -30450,21 +30450,12 @@
     "5777": {
       "events": {},
       "links": {},
-<<<<<<< HEAD
-      "address": "0x2c081f964F75b77Fb5D66B60CD2ab36B4DBCEE80",
-      "transactionHash": "0xfc137fe16ecc646b9bc2a8ce71a0c22d2c7c34366991ee6d13e559a938024ed6"
+      "address": "0xc40d33f188C1D0CDC8FACbfa41c5aD281EF0046C",
+      "transactionHash": "0x0c982345288acb9e213699351756424f47020581a83f1ce5d5722ac7aa9ce8ac"
     }
   },
   "schemaVersion": "3.0.6",
-  "updatedAt": "2019-05-14T23:14:53.911Z",
-=======
-      "address": "0x7989B166a4F8De831C1a62C71239aE18B83b7f73",
-      "transactionHash": "0x809293a8d9136a73aa6f65628affc5bfb10d70223a780d70b5203ae00de6d0eb"
-    }
-  },
-  "schemaVersion": "3.0.6",
-  "updatedAt": "2019-05-13T17:36:19.687Z",
->>>>>>> 9fbfefc2d247350cfee21d3cbedb89e3e09161a4
+  "updatedAt": "2019-05-14T23:41:27.373Z",
   "devdoc": {
     "methods": {}
   },
