@@ -13342,11 +13342,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.6",
-<<<<<<< HEAD
-  "updatedAt": "2019-05-14T23:14:51.012Z",
-=======
-  "updatedAt": "2019-05-13T17:35:37.145Z",
->>>>>>> 9fbfefc2d247350cfee21d3cbedb89e3e09161a4
+  "updatedAt": "2019-05-14T23:41:24.620Z",
   "devdoc": {
     "methods": {}
   },
