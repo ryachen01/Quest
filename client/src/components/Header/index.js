@@ -126,7 +126,7 @@ captureProfileUpload = async event => {
 
            <div className ="Nav-menu">
                <div className="Nav-brand">
-		             <h1> Ethereum Dapp</h1>
+		             <h1> EtherGram </h1>
               </div>
 
               <div className="Nav-logo">
