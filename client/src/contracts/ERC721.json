@@ -2095,12 +2095,21 @@
     "5777": {
       "events": {},
       "links": {},
+<<<<<<< HEAD
       "address": "0x9c57190769DFC36a4A2be3D2A1bca662c790c7bC",
       "transactionHash": "0xa6b7369a1572b24b043cc3a0e318440435536cbdeb40a9023b559a1574e49122"
     }
   },
   "schemaVersion": "3.0.6",
   "updatedAt": "2019-05-14T23:14:53.883Z",
+=======
+      "address": "0x3ACCeC3FD5BA8e76aB79d3554E5D411e38bB0f7a",
+      "transactionHash": "0x28b45e24ade9824ae4fd0222f848ac20e92e0fddf5ef2be9139728251c499cc9"
+    }
+  },
+  "schemaVersion": "3.0.6",
+  "updatedAt": "2019-05-13T17:36:19.666Z",
+>>>>>>> 9fbfefc2d247350cfee21d3cbedb89e3e09161a4
   "devdoc": {
     "methods": {}
   },

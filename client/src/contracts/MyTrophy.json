@@ -10554,12 +10554,21 @@
     "5777": {
       "events": {},
       "links": {},
+<<<<<<< HEAD
       "address": "0x68CAbB0F96Cf4fd1AaE868eac815959c8B0c1D3F",
       "transactionHash": "0xb681fcf40e177bb66e02f2152c94c2c79e5a1575f129db00ae2258296ce9c39c"
     }
   },
   "schemaVersion": "3.0.6",
   "updatedAt": "2019-05-14T23:14:53.899Z",
+=======
+      "address": "0xcC5C9fFc8EdF0E3b21ee264fe971BB9987E88F63",
+      "transactionHash": "0xa38b4d2d451b665ea0ff4a3ed6b35cfb22f58955fc8b296d1b8c41a186db3a51"
+    }
+  },
+  "schemaVersion": "3.0.6",
+  "updatedAt": "2019-05-13T17:36:19.678Z",
+>>>>>>> 9fbfefc2d247350cfee21d3cbedb89e3e09161a4
   "devdoc": {
     "methods": {}
   },
