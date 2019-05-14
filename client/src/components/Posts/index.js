@@ -103,10 +103,10 @@ class Post extends Component{
       const imageHash = await contract.methods.getList(value).call();
       const imageCaption = await contract.methods.getCaption(value).call();
       const imageAddress = await contract.methods.getAddress(value).call();
+      this.setState({ address: imageAddress});
       if (imageAddress !== accounts[0]){
 
         this.isFollowing(imageAddress);
-        this.setState({ address: imageAddress});
         const numLikes = await contract.methods.totalVotesFor(imageAddress).call();
         const name = await contract.methods.getProfileName(imageAddress).call();
         const username = await contract.methods.getUserName(imageAddress).call();
@@ -167,11 +167,11 @@ class Post extends Component{
           this.setState({ isLiking: true})
           document.getElementById("likeButton").src = red_like_button;
         }
-    }else{
-      this.viewPosts();
-    }
-      this.setState({ index: (index - 1)});
+      }else{
+        this.viewPosts();
+      }
 
+      this.setState({ index: (index - 1)});
   }
 
 
@@ -253,17 +253,11 @@ class Post extends Component{
 
   follow = async () => {
 
-    const {contract, index, accounts} = this.state;
+    const {accounts, address} = this.state;
 
-    const myAddress = accounts[0]
+    const myAddress = accounts[0];
 
-    var followerAddress = ""
-    try {
-      followerAddress = await contract.methods.getAddress(index - 1).call();
-    }
-    catch {
-      followerAddress = await contract.methods.returnWinnerAddress().call();
-    }
+    const followerAddress = address;
 
     if (myAddress === followerAddress){
       return false;

@@ -7906,12 +7906,21 @@
     "5777": {
       "events": {},
       "links": {},
+<<<<<<< HEAD
       "address": "0x0a9E666aa5001745A478e2F1F813c1CD40448ca8",
       "transactionHash": "0xe3540c519cb208ddc2b336233726f57a2516da7a5e4a57a1dbf53c0f78f6c325"
     }
   },
   "schemaVersion": "3.0.6",
   "updatedAt": "2019-05-14T23:14:53.885Z",
+=======
+      "address": "0xe1F6f4E7B0FCB7DD0DFAEEbd88181a365E6EAEB5",
+      "transactionHash": "0x1dc35cda1903a7fd44b44b9bbb2950de852fd8d377240498021577ddd1ef7557"
+    }
+  },
+  "schemaVersion": "3.0.6",
+  "updatedAt": "2019-05-13T17:36:19.669Z",
+>>>>>>> 9fbfefc2d247350cfee21d3cbedb89e3e09161a4
   "devdoc": {
     "methods": {}
   },
