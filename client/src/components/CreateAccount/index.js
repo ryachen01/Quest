@@ -127,10 +127,15 @@ class CreateAccount extends Component{
       }else{
         var confirmed = window.confirm("Are you sure you would like to create this account?")
         if (confirmed){
-          contract.methods.registerAccount(username, name, hash).send({from: accounts[0], value: 1e17, gasPrice: 1e9}).then(function(){
-              window.alert("Congratulations! You have created your account. You can learn more at https://github.com/ryachen01/Social-Media-Blockchain-App/blob/master/README.md")
-              window.location.href = "/"
-          });
+          var tokenAmount = prompt("How many EtherGram Tokens would you like the purchase? The current exchange rate is 0.0005 ether to 1 EGT. ");
+          if (tokenAmount != null && parseInt(tokenAmount) >= 1){
+            const ethValue = 5e14 * parseInt(tokenAmount);
+            contract.methods.registerAccount(username, name, hash).send({from: accounts[0], value: ethValue, gasPrice: 1e9}).then(function(){
+                window.alert("Congratulations! You have created your account. You can learn more at https://github.com/ryachen01/Social-Media-Blockchain-App/blob/master/README.md")
+                window.location.href = "/"
+            });
+          }
+
 
         }else{
           return false;

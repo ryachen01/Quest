@@ -55,6 +55,7 @@ class App extends Component {
         <Upload web3 = {this.state.web3} accounts = {this.state.accounts}/>
         <Posts web3 = {this.state.web3} accounts = {this.state.accounts}/>
         <Purchase web3 = {this.state.web3} accounts = {this.state.accounts}/>
+
       </div>
       </div>
     );

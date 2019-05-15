@@ -32,8 +32,8 @@ import "../contracts/ERC20.sol";
 
 
      constructor() public {
-          symbol = "RAC";
-          name = "My Token";
+          symbol = "EGT";
+          name = "EtherGram Token";
           decimals = 18;
           _totalSupply = 100000000000000000000000000;
           creator = msg.sender;
@@ -93,7 +93,8 @@ import "../contracts/ERC20.sol";
       function buy() external payable {
 
           creator.transfer(msg.value);
-  	      uint tokens = msg.value * 500;
+  	      uint tokens = msg.value * 2500;
+          require (tokens >= 1);
   	      balances[msg.sender] = balances[msg.sender].add(tokens);
   	      _totalSupply = _totalSupply.add(tokens);
           emit Transfer(address(0), msg.sender, tokens);

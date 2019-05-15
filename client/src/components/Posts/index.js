@@ -53,20 +53,28 @@ class Post extends Component{
 
     const winnerAddress = await contract.methods.returnWinnerAddress().call();
     const winnerHash = await contract.methods.returnWinnerHash().call();
+    const winnerCaption = await contract.methods.returnWinnerCaption().call();
+
+    if (winnerAddress != "" && winnerHash != ""){
 
     const numLikes = await contract.methods.totalVotesFor(winnerAddress).call();
     const name = await contract.methods.getProfileName(winnerAddress).call();
     const username = await contract.methods.getUserName(winnerAddress).call();
     const profileImage = await contract.methods.getProfileImage(winnerAddress).call();
+
     this.setState({ address: winnerAddress});
 
-
-    if (winnerAddress != null && winnerHash != null){
     document.getElementById("Ipfs-Image").src = `https://ipfs.io/ipfs/${winnerHash}`;
+
     document.getElementById("Caption").innerHTML = username.bold() + " Winning Post";
+
     document.getElementById("Name").innerHTML = name;
+
     document.getElementById("Num-likes").innerHTML = numLikes + " Likes"
+
     document.getElementById("profilePicture").src = `https://ipfs.io/ipfs/${profileImage}`;
+
+
     this.isFollowing(winnerAddress);
     }
     this.randomizeOrder();
@@ -112,11 +120,19 @@ class Post extends Component{
         const username = await contract.methods.getUserName(imageAddress).call();
         const profileImage = await contract.methods.getProfileImage(imageAddress).call();
         document.getElementById("Name").innerHTML = name
-        document.getElementById("Ipfs-Image").src = `https://ipfs.io/ipfs/${imageHash}`;
+        try {
+          document.getElementById("Ipfs-Image").src = `https://ipfs.io/ipfs/${imageHash}`;
+        } catch (error){
+          console.log(error);
+        }
+
         document.getElementById("Caption").innerHTML = username.bold() + "  " + imageCaption;
         document.getElementById("Num-likes").innerHTML = numLikes + " Likes"
         console.log(`https://ipfs.io/ipfs/${profileImage}`)
+
         document.getElementById("profilePicture").src = `https://ipfs.io/ipfs/${profileImage}`;
+
+
         const hasLiked = await contract.methods.likedPhoto(imageAddress).call({from: accounts[0]});
         if (hasLiked === false){
           this.setState({ isLiking: false})

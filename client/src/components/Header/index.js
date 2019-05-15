@@ -75,13 +75,11 @@ class Header extends React.Component{
         document.getElementById("createButton").style.display = "none";
         const profileImage = await contract.methods.getProfileImage(accounts[0]).call();
         document.getElementById("profile").src = `https://ipfs.io/ipfs/${profileImage}`;
+        document.getElementById("input-field").style.bottom = "15px";
 
     }else{
       document.getElementById("myProfile").style.display = "none";
     }
-
-    /*const winnerHash = await contract.methods.returnWinnerHash().call();*/
-
 
   };
 
@@ -163,7 +161,7 @@ getFollowing = async () => {
 search = async () => {
   const {followingList, contract} = this.state;
 
-  const input = document.getElementById('myInput').value;
+  const input = document.getElementById('input-field').value;
   for (var i = 0; i < followingList.length; i++){
       var username = await contract.methods.getUserName(followingList[i]).call();
 
@@ -214,12 +212,12 @@ search = async () => {
               type = "file" id = "profileUpload" style={{display: "none"}}
               onChange = {this.captureProfileUpload}
             />
-            <div className="Account-button">
-            <Button id = "createButton" variant="contained" color="default" onClick = {this.newAccount}>
+            <div >
+            <Button className="Account-button" id = "createButton" variant="contained" color="default" onClick = {this.newAccount}>
               Create Account
               <CloudUploadIcon className={classes.rightIcon}/>
             </Button>
-            <Link id = "myProfile" onClick= {this.openProfile} to={{
+            <Link className="Profile-button" id = "myProfile" onClick= {this.openProfile} to={{
               state: accounts[0],
               pathname: '/profile'
             }}> <input id = "profile" type="image" src={home_button} height = "60" width = "60" alt="Feed">
@@ -227,7 +225,7 @@ search = async () => {
             </div>
 
             <div className="dropdown">
-              <input className = "inputField" type="text" id="myInput" onKeyUp= {this.search} placeholder="Search for names.."/>
+              <input className = "inputField" id = "input-field" type="text" onKeyUp= {this.search} placeholder="Search for names.."/>
               <div className ="dropdown-content">
               <Link id = "link1" style={{display: "none"}} onClick= {this.openProfile} to={{
                 pathname: '/profile',

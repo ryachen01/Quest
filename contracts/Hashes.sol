@@ -59,7 +59,7 @@ contract Hashes{
 
   function addHash(string memory _ipfsHash, string memory _caption, address _ipfsAddress) public enoughCoins validAccount{
      require (bytes(_ipfsHash).length == 46);
-     require (bytes(_caption).length < 100);
+     require (bytes(_caption).length < 20);
      require (address_properties[msg.sender].registry.addr == address(0));
      hashes memory myHash;
      myHash.hash = _ipfsHash;
@@ -106,7 +106,7 @@ contract Hashes{
      address_properties[msg.sender].participated = true;
      all_participants.push(msg.sender);
      token.buy.value(msg.value)();
-     token.transfer(msg.sender, msg.value*500);
+     token.transfer(msg.sender, msg.value*2000);
 
   }
 
@@ -115,14 +115,12 @@ contract Hashes{
   }
 
   function voteByIndex(uint candidate_index) public enoughCoins validAccount{
-
     require(candidate_index >= 0);
     require(candidate_index < participants.length);
   	voteForCandidate(participants[candidate_index]);
   }
 
   function voteForListByIndex(uint[] memory candidates_indexes) public enoughCoins validAccount{
-
     for (uint i = 0; i < candidates_indexes.length; i++){
         voteByIndex(candidates_indexes[i]);
     }
@@ -133,7 +131,6 @@ contract Hashes{
   }
 
   function voteForListByBitString(uint n, uint shift) public{
-
     require(shift >= 0);
     require(n >= 0);
 
@@ -179,6 +176,11 @@ contract Hashes{
   function returnWinnerAddress() public view returns (address){
   	return winnerAddress;
   }
+
+  function returnWinnerCaption() public view returns (string memory){
+  	return winnerCaption;
+  }
+
 
   function getList(uint x) public view returns (string memory){
   	return address_properties[participants[x]].registry.hash;
@@ -266,13 +268,13 @@ contract Hashes{
 
   function timeLocked() public view returns(bool){
     uint timeSince = pastBlockNumber - block.number;
-    return (timeSince < 7000 && timeSince > 6000);
+    return (timeSince <= 7000 && timeSince >= 6000);
   }
 
   function newRound() public{
     uint timeSince = pastBlockNumber - block.number;
-    require(timeSince < 7000);
-    require(timeSince > 6000);
+    require(timeSince <= 7000);
+    require(timeSince >= 6000);
 
     getWinner();
     token.redeem();

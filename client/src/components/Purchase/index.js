@@ -57,7 +57,7 @@ class TokenPurchase extends Component{
   updateValue = async () => {
     //Conversion between Ether to ERC20 Token
     const amount = document.getElementById("Value").value;
-    const tokenValue = amount * 500;
+    const tokenValue = amount * 2000;
     document.getElementById("Token Value").value = tokenValue;
 
   }
@@ -65,7 +65,7 @@ class TokenPurchase extends Component{
   getEthAmount = async () => {
     //Conversion between Ether to ERC20 Token
     const amount = document.getElementById("Token Value").value;
-    const tokenValue = amount/500;
+    const tokenValue = amount/2000;
     document.getElementById("Value").value = tokenValue;
 
   }
@@ -91,7 +91,7 @@ class TokenPurchase extends Component{
       <p> </p>
       Amount in Tokens: <input type="text" id = "Token Value" defaultValue = "0" onChange = {this.getEthAmount}></input>
       <p> Token address: 0xc47763cd25154fD25B0CCaF0b03d48165CC850ee </p>
-  
+
         </div>
 
         );
