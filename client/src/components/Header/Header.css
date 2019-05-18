@@ -37,12 +37,12 @@
 .Nav-brand-logo {
 
   display:block;
-  background-image: url(../../sprite.png);
-  background-size: 50px 50px;
+  background-image: url(../../ethergram.png);
+  background-size: 100px 100px;
   background-repeat: no-repeat;
   height: 100px;
   width: 100px;
-  margin-top: 50px;
+  margin-top: 30px;
   position: absolute;
   left: 110%
 

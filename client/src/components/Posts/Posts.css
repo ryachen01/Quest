@@ -31,8 +31,9 @@
 
   background-color: #efefef;
 }
-.Post-image img {
-  height: 1000px;
+
+.Post-Image img {
+  height: 800px;
   width: 100%;
 }
 .Post-caption {

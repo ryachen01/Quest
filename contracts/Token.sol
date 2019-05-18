@@ -33,9 +33,9 @@ import "../contracts/ERC20.sol";
 
      constructor() public {
           symbol = "EGT";
-          name = "EtherGram Token";
+          name = "EtherGramToken";
           decimals = 18;
-          _totalSupply = 100000000000000000000000000;
+          _totalSupply = 1000000000000000000000;
           creator = msg.sender;
           balances[creator] = _totalSupply;
 
@@ -93,14 +93,13 @@ import "../contracts/ERC20.sol";
       function buy() external payable {
 
           creator.transfer(msg.value);
-  	      uint tokens = msg.value * 2500;
+  	      uint tokens = msg.value * 2000;
           require (tokens >= 1);
   	      balances[msg.sender] = balances[msg.sender].add(tokens);
   	      _totalSupply = _totalSupply.add(tokens);
           emit Transfer(address(0), msg.sender, tokens);
 
       }
-
 
       function winner() internal view returns (address){
           return hashes.returnWinnerAddress();

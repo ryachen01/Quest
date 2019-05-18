@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom'
 class Post extends Component{
 
 
-  state = {web3: null, accounts: null, contract: null, index: null, likedPhotos: null, isLiking: false, listOrder: null, address: null};
+  state = {web3: null, accounts: null, contract: null, index: null, likedPhotos: null, isLiking: false, listOrder: null, address: null, askedToReset: null};
 
   componentDidMount = async () => {
 
@@ -101,9 +101,22 @@ class Post extends Component{
 
   viewPosts = async () => {
 
-    const {contract, index, accounts, listOrder} = this.state;
+    const {contract, index, accounts, listOrder, askedToReset} = this.state;
     const numPosts = await contract.methods.listLength().call();
 
+    const timeLocked = await contract.methods.getTime().call();
+    const registered = await contract.methods.accountRegistered().call({from: accounts[0]});
+
+    if (registered && !askedToReset){
+
+      if (timeLocked >= 50 && timeLocked <= 200){
+
+        this.setState({ askedToReset: true});
+        await contract.methods.newRound().send({from: accounts[0], gasPrice: 1e9});
+
+      }
+
+    }
 
     if (index < numPosts){
       var value = listOrder[index]
@@ -149,7 +162,8 @@ class Post extends Component{
 
   }
 
-    //await contract.methods.newRound().send({from: accounts[0], gasPrice: 1e9});
+
+
 
   };
 
@@ -279,6 +293,10 @@ class Post extends Component{
       return false;
     }
 
+    if (myAddress === null){
+      return false;
+    }
+
     firebase.auth().signInWithEmailAndPassword(process.env.REACT_APP_EMAIL, process.env.REACT_APP_PASSWORD)
 
     let ref = firebase.database().ref('followers');
@@ -362,7 +380,7 @@ class Post extends Component{
                 </div>
               </div>
             </header>
-            <div className="Post-image">
+            <div className="Post-Image">
               <div className="Post-image-bg">
                 <img alt="Unavailable" src="https://www.gettyimages.com/gi-resources/images/CreativeLandingPage/HP_Sept_24_2018/CR3_GettyImages-159018836.jpg" id = "Ipfs-Image" />
               </div>

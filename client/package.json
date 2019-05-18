@@ -1,11 +1,13 @@
 {
   "name": "client",
+  "homepage": "https://github.com/ryachen01/Social-Media-Blockchain-App",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^3.9.2",
     "@material-ui/icons": "^3.0.2",
     "firebase": "^5.9.1",
+    "gh-pages": "^2.0.1",
     "ipfs-api": "^26.1.2",
     "material-ui-icons": "^1.0.0-beta.36",
     "react": "^16.6.3",
@@ -22,7 +24,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+     "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"

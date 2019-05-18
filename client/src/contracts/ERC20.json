@@ -21,8 +21,7 @@
         }
       ],
       "name": "Transfer",
-      "type": "event",
-      "signature": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
+      "type": "event"
     },
     {
       "anonymous": false,
@@ -44,8 +43,7 @@
         }
       ],
       "name": "Approval",
-      "type": "event",
-      "signature": "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925"
+      "type": "event"
     },
     {
       "constant": true,
@@ -59,8 +57,7 @@
       ],
       "payable": false,
       "stateMutability": "view",
-      "type": "function",
-      "signature": "0x18160ddd"
+      "type": "function"
     },
     {
       "constant": true,
@@ -79,8 +76,7 @@
       ],
       "payable": false,
       "stateMutability": "view",
-      "type": "function",
-      "signature": "0x70a08231"
+      "type": "function"
     },
     {
       "constant": true,
@@ -103,8 +99,7 @@
       ],
       "payable": false,
       "stateMutability": "view",
-      "type": "function",
-      "signature": "0xdd62ed3e"
+      "type": "function"
     },
     {
       "constant": false,
@@ -122,8 +117,7 @@
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
-      "type": "function",
-      "signature": "0xa9059cbb"
+      "type": "function"
     },
     {
       "constant": false,
@@ -141,8 +135,7 @@
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
-      "type": "function",
-      "signature": "0x095ea7b3"
+      "type": "function"
     },
     {
       "constant": false,
@@ -164,8 +157,7 @@
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
-      "type": "function",
-      "signature": "0x23b872dd"
+      "type": "function"
     }
   ],
   "metadata": "{\"compiler\":{\"version\":\"0.5.0+commit.1d4f565a\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":false,\"inputs\":[{\"name\":\"spender\",\"type\":\"address\"},{\"name\":\"tokens\",\"type\":\"uint256\"}],\"name\":\"approve\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"totalSupply\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"from\",\"type\":\"address\"},{\"name\":\"to\",\"type\":\"address\"},{\"name\":\"tokens\",\"type\":\"uint256\"}],\"name\":\"transferFrom\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"tokenOwner\",\"type\":\"address\"}],\"name\":\"balanceOf\",\"outputs\":[{\"name\":\"balance\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"to\",\"type\":\"address\"},{\"name\":\"tokens\",\"type\":\"uint256\"}],\"name\":\"transfer\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"tokenOwner\",\"type\":\"address\"},{\"name\":\"spender\",\"type\":\"address\"}],\"name\":\"allowance\",\"outputs\":[{\"name\":\"remaining\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"from\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"tokens\",\"type\":\"uint256\"}],\"name\":\"Transfer\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"tokenOwner\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"spender\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"tokens\",\"type\":\"uint256\"}],\"name\":\"Approval\",\"type\":\"event\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/ryachen/Desktop/Quest/eth-chain/app/contracts/ERC20.sol\":\"ERC20\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/ryachen/Desktop/Quest/eth-chain/app/contracts/ERC20.sol\":{\"keccak256\":\"0xe188c38b17aea07255b1b0a45db4afe6709a2f81100ab7c1e340718394236af8\",\"urls\":[\"bzzr://9d5203cfafa808d841b79efffe9f3e352bd24224024c5570a9cb0cfbf62fbf6f\"]}},\"version\":1}",
@@ -1744,15 +1736,15 @@
     "version": "0.5.0+commit.1d4f565a.Emscripten.clang"
   },
   "networks": {
-    "5777": {
+    "3": {
       "events": {},
       "links": {},
-      "address": "0x09E8d1C1BF5B1DCE2Ce9cea3F1E888605C80F4CF",
-      "transactionHash": "0xd54eb2a9d822e7f64bbf4252bd17cfc3e1e96122cd0587f1b0135d83ea71928d"
+      "address": "0xa494f9790b091fDf5eb7b75c219788fe2f817698",
+      "transactionHash": "0x6f4db47299ef1b620d2fce8e31e5d892af906aabd3d373976011e13550640e24"
     }
   },
-  "schemaVersion": "3.0.6",
-  "updatedAt": "2019-05-15T16:51:24.429Z",
+  "schemaVersion": "3.0.9",
+  "updatedAt": "2019-05-18T22:45:35.107Z",
   "devdoc": {
     "methods": {}
   },

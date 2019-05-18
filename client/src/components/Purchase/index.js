@@ -6,7 +6,7 @@ import "./Purchase.css"
 class TokenPurchase extends Component{
 
   //initialize web3 to connect with smart contracts and wallets
-  state = {web3: null, accounts: null, contract: null, response:null};
+  state = {web3: null, accounts: null, contract: null, response:null, contractAddress:null};
 
   componentDidMount = async () => {
 
@@ -40,7 +40,11 @@ class TokenPurchase extends Component{
 
     const response = await contract.methods.balanceOf(accounts[0]).call();
 
+    const contractAddress = await contract.methods.returnAddress().call();
+
     this.setState({ storageValue: (response/1000000000000000000)});
+
+    this.setState({ contractAddress: contractAddress});
 
   };
 
@@ -50,7 +54,7 @@ class TokenPurchase extends Component{
     const amount = document.getElementById("Value").value;
     await contract.methods.buy().send({from: accounts[0], value: (1e18 * amount), gasPrice: 1e9});
     const total = await contract.methods.totalSupply().call();
-    console.log(total);
+
 
   };
 
@@ -90,7 +94,7 @@ class TokenPurchase extends Component{
       <button onClick = {this.buyCoins} id = "Buy" >Purchase Coins</button>
       <p> </p>
       Amount in Tokens: <input type="text" id = "Token Value" defaultValue = "0" onChange = {this.getEthAmount}></input>
-      <p> Token address: 0xc47763cd25154fD25B0CCaF0b03d48165CC850ee </p>
+      <p> Token address: {this.state.contractAddress} </p>
 
         </div>
 

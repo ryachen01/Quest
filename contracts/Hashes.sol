@@ -37,7 +37,7 @@ contract Hashes{
   address[] public all_participants;
   uint minTokens;
   MyToken token;
-  MyTrophy trophy;
+  //ftMyTrophy trophy;
   address payable token_address;
   uint pastBlockNumber;
   uint rewardScalar;
@@ -51,8 +51,8 @@ contract Hashes{
     token = MyToken(_myToken);
     token_address = _myToken;
     token.setAddress(address(this));
-    trophy = MyTrophy(_myTrophy);
-    trophy.setAddress(address(this));
+    //trophy = MyTrophy(_myTrophy);
+    //trophy.setAddress(address(this));
     pastBlockNumber = block.number;
 
   }
@@ -246,9 +246,9 @@ contract Hashes{
     return address_properties[x].photosPosted;
   }
 
-  function totalTrophies(address x) public view returns(uint){
+  /* function totalTrophies(address x) public view returns(uint){
     return trophy.balanceOf(x);
-  }
+  } */
 
   function getUserName (address x) public view returns(string memory){
     return address_properties[x].name;
@@ -266,15 +266,10 @@ contract Hashes{
     return (address_properties[msg.sender].registry.addr == address(0));
   }
 
-  function timeLocked() public view returns(bool){
-    uint timeSince = pastBlockNumber - block.number;
-    return (timeSince <= 7000 && timeSince >= 6000);
-  }
-
   function newRound() public{
-    uint timeSince = pastBlockNumber - block.number;
-    require(timeSince <= 7000);
-    require(timeSince >= 6000);
+    uint timeSince = getTime();
+    require(timeSince <= 200);
+    require(timeSince >= 50);
 
     getWinner();
     token.redeem();
@@ -286,11 +281,9 @@ contract Hashes{
       pastBlockNumber = block.number;
   }
 
+  function getTime() public view returns(uint){
+    return (block.number - pastBlockNumber);
+  }
 
-    function getTime() public view returns(uint) {
-      //This function should be deleted before production
-
-      return block.number;
-    }
 
 }

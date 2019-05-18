@@ -130,8 +130,9 @@ class CreateAccount extends Component{
           var tokenAmount = prompt("How many EtherGram Tokens would you like the purchase? The current exchange rate is 0.0005 ether to 1 EGT. ");
           if (tokenAmount != null && parseInt(tokenAmount) >= 1){
             const ethValue = 5e14 * parseInt(tokenAmount);
+            document.getElementById("loading-message").innerHTML = "Please wait for transaction to process. Should only take a few seconds"
             contract.methods.registerAccount(username, name, hash).send({from: accounts[0], value: ethValue, gasPrice: 1e9}).then(function(){
-                window.alert("Congratulations! You have created your account. You can learn more at https://github.com/ryachen01/Social-Media-Blockchain-App/blob/master/README.md")
+                window.alert("Congratulations! Your account has been created. You can learn more at https://github.com/ryachen01/Social-Media-Blockchain-App/blob/master/README.md")
                 window.location.href = "/"
             });
           }
@@ -190,7 +191,7 @@ class CreateAccount extends Component{
 
                  <p> </p>
                  <button type="submit" id = "create-button" onClick = {this.createProfile} style={{display: "none"}} className = "create-button"> Create Account</button>
-
+                 <h3 id = "loading-message"> </h3>
                  </div>
                </div>
           </div>
