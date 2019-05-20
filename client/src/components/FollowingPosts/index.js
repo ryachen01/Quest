@@ -94,7 +94,7 @@ class FollowingPosts extends Component{
       for (var i = postList[0].length - 1; i > 0; i--) {
         var j = Math.floor(Math.random() * (i + 1));
         var temp = postList[0][i];
-        
+
         postList[0][i] = postList[0][j];
         postList[0][j] = temp;
     }
@@ -268,7 +268,7 @@ class FollowingPosts extends Component{
               </div>
               </div>
             </header>
-            <div className="Post-image">
+            <div className="Post-Image">
               <div className="Post-image-bg">
                 <img alt="Unavailable"  id = "Ipfs-Image" />
               </div>

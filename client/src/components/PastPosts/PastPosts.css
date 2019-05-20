@@ -3,9 +3,9 @@
       border-radius: 3px;
       border: 1px solid #e6e6e6;
       background-color: #fff;
-      margin-left : 30%;
+      margin-left : 31.5%;
       margin-right: 30%;
-      width:41%;
+      width:36%;
     }
 
 
@@ -33,7 +33,7 @@
   background-color: #efefef;
 }
 .Profile-Post-image img {
-  height: 450px;
+  height: 350px;
   width: 100%;
 }
 .Post-caption {

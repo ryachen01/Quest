@@ -285,7 +285,7 @@ class Post extends Component{
 
   follow = async () => {
 
-    const {accounts, address} = this.state;
+    const {accounts, address, contract} = this.state;
 
     const myAddress = accounts[0];
 
@@ -295,7 +295,8 @@ class Post extends Component{
       return false;
     }
 
-    if (myAddress === null){
+    const registered = await contract.methods.accountRegistered().call({from: accounts[0]});
+    if (!registered){
       return false;
     }
 

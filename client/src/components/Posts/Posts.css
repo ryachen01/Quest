@@ -3,9 +3,9 @@
     border-radius: 3px;
     border: 1px solid #e6e6e6;
     background-color: #fff;
-    margin-left: 30%;
+    margin-left: 31.5%;
     margin-right: 30%;
-    width:41%;
+    width:36%;
 }
 
 .Top-margin {
@@ -34,7 +34,7 @@
 }
 
 .Post-Image img {
-  height: 450px;
+  height: 350px;
   width: 100%;
 }
 .Post-caption {
@@ -54,12 +54,12 @@
 
 .Follow-button {
   position:absolute;
-  left: 60%
+  left: 58%
 
 }
 .Save-button{
   position: absolute;
-  left:62%;
+  left:56%;
   margin-top: -40px;
 }
 
