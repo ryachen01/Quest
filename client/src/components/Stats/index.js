@@ -43,7 +43,6 @@ class Stats extends Component{
     /*const winnerHash = await contract.methods.returnWinnerHash().call();*/
     const totalVotes = await contract.methods.totalVotesReceived(address).call();
     const totalPhotos = await contract.methods.totalPhotosPosted(address).call();
-    const totalTrophies = await contract.methods.totalTrophies(address).call();
     document.getElementById("numPhotos").innerHTML = " Total Photos Posted: " + totalPhotos;
     document.getElementById("numVotes").innerHTML = " Total Votes Received: " + totalVotes;
     document.getElementById("address").innerHTML = " Address: " + address;
@@ -57,7 +56,7 @@ class Stats extends Component{
         <div className = "Stats">
 
 
-      <h1> User Stats! </h1>
+      <h2> User Stats! </h2>
 
       <h3 id = "numPhotos">Total Photos Posted: 0</h3>
       <h3 id = "numVotes">Total Votes Received: 0</h3>

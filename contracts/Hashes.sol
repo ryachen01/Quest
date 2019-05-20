@@ -37,7 +37,7 @@ contract Hashes{
   address[] public all_participants;
   uint minTokens;
   MyToken token;
-  //ftMyTrophy trophy;
+  //MyTrophy trophy;
   address payable token_address;
   uint pastBlockNumber;
   uint rewardScalar;
@@ -268,8 +268,9 @@ contract Hashes{
 
   function newRound() public{
     uint timeSince = getTime();
-    require(timeSince <= 200);
-    require(timeSince >= 50);
+
+    require(timeSince >= 6000);
+    require(timeSince <= 7000);
 
     getWinner();
     token.redeem();
@@ -278,7 +279,7 @@ contract Hashes{
       address_properties[participants[i]].registry = myHash;
     }
     participants.length = 0;
-      pastBlockNumber = block.number;
+    pastBlockNumber = block.number;
   }
 
   function getTime() public view returns(uint){

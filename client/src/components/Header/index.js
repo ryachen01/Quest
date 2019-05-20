@@ -220,12 +220,12 @@ search = async () => {
             <Link className="Profile-button" id = "myProfile" onClick= {this.openProfile} to={{
               state: accounts[0],
               pathname: '/profile'
-            }}> <input id = "profile" type="image" src={home_button} height = "60" width = "60" alt="Feed">
+            }}> <input id = "profile" type="image" src={home_button} height = "30" width = "30" alt="Home">
               </input>  <h3> My Profile</h3> </Link>
             </div>
 
             <div className="dropdown">
-              <input className = "inputField" id = "input-field" type="text" onKeyUp= {this.search} placeholder="Search for names.."/>
+              <input className = "inputField" id = "input-field" type="text" onKeyUp= {this.search} placeholder="Search following list.."/>
               <div className ="dropdown-content">
               <Link id = "link1" style={{display: "none"}} onClick= {this.openProfile} to={{
                 pathname: '/profile',
@@ -244,7 +244,7 @@ search = async () => {
             <div className="Feed-button">
             <Link onClick= {this.openFeed} to={{
               pathname: '/following'
-            }}> <input  type="image" src={home_button} height = "60" width = "60" alt="Feed">
+            }}> <input  type="image" src={home_button} height = "30" width = "30" alt="Feed">
               </input>  <h3> My Feed</h3> </Link>
             </div>
            </nav>

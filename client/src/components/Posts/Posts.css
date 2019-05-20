@@ -5,13 +5,14 @@
     background-color: #fff;
     margin-left: 30%;
     margin-right: 30%;
+    width:41%;
 }
 
-
-.Post-user {
+.Top-margin {
   display: flex;
-  padding: 30px;
+  padding: 10px;
   align-items: center;
+
 }
 .Post-user-avatar {
   width: 50px;
@@ -33,7 +34,7 @@
 }
 
 .Post-Image img {
-  height: 800px;
+  height: 450px;
   width: 100%;
 }
 .Post-caption {
@@ -46,12 +47,36 @@
   margin-right:800px;
 }
 
+.CaptionText{
+  margin-top:40px;
+  margin-bottom:-5px;
+}
+
 .Follow-button {
   position:absolute;
-  left: 63%
+  left: 60%
+
+}
+.Save-button{
+  position: absolute;
+  left:62%;
+  margin-top: -40px;
 }
 
 
+.Bottom-margin{
+  height: 50px;
+
+}
+.post-buttons{
+  margin-top: -50px;
+}
+
+.Num-likes{
+
+  margin-top:50px;
+
+}
 
 .vjs-fade-out {
   display: none;

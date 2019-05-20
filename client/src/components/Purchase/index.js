@@ -83,17 +83,17 @@ class TokenPurchase extends Component{
         <div className = "Buy">
 
 
-      <h1> Buy Tokens! </h1>
+      <h2> Buy Tokens! </h2>
 
       <div>Your Token Balance is: {this.state.storageValue}</div>
 
       <p> </p>
 
 
-      Amount in Ether: <input type="text" onChange = {this.updateValue} id = "Value"></input>
+      Amount in Ether: <input className = "purchaseInputFields" type="text" onChange = {this.updateValue} id = "Value"></input>
       <button onClick = {this.buyCoins} id = "Buy" >Purchase Coins</button>
       <p> </p>
-      Amount in Tokens: <input type="text" id = "Token Value" defaultValue = "0" onChange = {this.getEthAmount}></input>
+      Amount in Tokens: <input className = "purchaseInputFields" type="text" id = "Token Value" defaultValue = "0" onChange = {this.getEthAmount}></input>
       <p> Token address: {this.state.contractAddress} </p>
 
         </div>

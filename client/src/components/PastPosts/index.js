@@ -321,7 +321,7 @@ class PastPosts extends Component{
               </div>
             </div>
             </header>
-            <div className="Post-image">
+            <div className="Profile-Post-image">
               <div className="Post-image-bg">
                 <img alt="Unavailable"  id = "Ipfs-Image" />
               </div>

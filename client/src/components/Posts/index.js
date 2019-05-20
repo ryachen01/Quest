@@ -105,13 +105,15 @@ class Post extends Component{
     const numPosts = await contract.methods.listLength().call();
 
     const timeLocked = await contract.methods.getTime().call();
+    console.log(timeLocked)
     const registered = await contract.methods.accountRegistered().call({from: accounts[0]});
 
     if (registered && !askedToReset){
 
-      if (timeLocked >= 50 && timeLocked <= 200){
+      if (timeLocked >= 6000 && timeLocked <= 7000){
 
         this.setState({ askedToReset: true});
+
         await contract.methods.newRound().send({from: accounts[0], gasPrice: 1e9});
 
       }
@@ -364,7 +366,7 @@ class Post extends Component{
         return (
         <article className="Main-Post" ref="Post">
             <header className = "Post-Header">
-              <div className="Post-user">
+              <div className="Top-margin">
                 <div className="Post-user-avatar">
                   <Link onClick= {this.openProfile} to={{
                     pathname: '/profile',
@@ -376,7 +378,7 @@ class Post extends Component{
                   <span id = "Name" ></span>
                 </div>
                 <div className = "Follow-button">
-                  <Button id = "followButton" onClick = {this.follow} variant="outlined">Follow</Button>
+                  <Button className = "followButton" id = "followButton" onClick = {this.follow} variant="outlined"  >Follow</Button>
                 </div>
               </div>
             </header>
@@ -386,14 +388,17 @@ class Post extends Component{
               </div>
             </div>
             <div className="Post-caption" >
-              <div className ="Post-buttons" >
+              <div className ="Bottom-margin" >
                 <input id = "likeButton" onClick = {this.likePost} className="Like-button" type="image" src = {like_button} height = "40" width = "40" alt ="like" />
                 <input onClick = {this.saveLikes} className="Save-button" type="image" src = {save_button} height = "40" width = "80" alt ="save" />
+                <div className="post-buttons">
                 <h3 id = "Num-likes"> 0 Likes </h3>
-                <button onClick = {this.viewPosts} className = "Post-Next" >Next</button>
                 <button onClick = {this.previousPost} className = "Post-Previous" >Previous</button>
+                <button onClick = {this.viewPosts} className = "Post-Next" >Next</button>
+
+                </div>
               </div>
-              <p id = "Caption" ></p>
+              <p className = "CaptionText" id = "Caption" ></p>
             </div>
             <div className = "Post-like">
 

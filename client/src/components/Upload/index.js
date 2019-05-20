@@ -4,7 +4,8 @@ import "./Upload.css"
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-
+import Cropper from 'react-easy-crop'
+import getCroppedImg from './cropImage'
 
 
 const styles = theme => ({
@@ -26,7 +27,14 @@ const styles = theme => ({
 
 class ImageUpload extends Component{
 
-  state = {web3: null, accounts: null, contract: null, reader: null, username: null, name: null};
+  state = {web3: null, accounts: null, contract: null, reader: null, username: null, name: null,
+    image: null,
+    crop: { x: 0, y: 0 },
+    zoom: 1,
+    aspect: 4 / 3,
+    croppedAreaPixels: null,
+    croppedImage: null
+  };
 
   componentDidMount = async () => {
 
@@ -59,11 +67,6 @@ class ImageUpload extends Component{
   };
 
 
-
-
-
-
-
 captureFile = async event => {
 
   this.state.reader.abort()
@@ -71,35 +74,38 @@ captureFile = async event => {
   event.stopPropagation()
   event.preventDefault()
   const myFile = event.target.files[0]
-
+  console.log(myFile)
 
   this.state.reader.readAsDataURL(myFile)
 
 
   setTimeout(() => {
+      this.setState({image: this.state.reader.result})
+      document.getElementById("cropperTool").style.display = ""
+      document.getElementById("uploadPostButton").style.display = ""
 
-      document.getElementById("preview").style.display = ""
-      document.getElementById("preview").src = this.state.reader.result
-      document.getElementById("upload").style.display = ""
-      this.state.reader.readAsArrayBuffer(myFile)
 
-  }, 25);
+  }, 50);
 
 
 };
 
 
 
+
+
     uploadFile = async () => {
 
 
-        const { accounts, contract } = this.state;
+        const { accounts, contract} = this.state;
 
         var ipfsAPI = require('ipfs-api')
 
         // connect to ipfs daemon API server
         var ipfs = ipfsAPI('ipfs.infura.io', '5001', {protocol: 'https'})
         // Connect to IPFS
+
+        console.log(this.state.reader.result)
 
         const buf = Buffer.from(this.state.reader.result) // Convert data into buffer
         ipfs.files.add(buf, (err, result) => { // Upload buffer to IPFS
@@ -118,8 +124,9 @@ captureFile = async event => {
           return false
         }else{
           contract.methods.addHash(hash, caption, accounts[0]).send({from: accounts[0], gasPrice: 1e9});
-          document.getElementById("preview").style.display = "none"
-          document.getElementById("upload").style.display = "none"
+          document.getElementById("cropperTool").style.display = "none"
+          document.getElementById("uploadPostButton").style.display = "none"
+
         }
 
 
@@ -129,11 +136,40 @@ captureFile = async event => {
 
     }
 
+
+
     triggerInput = async () => {
       document.getElementById("fileUpload").click()
     }
 
+    onCropChange = crop => {
+        this.setState({ crop })
+      }
 
+    onCropComplete = (croppedArea, croppedAreaPixels) => {
+      console.log(croppedArea, croppedAreaPixels)
+      this.setState({ croppedAreaPixels })
+    }
+
+    onZoomChange = zoom => {
+      this.setState({ zoom })
+    }
+
+    showCroppedImage = async () => {
+    console.log(this.state.image)
+    const croppedImage = await getCroppedImg(
+      this.state.image,
+      this.state.croppedAreaPixels
+    )
+
+    console.log(typeof croppedImage)
+    this.state.reader.readAsArrayBuffer(croppedImage)
+    setTimeout(() => {
+      console.log(this.state.reader.result)
+      this.uploadFile();
+    },100);
+
+  }
 
 
 
@@ -143,16 +179,16 @@ captureFile = async event => {
 
         return (
 
-        <div>
+        <div className = "upload" >
 
-      <h1> Upload Photo </h1>
+      <h2> Upload Photo </h2>
 
       <input
         type = "file" id = "fileUpload" style={{display: "none"}}
         onChange = {this.captureFile}
       />
 
-      <Button variant="contained" color="primary" onClick = {this.triggerInput}>
+      <Button className = "newPost" variant="contained" color="primary" onClick = {this.triggerInput}>
         New Post
         <CloudUploadIcon className={classes.rightIcon} />
 
@@ -160,12 +196,22 @@ captureFile = async event => {
 
       <p> </p>
 
-      <img alt="Unavailable" style={{display: "none"}} id = "preview" height = "200" width = "200"/>
+      <div style={{display: "none"}} id = "cropperTool"  className="crop-container">
+      <Cropper
+        image={this.state.image}
+        crop={this.state.crop}
+        zoom={this.state.zoom}
+        aspect={this.state.aspect}
+        onCropChange={this.onCropChange}
+        onCropComplete={this.onCropComplete}
+        onZoomChange={this.onZoomChange}
+      />
+      </div>
 
       <p> </p>
 
-      <div>
-      <Button variant = "contained" id = "upload" style={{display: "none"}} onClick = {this.uploadFile} type="submit" className ="uploadButton"> Post Photo</Button>
+      <div className = "upload-div">
+      <Button variant = "contained" id = "uploadPostButton" style={{display: "none"}} onClick = {this.showCroppedImage} type="submit" className ="uploadButton"> Post Photo</Button>
       </div>
 
 

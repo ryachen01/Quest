@@ -1,6 +1,7 @@
 const path = require("path");
 const HDWalletProvider = require("truffle-hdwallet-provider");
 
+
 module.exports = {
 
   contracts_build_directory: "./client/src/contracts",

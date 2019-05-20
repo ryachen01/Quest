@@ -1,6 +1,11 @@
 .Buy{
   position: absolute;
-  margin-top: -50%;
-  margin-left: 73%;
+  margin-top: -34%;
+  margin-left: 72%;
+  font-size: 8.5px;
 
+}
+
+.purchaseInputFields{
+  height:12px;
 }

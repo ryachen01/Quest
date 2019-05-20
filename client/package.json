@@ -1,6 +1,6 @@
 {
   "name": "client",
-  "homepage": "https://github.com/ryachen01/Social-Media-Blockchain-App",
+  "homepage": "https://ethergram.surge.sh",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -14,6 +14,7 @@
     "react-bootstrap": "^1.0.0-beta.5",
     "react-confirm-alert": "^2.1.0",
     "react-dom": "^16.6.3",
+    "react-easy-crop": "^1.12.0",
     "react-image-crop": "^6.0.17",
     "react-router-dom": "^4.3.1",
     "react-scripts": "^2.1.8",
@@ -22,10 +23,10 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "deploy": "npm run build && mv build/index.html build/200.html && surge build ether       gram.surge.sh",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-     "deploy": "gh-pages -d build"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"

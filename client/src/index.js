@@ -11,13 +11,13 @@ import NewAccount from './NewAccount'
 import * as serviceWorker from './serviceWorker';
 
 const routing = (
-  <BrowserRouter >
+  <BrowserRouter>
     <div>
     <Switch>
       <Route exact path="/" component= {App}/>
-      <Route path="/profile" component={Profile} />
-      <Route path="/following" component={Following} />
-      <Route path="/new" component={NewAccount} />
+      <Route exact path="/profile" component={Profile} />
+      <Route exact path="/following" component={Following} />
+      <Route exact path="/new" component={NewAccount} />
     </Switch>
     </div>
   </BrowserRouter>
