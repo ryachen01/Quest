@@ -1,10 +1,10 @@
 .Stats{
   position: absolute;
-  margin-top: -50%;
-  margin-left: 75%;
+  margin-top: -40%;
+  margin-left: 70%;
   font-family: 'PT Sans', sans-serif;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 14px;
 }
 
 .h1{

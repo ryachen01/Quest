@@ -115,7 +115,7 @@ class CreateAccount extends Component{
 
     const name = document.getElementById('name-input').value;
 
-    const usernameTaken = contract.methods.isNameTaken(username).call().then(function(result) {
+    contract.methods.isNameTaken(username).call().then(function(result) {
 
       if (result){
         window.alert("Please choose a different username")
@@ -152,7 +152,6 @@ class CreateAccount extends Component{
 
       render() {
 
-        const {contract, accounts} = this.state;
         const {classes} = this.props;
 
         return (

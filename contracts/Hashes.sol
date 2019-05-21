@@ -2,7 +2,6 @@ pragma solidity ^0.5.0;
 // We have to specify what version of compiler this code will compile with
 
 import "../contracts/Token.sol";
-import "../contracts/Trophies.sol";
 
 contract Hashes{
 
@@ -37,22 +36,18 @@ contract Hashes{
   address[] public all_participants;
   uint minTokens;
   MyToken token;
-  //MyTrophy trophy;
   address payable token_address;
   uint pastBlockNumber;
   uint rewardScalar;
+  bool firstReset = false;
 
 
 
-
-
-  constructor(uint _minTokens, address payable _myToken, address _myTrophy) public{
-    minTokens = _minTokens;
+  constructor(uint _minTokens, address payable _myToken) public{
+    minTokens = _minTokens * 1000;
     token = MyToken(_myToken);
     token_address = _myToken;
     token.setAddress(address(this));
-    //trophy = MyTrophy(_myTrophy);
-    //trophy.setAddress(address(this));
     pastBlockNumber = block.number;
 
   }
@@ -246,10 +241,6 @@ contract Hashes{
     return address_properties[x].photosPosted;
   }
 
-  /* function totalTrophies(address x) public view returns(uint){
-    return trophy.balanceOf(x);
-  } */
-
   function getUserName (address x) public view returns(string memory){
     return address_properties[x].name;
   }
@@ -270,7 +261,8 @@ contract Hashes{
     uint timeSince = getTime();
 
     require(timeSince >= 6000);
-    require(timeSince <= 7000);
+    require(timeSince%6000 < 7000);
+
 
     getWinner();
     token.redeem();
@@ -280,6 +272,21 @@ contract Hashes{
     }
     participants.length = 0;
     pastBlockNumber = block.number;
+  }
+
+  function overRideReset() public {
+
+    require (firstReset == false);
+    firstReset = true;
+    getWinner();
+    token.redeem();
+    hashes memory myHash;
+    for (uint i = 0; i < participants.length; i++){
+      address_properties[participants[i]].registry = myHash;
+    }
+    participants.length = 0;
+    pastBlockNumber = block.number;
+
   }
 
   function getTime() public view returns(uint){

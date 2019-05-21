@@ -55,7 +55,7 @@ class Post extends Component{
     const winnerHash = await contract.methods.returnWinnerHash().call();
     const winnerCaption = await contract.methods.returnWinnerCaption().call();
 
-    if (winnerAddress != "" && winnerHash != ""){
+    if (winnerAddress !== "" && winnerHash !== ""){
 
     const numLikes = await contract.methods.totalVotesFor(winnerAddress).call();
     const name = await contract.methods.getProfileName(winnerAddress).call();
@@ -66,7 +66,7 @@ class Post extends Component{
 
     document.getElementById("Ipfs-Image").src = `https://ipfs.io/ipfs/${winnerHash}`;
 
-    document.getElementById("Caption").innerHTML = username.bold() + " Winning Post";
+    document.getElementById("Caption").innerHTML = username.bold() + " " + winnerCaption;
 
     document.getElementById("Name").innerHTML = name;
 
@@ -86,8 +86,8 @@ class Post extends Component{
     const {contract } = this.state;
     const numPhotos = await contract.methods.listLength().call();
     var order = []
-    for (var i = 0; i < numPhotos; i++){
-      order.push(i);
+    for (var k = 0; k < numPhotos; k++){
+      order.push(k);
     }
     for (var i = order.length - 1; i > 0; i--) {
       var j = Math.floor(Math.random() * (i + 1));
@@ -104,13 +104,13 @@ class Post extends Component{
     const {contract, index, accounts, listOrder, askedToReset} = this.state;
     const numPosts = await contract.methods.listLength().call();
 
-    const timeLocked = await contract.methods.getTime().call();
-    console.log(timeLocked)
+    const timeSinceReset = await contract.methods.getTime().call();
+    console.log("Time Since Reset: " + timeSinceReset + " Blocks")
     const registered = await contract.methods.accountRegistered().call({from: accounts[0]});
-
+    //await contract.methods.overRideReset().send({from: accounts[0], gasPrice: 1e9});
     if (registered && !askedToReset){
 
-      if (timeLocked >= 6000 && timeLocked <= 7000){
+      if (timeSinceReset >= 6000 && timeSinceReset%6000 < 1000){
 
         this.setState({ askedToReset: true});
 
@@ -122,7 +122,7 @@ class Post extends Component{
 
     if (index < numPosts){
       var value = listOrder[index]
-
+      document.getElementById("likeButton").style.visibility="visible";
       const imageHash = await contract.methods.getList(value).call();
       const imageCaption = await contract.methods.getCaption(value).call();
       const imageAddress = await contract.methods.getAddress(value).call();
@@ -164,9 +164,6 @@ class Post extends Component{
 
   }
 
-
-
-
   };
 
   previousPost = async () => {
@@ -188,7 +185,7 @@ class Post extends Component{
         const profileImage = await contract.methods.getProfileImage(imageAddress).call();
         document.getElementById("Name").innerHTML = name
         document.getElementById("Ipfs-Image").src = `https://ipfs.io/ipfs/${imageHash}`;
-        document.getElementById("Caption").innerHTML = username.bold() + "  " + imageCaption;
+        document.getElementById("Caption").innerHTML = username.bold() + " " + imageCaption;
         document.getElementById("Num-likes").innerHTML = numLikes + " Likes"
         document.getElementById("profilePicture").src = `https://ipfs.io/ipfs/${profileImage}`;
         const hasLiked = await contract.methods.likedPhoto(imageAddress).call({from: accounts[0]});
@@ -204,7 +201,34 @@ class Post extends Component{
       }
 
       this.setState({ index: (index - 1)});
+  }else{
+    const winnerAddress = await contract.methods.returnWinnerAddress().call();
+    const winnerHash = await contract.methods.returnWinnerHash().call();
+    const winnerCaption = await contract.methods.returnWinnerCaption().call();
+
+    if (winnerAddress !== "" && winnerHash !== ""){
+    document.getElementById("likeButton").style.visibility="hidden";
+    const numLikes = await contract.methods.totalVotesFor(winnerAddress).call();
+    const name = await contract.methods.getProfileName(winnerAddress).call();
+    const username = await contract.methods.getUserName(winnerAddress).call();
+    const profileImage = await contract.methods.getProfileImage(winnerAddress).call();
+
+    this.setState({ address: winnerAddress});
+
+    document.getElementById("Ipfs-Image").src = `https://ipfs.io/ipfs/${winnerHash}`;
+
+    document.getElementById("Caption").innerHTML = username.bold() + " " + winnerCaption;
+
+    document.getElementById("Name").innerHTML = name;
+
+    document.getElementById("Num-likes").innerHTML = numLikes + " Likes"
+
+    document.getElementById("profilePicture").src = `https://ipfs.io/ipfs/${profileImage}`;
+
+    this.setState({ index: 0});
+
   }
+}
 
 
   };
@@ -390,7 +414,7 @@ class Post extends Component{
             </div>
             <div className="Post-caption" >
               <div className ="Bottom-margin" >
-                <input id = "likeButton" onClick = {this.likePost} className="Like-button" type="image" src = {like_button} height = "40" width = "40" alt ="like" />
+                <input id = "likeButton" onClick = {this.likePost} className="Like-button" style={{visibility: "hidden"}}  type="image" src = {like_button} height = "40" width = "40" alt ="like" />
                 <input onClick = {this.saveLikes} className="Save-button" type="image" src = {save_button} height = "40" width = "80" alt ="save" />
                 <div className="post-buttons">
                 <h3 id = "Num-likes"> 0 Likes </h3>

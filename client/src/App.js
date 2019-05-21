@@ -35,7 +35,7 @@ class App extends Component {
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
-        `Please make sure you have Metamask Installed (https://metamask.io).`,
+        `Please make sure you have Metamask Installed (https://metamask.io) and you are switched to the Ropsten Testnet`,
       );
       console.error(error);
     }

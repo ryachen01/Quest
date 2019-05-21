@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom'
 class FollowingPosts extends Component{
 
 
-  state = {web3: null, accounts: null, contract: null, index: null, likedPhotos: null, address: null, postList:null, listSet:null};
+  state = {web3: null, accounts: null, contract: null, index: null, likedPhotos: null, address: null, postList:null};
 
   componentDidMount = async () => {
 
@@ -26,8 +26,6 @@ class FollowingPosts extends Component{
 
       const postList = []
 
-      const listSet = false;
-
       // Get the contract instance.
       const networkId = await web3.eth.net.getId();
       const deployedNetwork = HashesContract.networks[networkId];
@@ -38,7 +36,7 @@ class FollowingPosts extends Component{
 
       // Set web3, accounts, and contract to the state, and then proceed with an
       // example of interacting with the contract's methods.
-      this.setState({web3, accounts, contract: instance, index, likedPhotos, postList, listSet}, this.runOnStart);
+      this.setState({web3, accounts, contract: instance, index, likedPhotos, postList}, this.runOnStart);
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
@@ -107,7 +105,7 @@ class FollowingPosts extends Component{
   viewPosts = async () => {
 
 
-    const {contract, index, accounts, postList, listSet} = this.state;
+    const {contract, index, accounts, postList} = this.state;
     var address;
     if (typeof postList[0] == "string"){
       address = postList[index];
@@ -185,8 +183,10 @@ class FollowingPosts extends Component{
 
     this.setState({ address: address});
 
-    const imageHash = await contract.methods.viewPhotos(address, 0).call();
-    const imageCaption = await contract.methods.viewCaption(address, 0).call();
+    const photosPosted = await contract.methods.totalPhotosPosted(address).call();
+
+    const imageHash = await contract.methods.viewPhotos(address, photosPosted - 1).call();
+    const imageCaption = await contract.methods.viewCaption(address, photosPosted - 1).call();
     const name = await contract.methods.getProfileName(address).call();
     const numLikes = await contract.methods.totalVotesFor(address).call();
     const username = await contract.methods.getUserName(address).call();

@@ -5,7 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Cropper from 'react-easy-crop'
-import getCroppedImg from './cropImage'
+import getCroppedImg from '../cropImage'
 
 
 const styles = theme => ({
@@ -74,7 +74,6 @@ captureFile = async event => {
   event.stopPropagation()
   event.preventDefault()
   const myFile = event.target.files[0]
-  console.log(myFile)
 
   this.state.reader.readAsDataURL(myFile)
 
@@ -104,8 +103,6 @@ captureFile = async event => {
         // connect to ipfs daemon API server
         var ipfs = ipfsAPI('ipfs.infura.io', '5001', {protocol: 'https'})
         // Connect to IPFS
-
-        console.log(this.state.reader.result)
 
         const buf = Buffer.from(this.state.reader.result) // Convert data into buffer
         ipfs.files.add(buf, (err, result) => { // Upload buffer to IPFS
@@ -147,7 +144,6 @@ captureFile = async event => {
       }
 
     onCropComplete = (croppedArea, croppedAreaPixels) => {
-      console.log(croppedArea, croppedAreaPixels)
       this.setState({ croppedAreaPixels })
     }
 
@@ -156,18 +152,17 @@ captureFile = async event => {
     }
 
     showCroppedImage = async () => {
-    console.log(this.state.image)
-    const croppedImage = await getCroppedImg(
-      this.state.image,
-      this.state.croppedAreaPixels
-    )
 
-    console.log(typeof croppedImage)
-    this.state.reader.readAsArrayBuffer(croppedImage)
-    setTimeout(() => {
-      console.log(this.state.reader.result)
-      this.uploadFile();
-    },100);
+      const croppedImage = await getCroppedImg(
+        this.state.image,
+        this.state.croppedAreaPixels
+      )
+
+      this.state.reader.readAsArrayBuffer(croppedImage)
+      setTimeout(() => {
+        console.log(this.state.reader.result)
+        this.uploadFile();
+      },100);
 
   }
 

@@ -3,11 +3,12 @@
 
   -webkit-animation: glowing 1500ms infinite;
 
+
 }
 
 .upload-div{
-  margin-top: 250px;
-  margin-bottom: -60px;
+  margin-top: 230px;
+  margin-bottom: -20px;
 }
 @-webkit-keyframes glowing {
   0% { background-color: #B20000; -webkit-box-shadow: 0 0 3px #B20000; }
@@ -25,7 +26,7 @@
   position:absolute;
   height:200px;
   width:200px;
-  right:42.8%;
+  right:43.5%;
   margin-top: 0px;
 
 }

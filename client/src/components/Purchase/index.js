@@ -53,9 +53,7 @@ class TokenPurchase extends Component{
     const { accounts, contract } = this.state;
     const amount = document.getElementById("Value").value;
     await contract.methods.buy().send({from: accounts[0], value: (1e18 * amount), gasPrice: 1e9});
-    const total = await contract.methods.totalSupply().call();
-
-
+  
   };
 
   updateValue = async () => {

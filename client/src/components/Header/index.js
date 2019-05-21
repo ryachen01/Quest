@@ -171,13 +171,13 @@ search = async () => {
         document.getElementById(id).innerHTML = username;
         document.getElementById(id).style.display = "";
 
-        if (i == 0){
+        if (i === 0){
           this.setState({address1: followingList[i]});
         }
-        else if (i == 1){
+        else if (i === 1){
           this.setState({address2: followingList[i]});
         }
-        else if (i == 2){
+        else if (i === 2){
           this.setState({address3: followingList[i]});
         }
 
