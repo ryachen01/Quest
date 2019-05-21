@@ -63,4 +63,4 @@ You can follow other accounts for free if you have created an account
 
 This information is stored on Firebase not the blockchain.
 
-By paying a small fee for every transaction users can ensure a decentralized, private, and add free user experience
+By paying a small fee for every transaction users can ensure a decentralized, private, and ad free user experience
