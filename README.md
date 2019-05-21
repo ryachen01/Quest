@@ -64,3 +64,5 @@ You can follow other accounts for free if you have created an account
 This information is stored on Firebase not the blockchain.
 
 By paying a small fee for every transaction users can ensure a decentralized, private, and ad free user experience
+
+#### Ethereum donations are welcome @ 0x6fbE136725b4cDe4C6bD5F392E58c877c4Af7198
